@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>직방 TMS — 토탈 메시징 솔루션</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.3.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+<style>
+:root{
+  --bg:#ffffff;--bg2:#f6f5f1;--bg3:#eeece6;--bg4:#e4e2db;
+  --tx:#111827;--tx2:#6b7280;--tx3:#9ca3af;
+  --bd:rgba(0,0,0,.07);--bd2:rgba(0,0,0,.13);--bd3:rgba(0,0,0,.22);
+  --r:8px;--r2:12px;
+  --f:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;
+  --g:#1D9E75;--g8:rgba(29,158,117,.08);--g2:rgba(29,158,117,.2);--gd:rgba(29,158,117,.5);
+  --bl:#3B82F6;--bl8:rgba(59,130,246,.08);--bl2:rgba(59,130,246,.2);
+  --pu:#8B5CF6;--pu8:rgba(139,92,246,.08);--pu2:rgba(139,92,246,.2);
+  --am:#F59E0B;--am8:rgba(245,158,11,.08);--am2:rgba(245,158,11,.2);
+  --pk:#EC4899;--pk8:rgba(236,72,153,.08);--pk2:rgba(236,72,153,.2);
+  --cy:#06B6D4;--cy8:rgba(6,182,212,.08);--cy2:rgba(6,182,212,.2);
+  --rd:#EF4444;--rd8:rgba(239,68,68,.08);--rd2:rgba(239,68,68,.2);
+  --kk:#FEE500;--kkt:#3A1D1D;--kk2:rgba(254,229,0,.35);
+  --page:#eceae3;--sh:0 2px 8px rgba(0,0,0,.08);
+}
+[data-theme=dark]{
+  --bg:#1e1e1e;--bg2:#252525;--bg3:#2d2d2d;--bg4:#383838;
+  --tx:#f0ede8;--tx2:#9ca3af;--tx3:#555;
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.12);--bd3:rgba(255,255,255,.2);
+  --page:#0f0f0f;--sh:0 2px 8px rgba(0,0,0,.5);--kkt:#FEE500;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--page);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;font-size:13px;line-height:1.5}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes bar-grow{from{width:0}to{width:var(--w)}}
+.ti-spin{display:inline-block;animation:spin 1s linear infinite}
+/* TOPBAR */
+.topbar{height:44px;display:flex;align-items:center;padding:0 12px;background:var(--bg);border-bottom:1px solid var(--bd);gap:7px;flex-shrink:0;position:sticky;top:0;z-index:100}
+.tb-logo{width:26px;height:26px;border-radius:6px;background:var(--g);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:11px;flex-shrink:0}
+.tb-title{font-size:14px;font-weight:700;letter-spacing:-.02em}
+.tb-svc{display:flex;gap:2px;margin-left:6px;background:var(--bg3);border-radius:6px;padding:2px;border:1px solid var(--bd)}
+.tsb{padding:3px 9px;border-radius:5px;border:none;background:transparent;color:var(--tx2);font-size:11px;cursor:pointer;transition:all .15s;font-family:var(--f);font-weight:500}
+.tsb.on{background:var(--bg);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.tsb:hover:not(.on){color:var(--tx)}
+.tb-r{margin-left:auto;display:flex;gap:4px;align-items:center}
+.tbb{width:30px;height:30px;border:none;background:transparent;border-radius:6px;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.tbb:hover{background:var(--bg2);color:var(--tx)}
+/* SETTINGS */
+.sov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;display:none;align-items:flex-start;justify-content:flex-end;padding:52px 10px 0}
+.sov.show{display:flex}
+.sp{width:290px;background:var(--bg);border-radius:var(--r2);border:1px solid var(--bd2);padding:14px;box-shadow:var(--sh);animation:fadein .2s}
+.sp-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sp-hd span{font-size:13px;font-weight:600}
+.sp-close{border:none;background:none;cursor:pointer;font-size:18px;color:var(--tx2);line-height:1;padding:2px 4px;border-radius:4px}
+.sp-close:hover{background:var(--bg2)}
+.sp-lbl{font-size:11px;color:var(--tx2);margin-bottom:4px;display:block}
+.sp-inp{width:100%;border:1px solid var(--bd2);border-radius:var(--r);padding:6px 8px;background:var(--bg2);color:var(--tx);font-size:12px;font-family:var(--f);margin-bottom:10px;outline:none}
+.sp-inp:focus{border-color:var(--g)}
+.sp-saved{display:none;font-size:11px;color:var(--g);text-align:center;margin-top:6px}
+/* LAYOUT */
+.wrap{display:flex;flex:1;min-height:0;overflow:hidden}
+.sb{width:52px;display:flex;flex-direction:column;align-items:center;padding:8px 0 10px;border-right:1px solid var(--bd);background:var(--bg);flex-shrink:0;gap:1px}
+.sb-sep{width:22px;height:1px;background:var(--bd);margin:4px 0}
+.sbn{width:40px;height:37px;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--tx3);transition:all .15s;border:1px solid transparent}
+.sbn:hover{color:var(--tx2);background:var(--bg2)}.sbn.on{color:var(--g);background:var(--g8);border-color:var(--g2)}
+.sbn i{font-size:15px}.sbn span{font-size:8px;font-weight:500}
+.content{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;background:var(--bg)}
+.hdr{height:42px;display:flex;align-items:center;padding:0 13px;border-bottom:1px solid var(--bd);flex-shrink:0;gap:8px}
+.hdr-t{font-size:14px;font-weight:700;letter-spacing:-.02em}
+.hdr-s{font-size:11px;color:var(--tx2)}
+.hdr-r{margin-left:auto;display:flex;gap:5px}
+.body{flex:1;overflow-y:auto;padding:13px}
+.body::-webkit-scrollbar{width:3px}.body::-webkit-scrollbar-thumb{background:var(--bd2)}
+/* BUTTONS */
+.btn{padding:5px 10px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg2);color:var(--tx);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-weight:500}
+.btn:hover{background:var(--bg3)}.btn:active{transform:scale(.98)}
+.btn-p{background:var(--g);color:#fff;border-color:var(--g)}.btn-p:hover{opacity:.88}
+.btn-sm{padding:3px 8px;font-size:11px}.btn-xs{padding:2px 6px;font-size:10px;border-radius:5px}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--tx2)}.btn-ghost:hover{background:var(--bg2);color:var(--tx)}
+.btn-ai{background:var(--g8);border-color:var(--g2);color:var(--g)}.btn-ai:hover{background:var(--g2)}
+.btn-rd{background:var(--rd8);border-color:var(--rd2);color:var(--rd)}.btn-rd:hover{background:var(--rd2)}
+/* TAGS */
+.tag{display:inline-flex;align-items:center;gap:2px;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500}
+.tg{background:var(--g8);color:var(--g);border:1px solid var(--g2)}
+.tb{background:var(--bl8);color:var(--bl);border:1px solid var(--bl2)}
+.tp{background:var(--pu8);color:var(--pu);border:1px solid var(--pu2)}
+.ta_{background:var(--am8);color:var(--am);border:1px solid var(--am2)}
+.tpk{background:var(--pk8);color:var(--pk);border:1px solid var(--pk2)}
+.tc{background:var(--cy8);color:var(--cy);border:1px solid var(--cy2)}
+.tkk{background:rgba(254,229,0,.15);color:#927700;border:1px solid var(--kk2)}
+[data-theme=dark] .tkk{color:#c9a800}
+.tgr{background:var(--bg3);color:var(--tx2);border:1px solid var(--bd2)}
+.trd{background:var(--rd8);color:var(--rd);border:1px solid var(--rd2)}
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:11px}
+.card-hd{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+/* KPI GRID */
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:10px}
+.mc-l{font-size:10px;color:var(--tx2);margin-bottom:2px}.mc-v{font-size:20px;font-weight:700}.mc-c{font-size:10px;color:var(--tx3);margin-top:1px}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:11px;font-weight:500;color:var(--tx2);padding:5px 8px;border-bottom:1px solid var(--bd)}
+.tbl td{padding:7px 8px;border-bottom:1px solid var(--bd);font-size:12px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}.tbl tr:hover td{background:var(--bg2)}
+/* STEP BAR */
+.step-bar{display:flex;margin-bottom:14px;border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;background:var(--bg2)}
+.si{flex:1;padding:8px 5px;text-align:center;font-size:11px;color:var(--tx3);border-right:1px solid var(--bd);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px}
+.si:last-child{border-right:none}.si.done{color:var(--g);background:var(--g8)}.si.cur{color:var(--tx);font-weight:600;background:var(--bg)}
+.sn{width:16px;height:16px;border-radius:50%;background:var(--bd2);display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.si.done .sn{background:var(--g);color:#fff}.si.cur .sn{background:var(--tx);color:var(--bg)}
+/* SERVICE TABS */
+.svc-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.svct{border:2px solid var(--bd2);border-radius:var(--r);padding:10px 8px;cursor:pointer;text-align:center;transition:all .15s;background:var(--bg2)}
+.svct:hover{border-color:var(--bd3)}.svct.on{border-color:var(--g);background:var(--g8)}
+.svct-icon{font-size:22px;margin-bottom:3px}.svct-l{font-size:12px;font-weight:700;letter-spacing:-.02em}.svct-d{font-size:10px;color:var(--tx2);margin-top:1px}
+.svct.on .svct-l{color:var(--g)}
+/* FORM */
+.fl{margin-bottom:11px}
+.lbl{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.req{color:var(--rd);font-size:10px}
+.inp{width:100%;border:1px solid var(--bd2);border-radius:var(--r);padding:7px 9px;background:var(--bg);color:var(--tx);font-size:12px;font-family:var(--f);outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--g)}.inp::placeholder{color:var(--tx3)}
+.ta_{resize:vertical;min-height:56px;max-height:110px}
+.sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
+/* CHANNEL CARDS */
+.ch-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}
+.chc{border:2px solid var(--bd2);border-radius:var(--r);padding:10px;cursor:pointer;transition:all .15s;background:var(--bg2);position:relative}
+.chc:hover{border-color:var(--bd3);background:var(--bg)}.chc.on{border-color:var(--g);background:var(--g8)}
+.chc.kakao.on{border-color:#d4b800;background:rgba(254,229,0,.09)}
+.chk-box{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--bd2);background:var(--bg);display:flex;align-items:center;justify-content:center;position:absolute;top:8px;right:8px;transition:all .15s}
+.chc.on .chk-box{background:var(--g);border-color:var(--g)}.chc.kakao.on .chk-box{background:#d4b800;border-color:#d4b800}
+.ch-ico{font-size:22px;margin-bottom:4px}.ch-nm{font-size:12px;font-weight:600;margin-bottom:1px}.ch-ds{font-size:10px;color:var(--tx2)}
+/* CROSS TARGET */
+.cross-wrap{background:var(--am8);border:1px solid var(--am2);border-radius:var(--r);padding:10px;margin-bottom:11px;animation:fadein .2s}
+.cross-hd{font-size:11px;font-weight:600;color:var(--am);margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.cross-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(245,158,11,.12)}
+.cross-row:last-child{border-bottom:none}
+.cross-row input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--am);flex-shrink:0}
+.cross-lbl{flex:1;font-size:11px}.cross-after{font-size:10px;color:var(--tx3);flex-shrink:0;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;padding:1px 5px}
+/* TRIGGER GRID */
+.trig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.trc{border:2px solid var(--bd2);border-radius:var(--r);padding:9px;cursor:pointer;transition:all .15s;background:var(--bg2)}
+.trc:hover{border-color:var(--bd3);background:var(--bg)}.trc.on{border-width:2px}
+.trc-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:5px}
+.trc-l{font-size:12px;font-weight:600;margin-bottom:1px}.trc-d{font-size:10px;color:var(--tx2);line-height:1.4}
+/* A/B VARIANTS */
+.ab-var{border:1px solid var(--bd2);border-radius:var(--r);padding:10px;background:var(--bg2);margin-bottom:6px;animation:fadein .2s}
+.ab-var-hd{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.ab-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px}
+.ab-badge-a{background:var(--g8);color:var(--g);border:1px solid var(--g2)}
+.ab-badge-b{background:var(--bl8);color:var(--bl);border:1px solid var(--bl2)}
+/* SAMPLE SUGGEST */
+.sample-wrap{background:var(--pu8);border:1px solid var(--pu2);border-radius:var(--r);padding:10px;margin-bottom:11px;animation:fadein .2s}
+.sample-hd{font-size:11px;font-weight:600;color:var(--pu);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.sample-cards{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.samplec{border:1px solid var(--pu2);border-radius:var(--r);padding:9px;background:var(--bg);cursor:pointer;transition:all .15s}
+.samplec:hover{border-color:var(--pu);background:var(--pu8)}
+.samplec-badge{font-size:9px;font-weight:700;color:var(--pu);margin-bottom:4px}
+.samplec-title{font-size:11px;font-weight:600;margin-bottom:3px;line-height:1.4}
+.samplec-body{font-size:10px;color:var(--tx2);line-height:1.5;margin-bottom:4px}
+.samplec-cta{font-size:10px;color:var(--g);font-weight:600}
+/* SEG RECOMMENDATION */
+.seg-rec{background:var(--cy8);border:1px solid var(--cy2);border-radius:var(--r);padding:9px;margin-bottom:10px;animation:fadein .2s}
+.seg-rec-hd{font-size:11px;font-weight:600;color:var(--cy);margin-bottom:7px;display:flex;align-items:center;gap:4px}
+.seg-rec-pills{display:flex;flex-wrap:wrap;gap:5px}
+.seg-rec-pill{padding:4px 10px;border-radius:20px;border:1px solid var(--cy2);background:var(--bg);font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.seg-rec-pill:hover{border-color:var(--cy);background:var(--cy8)}
+.seg-rec-pill.sel{border-color:var(--cy);background:var(--cy8);font-weight:600;color:var(--cy)}
+/* SCENARIOS */
+.sc-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--bd)}
+.sc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sc-hd-t{font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px}
+.sc-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px}
+.sc-scroll::-webkit-scrollbar{height:3px}.sc-scroll::-webkit-scrollbar-thumb{background:var(--bd2)}
+.scc{flex-shrink:0;width:158px;border:1px solid var(--bd);border-radius:var(--r);padding:10px;background:var(--bg2);cursor:pointer;transition:all .15s}
+.scc:hover{border-color:var(--gd);background:var(--g8)}.scc-t{font-size:11px;font-weight:600;margin-bottom:5px;line-height:1.4}
+.scc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px}.scc-rate{font-size:10px;color:var(--tx2)}
+/* NOTICE */
+.notice{padding:7px 10px;border-radius:var(--r);font-size:11px;display:flex;align-items:center;gap:6px;margin-bottom:9px;line-height:1.45}
+.ni{background:var(--bl8);border:1px solid var(--bl2);color:var(--bl)}
+.nw{background:var(--am8);border:1px solid var(--am2);color:#92400e}
+.ns{background:var(--g8);border:1px solid var(--g2);color:var(--g)}
+[data-theme=dark] .nw{color:var(--am)}[data-theme=dark] .ni{color:var(--bl)}
+/* AUDIENCE */
+.seg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.segc{border:1px solid var(--bd);border-radius:var(--r);padding:10px;background:var(--bg2);transition:border-color .15s}
+.segc:hover{border-color:var(--bd2)}.segc-hd{display:flex;align-items:center;gap:5px;margin-bottom:4px}
+.segc-n{font-size:12px;font-weight:600;flex:1}.segc-d{font-size:10px;color:var(--tx2);margin-bottom:5px}.segc-cnt{font-size:13px;font-weight:700;color:var(--g)}
+.seg-star{border:none;background:none;cursor:pointer;color:var(--tx3);font-size:14px;padding:1px;transition:color .15s;line-height:1}
+.seg-star.on{color:var(--am)}.seg-del{border:none;background:none;cursor:pointer;color:var(--tx3);font-size:13px;padding:1px;transition:color .15s;line-height:1}
+.seg-del:hover{color:var(--rd)}
+.saved-wrap{background:var(--am8);border:1px solid var(--am2);border-radius:var(--r);padding:10px;margin-bottom:12px}
+.saved-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.saved-ht{font-size:11px;font-weight:600;color:var(--am);display:flex;align-items:center;gap:4px}
+.saved-pills{display:flex;flex-wrap:wrap;gap:5px}
+.saved-pill{display:flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;background:var(--bg);border:1px solid var(--bd2);font-size:11px;cursor:pointer;transition:all .15s}
+.saved-pill:hover{border-color:var(--bd3)}.saved-pill-x{color:var(--tx3);font-size:10px}
+.saved-pill-x:hover{color:var(--rd)}
+.ai-gen-wrap{border:1.5px dashed var(--gd);border-radius:var(--r);padding:12px;background:var(--g8);margin-bottom:12px}
+.ai-gen-hd{font-size:12px;font-weight:600;color:var(--g);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.ai-gen-row{display:flex;gap:6px}
+.ai-inp{flex:1;border:1px solid var(--g2);border-radius:var(--r);padding:6px 9px;background:var(--bg);color:var(--tx);font-size:12px;font-family:var(--f);outline:none}
+.ai-inp:focus{border-color:var(--g)}.ai-inp::placeholder{color:var(--tx3)}
+/* JOURNEY */
+.j-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.jc{border:1px solid var(--bd);border-radius:var(--r2);padding:12px;background:var(--bg2);cursor:pointer;transition:all .15s}
+.jc:hover{border-color:var(--gd);background:var(--g8)}.jc-t{font-size:13px;font-weight:700;margin-bottom:3px}.jc-d{font-size:11px;color:var(--tx2);margin-bottom:9px}
+.j-steps{display:flex;gap:2px;align-items:center;flex-wrap:wrap}.j-arr{color:var(--tx3);font-size:10px}
+/* ANALYTICS */
+.ana-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.chart-box{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:12px}
+.chart-hd{font-size:12px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+/* Horizontal bar chart */
+.hbar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.hbar-lbl{font-size:11px;width:90px;flex-shrink:0;text-align:right;color:var(--tx2)}
+.hbar-track{flex:1;height:10px;background:var(--bg3);border-radius:5px;overflow:hidden}
+.hbar-fill{height:100%;border-radius:5px;transition:width .6s}
+.hbar-val{font-size:11px;font-weight:700;width:44px;text-align:right;flex-shrink:0}
+/* Vertical bar chart */
+.bar-wrap{display:flex;align-items:flex-end;gap:5px;height:80px;border-bottom:1px solid var(--bd);padding-bottom:2px}
+.bar{flex:1;background:var(--g8);border-top-left-radius:3px;border-top-right-radius:3px;border:1px solid var(--g2);border-bottom:none}
+.bar-lbl{font-size:9px;color:var(--tx3);text-align:center;margin-top:3px}
+/* Gender donut */
+.donut-wrap{display:flex;align-items:center;gap:14px}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:6px}
+.dleg-row{display:flex;align-items:center;gap:6px;font-size:11px}
+.dleg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+/* Funnel */
+.funnel-wrap{display:flex;flex-direction:column;gap:5px}
+.funnel-row{display:flex;align-items:center;gap:10px}
+.funnel-bar-outer{flex:1;height:28px;background:var(--bg3);border-radius:6px;overflow:hidden;position:relative}
+.funnel-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:600;color:#fff;transition:width .7s}
+.funnel-num{font-size:11px;font-weight:700;width:60px;text-align:right;flex-shrink:0}
+.funnel-lbl{font-size:11px;width:36px;flex-shrink:0;color:var(--tx2)}
+/* AB winner */
+.ab-winner-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.abwc{border:2px solid var(--bd);border-radius:var(--r);padding:10px}
+.abwc.winner{border-color:var(--g);background:var(--g8)}
+.abwc-hd{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.abwc-stat{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;padding:2px 0;border-bottom:1px solid var(--bd)}
+.abwc-stat:last-child{border-bottom:none}
+/* Campaign list in dash */
+.camp-del{border:none;background:none;cursor:pointer;color:var(--tx3);font-size:13px;padding:2px;transition:color .15s;line-height:1;vertical-align:middle}
+.camp-del:hover{color:var(--rd)}
+/* AGENT */
+.agent-wrap{display:flex;flex-direction:column}
+.chat-area{overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
+.chat-area::-webkit-scrollbar{width:3px}.chat-area::-webkit-scrollbar-thumb{background:var(--bd2)}
+.msg{max-width:78%;padding:8px 11px;border-radius:var(--r2);font-size:12px;line-height:1.55;animation:fadein .2s}
+.msg-u{align-self:flex-end;background:var(--g);color:#fff;border-bottom-right-radius:4px}
+.msg-a{align-self:flex-start;background:var(--bg2);border:1px solid var(--bd);border-bottom-left-radius:4px}
+.typing{display:flex;gap:4px;align-items:center;padding:10px 12px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--tx3);animation:bounce .8s infinite}
+.dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
+.chat-foot{padding:8px;border-top:1px solid var(--bd);display:flex;gap:6px}
+.chat-inp{flex:1;border:1px solid var(--bd2);border-radius:var(--r);padding:7px 9px;background:var(--bg);color:var(--tx);font-size:12px;font-family:var(--f);outline:none;resize:none;min-height:36px;max-height:80px}
+.chat-inp:focus{border-color:var(--g)}.chat-inp::placeholder{color:var(--tx3)}
+.chat-send{width:34px;height:34px;border-radius:var(--r);background:var(--g);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-send:hover{opacity:.85}.chat-send:disabled{opacity:.35;cursor:not-allowed}
+/* AT PREVIEW */
+.at-prev{background:#e8f4e8;border-radius:10px;padding:12px;font-size:12px;line-height:1.6;border:1px solid #c8e6c9;animation:fadein .2s}
+.at-ph{font-weight:700;font-size:12px;margin-bottom:6px;color:#1b5e20;display:flex;align-items:center;gap:5px}
+.at-body{color:#2e4d2e;margin-bottom:8px;white-space:pre-wrap;font-size:11px}
+.at-btn{background:var(--kk);color:var(--kkt);border:none;border-radius:6px;padding:7px;width:100%;text-align:center;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f)}
+/* MISC */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px;margin-top:12px}
+.winner-badge{background:var(--g);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:4px}
+@media(max-width:680px){
+  .mg{grid-template-columns:repeat(2,1fr)}
+  .ch-cards,.trig-grid,.sample-cards{grid-template-columns:1fr 1fr}
+  .seg-grid,.j-grid,.ana-grid,.two-col,.ab-winner-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">직</div>
+  <div class="tb-title" style="font-size:13px">TMS</div>
+  <div class="tb-svc" id="tb-svc">
+    <button class="tsb on" onclick="setSvc('zigbang',this)">직방</button>
+    <button class="tsb" onclick="setSvc('hogangnono',this)">호갱노노</button>
+    <button class="tsb" onclick="setSvc('jungkae',this)">중개사</button>
+  </div>
+  <div class="tb-r">
+    <button class="tbb" onclick="toggleTheme()" title="테마"><i id="ti-icon" class="ti ti-moon" style="font-size:16px"></i></button>
+    <button class="tbb" onclick="toggleSettings()" title="설정"><i class="ti ti-settings" style="font-size:16px"></i></button>
+  </div>
+</div>
+
+<div class="sov" id="sov" onclick="if(event.target===this)toggleSettings()">
+  <div class="sp">
+    <div class="sp-hd"><span><i class="ti ti-settings" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>설정</span><button class="sp-close" onclick="toggleSettings()">×</button></div>
+    <label class="sp-lbl">Anthropic API 키</label>
+    <input type="password" class="sp-inp" id="sp-key" placeholder="sk-ant-api03-...">
+    <div style="font-size:10px;color:var(--tx3);margin-top:-7px;margin-bottom:10px">AI 자동추천 · 세그먼트 생성에 필요합니다</div>
+    <button class="btn btn-p" style="width:100%" onclick="saveSettings()">저장</button>
+    <div class="sp-saved" id="sp-saved">✓ 저장됐어요</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="sb">
+    <div class="sbn on" id="sbn-dash" onclick="nav('dash',this)" title="대시보드"><i class="ti ti-layout-dashboard"></i><span>홈</span></div>
+    <div class="sbn" id="sbn-builder" onclick="builderStep=0;nav('builder',this)" title="캠페인 빌더"><i class="ti ti-rocket"></i><span>빌더</span></div>
+    <div class="sb-sep"></div>
+    <div class="sbn" id="sbn-journey" onclick="nav('journey',this)" title="저니 빌더"><i class="ti ti-timeline"></i><span>저니</span></div>
+    <div class="sbn" id="sbn-audience" onclick="nav('audience',this)" title="오디언스"><i class="ti ti-users"></i><span>고객</span></div>
+    <div class="sb-sep"></div>
+    <div class="sbn" id="sbn-analytics" onclick="nav('analytics',this)" title="성과 분석"><i class="ti ti-chart-bar"></i><span>성과</span></div>
+    <div class="sbn" id="sbn-agent" onclick="nav('agent',this)" title="AI 에이전트"><i class="ti ti-robot"></i><span>AI</span></div>
+  </div>
+  <div class="content">
+    <div class="hdr">
+      <div class="hdr-t" id="hdr-t">대시보드</div>
+      <div class="hdr-s" id="hdr-s"></div>
+      <div class="hdr-r" id="hdr-r">
+        <button class="btn btn-p btn-sm" onclick="builderStep=0;nav('builder',document.getElementById('sbn-builder'))"><i class="ti ti-plus" style="font-size:11px"></i>새 캠페인</button>
+      </div>
+    </div>
+    <div class="body" id="body"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+let API_KEY = localStorage.getItem('tms_api_key')||'';
+let isDark = localStorage.getItem('tms_dark')==='1';
+let curSvc = 'zigbang';
+let curPage = 'dash';
+let builderStep = 0;
+let BD = {};
+
+const CAMP_KEY = 'tms_campaigns';
+const SAVED_KEY = 'tms_saved_segs';
+
+function resetBD(){
+  BD={service:curSvc,name:'',goal:'',channels:[],crossTargets:[],segId:'s1',
+    abMode:'a',variants:[{title:'',body:'',cta:'자세히 보기'},{title:'',body:'',cta:'자세히 보기'}],
+    trigger:'immediate',schedDate:'',schedTime:'',trigDetail:'',alimtalkTpl:'',inappType:'팝업'};
+}
+resetBD();
+
+// ── DATA ──────────────────────────────────────────
+const SVCS = {
+  zigbang:   {label:'직방',  color:'var(--g)', icon:'🏠', desc:'아파트·빌라·원룸 매물'},
+  hogangnono:{label:'호갱노노',color:'var(--bl)',icon:'📊', desc:'시세·투자 분석 데이터'},
+  jungkae:   {label:'중개사',color:'var(--pu)',icon:'🤝', desc:'중개사 B2B 서비스'},
+};
+
+let SEGMENTS = [
+  {id:'s1',name:'서울 30대 iOS 활성', desc:'서울·30~39세·iOS·active',   cnt:12840,tags:['서울','30대','iOS']},
+  {id:'s2',name:'신규 가입 7일 이내', desc:'가입일 기준 7일 이내',       cnt:3210, tags:['신규','전국']},
+  {id:'s3',name:'14일 미접속 전국',   desc:'last_active < 14일',         cnt:28930,tags:['미접속','전국']},
+  {id:'s4',name:'직방 리빙 유저',     desc:'직방 리빙 서비스 사용',       cnt:8450, tags:['리빙','직방']},
+  {id:'s5',name:'30~40대 iOS 전국',   desc:'30~49세·iOS·전국',           cnt:18720,tags:['30-40대','iOS']},
+  {id:'s6',name:'인천·경기 Android',  desc:'인천·경기·Android 사용자',    cnt:9340, tags:['인천','경기']},
+  {id:'s7',name:'매물 찜 7일 미방문', desc:'찜 후 7일 내 앱 미방문',     cnt:5620, tags:['관심매물','미방문']},
+  {id:'s8',name:'청약 관심 유저',     desc:'청약 페이지 3회+ 조회',      cnt:7890, tags:['청약','관심']},
+];
+
+let savedSegs = JSON.parse(localStorage.getItem(SAVED_KEY)||'["s1","s2"]');
+
+// Saved campaigns from localStorage (seeded with demo data if empty)
+function loadCamps(){
+  const raw = localStorage.getItem(CAMP_KEY);
+  if(raw) return JSON.parse(raw);
+  const demo=[
+    {id:'c1',name:'봄 이사철 특가',   svc:'zigbang',seg:'서울 30대',  sent:'2026-05-10',tgt:12840,or:'17.1%',ch:['push','inapp'],   goal:'전환',   trigger:'scheduled'},
+    {id:'c2',name:'신규가입 웰컴',    svc:'zigbang',seg:'신규 7일',   sent:'2026-05-08',tgt:3210, or:'39.0%',ch:['push'],            goal:'활성화', trigger:'lifecycle'},
+    {id:'c3',name:'재방문 유도',      svc:'zigbang',seg:'14일 미접속',sent:'2026-05-05',tgt:28930,or:'8.0%', ch:['push','alimtalk'],goal:'재방문', trigger:'lifecycle'},
+    {id:'c4',name:'청약 정보 알림',   svc:'hogangnono',seg:'30-40대 iOS',sent:'2026-04-28',tgt:18720,or:'21.0%',ch:['alimtalk'],   goal:'정보전달',trigger:'event'},
+    {id:'c5',name:'리빙 콘텐츠',      svc:'zigbang',seg:'리빙 유저',  sent:'2026-04-20',tgt:8450, or:'14.5%',ch:['inapp'],           goal:'인게이지',trigger:'contextual'},
+  ];
+  localStorage.setItem(CAMP_KEY, JSON.stringify(demo));
+  return demo;
+}
+let CAMPS = loadCamps();
+
+const TRIGGERS = [
+  {id:'immediate',  icon:'ti-bolt',         label:'즉시발송',  desc:'저장 즉시 전송',       color:'var(--g)', cbg:'var(--g8)'},
+  {id:'scheduled',  icon:'ti-calendar-event',label:'예약발송',  desc:'날짜·시간 지정',       color:'var(--bl)',cbg:'var(--bl8)'},
+  {id:'behavioral', icon:'ti-click',         label:'행동기반',  desc:'앱 내 행동 트리거',    color:'var(--pu)',cbg:'var(--pu8)'},
+  {id:'event',      icon:'ti-flag-3',        label:'이벤트기반',desc:'외부 이벤트 연동',     color:'var(--am)',cbg:'var(--am8)'},
+  {id:'lifecycle',  icon:'ti-user-heart',    label:'생애주기',  desc:'가입·거래 단계별',     color:'var(--pk)',cbg:'var(--pk8)'},
+  {id:'contextual', icon:'ti-brain',         label:'맥락·패턴', desc:'시간·위치·패턴 기반',  color:'var(--cy)',cbg:'var(--cy8)'},
+];
+
+const CROSS_OPTS = [
+  {id:'p2a',  label:'푸시 미오픈 → 알림톡 재발송',  after:'24시간 후',   req:['push','alimtalk']},
+  {id:'a2i',  label:'알림톡 미수신 → 인앱 팝업',    after:'앱 재방문 시', req:['alimtalk','inapp']},
+  {id:'i2p',  label:'인앱 미전환 → 푸시 리마인드',  after:'12시간 후',   req:['inapp','push']},
+  {id:'p2i',  label:'푸시 미오픈 → 인앱 배너',      after:'앱 재방문 시', req:['push','inapp']},
+  {id:'a2p',  label:'알림톡 미수신 → 푸시 보완',    after:'6시간 후',    req:['alimtalk','push']},
+];
+
+const AT_TPLS = {
+  zigbang:[
+    {id:'at1',name:'매물 알림',    body:'안녕하세요, #{이름}님!\n관심 등록하신 #{지역} 매물에 변동이 있어 안내드립니다.\n\n📍 #{매물명}\n💰 #{가격}\n\n지금 바로 확인해보세요!'},
+    {id:'at2',name:'이사 일정 알림',body:'#{이름}님, 이사 예정일이 #{D}일 남았습니다.\n이사 전 체크리스트를 지금 확인하세요.'},
+  ],
+  hogangnono:[
+    {id:'at3',name:'시세 변동 알림',body:'#{이름}님이 관심 등록하신\n#{단지명}의 실거래가가 변동됐어요.\n\n📈 #{변동금액} #{변동방향}\n\n자세한 시세를 확인해보세요.'},
+    {id:'at4',name:'급매 알림',     body:'#{이름}님이 관심 단지에\n급매 매물이 등록됐어요!\n\n#{단지명} #{매물정보}\n\n빠르게 확인해보세요.'},
+  ],
+  jungkae:[
+    {id:'at5',name:'신규 문의 알림',body:'안녕하세요, #{중개사명}님!\n새 고객 문의가 접수됐습니다.\n\n고객명: #{고객명}\n매물: #{매물정보}\n\n빠른 답변 부탁드립니다.'},
+    {id:'at6',name:'계약 만료 알림',body:'#{계약자명}님의 계약 만료일이\n#{D}일 앞으로 다가왔습니다.\n\n갱신 상담 연락을 드려보세요.'},
+  ],
+};
+
+// Sample messages per service+trigger (demo, no API needed)
+const SAMPLE_MSGS = {
+  zigbang:{
+    immediate:[
+      {title:'지금 딱 맞는 매물 발견!',body:'관심지역에 새 매물이 올라왔어요. 오늘만 중개보수 50% 할인이니 서두르세요!',cta:'매물 보기'},
+      {title:'이 매물 놓치면 후회해요',body:'#{지역} 신규 매물 알림 — 방금 등록된 매물, 관심고객이 이미 보고 있어요.',cta:'바로 확인'},
+    ],
+    scheduled:[
+      {title:'주말에 집 구경 어때요?',body:'이번 주말 오픈하우스 일정을 확인해보세요. 관심 매물 3곳이 방문 가능합니다.',cta:'일정 확인'},
+      {title:'이사철 맞춤 매물 정리',body:'3~4월 이사 시즌! 서울 주요 지역 가격 내린 매물을 모아봤어요.',cta:'지금 보기'},
+    ],
+    lifecycle:[
+      {title:'가입 축하드려요 🎉',body:'직방에 오신 걸 환영해요! 지금 앱에서 관심지역을 설정하면 맞춤 매물 알림을 드릴게요.',cta:'관심지역 설정'},
+      {title:'다시 만나서 반가워요!',body:'오랜만에 돌아오셨네요. 그동안 #{지역} 매물이 많이 바뀌었어요. 지금 확인해보세요.',cta:'새 매물 보기'},
+    ],
+    behavioral:[
+      {title:'찜한 매물, 가격 협의 가능!',body:'관심 등록하신 매물이 가격 협의 가능 상태로 변경됐어요. 지금 바로 연락해보세요.',cta:'문의하기'},
+      {title:'다시 한번 볼까요?',body:'최근 조회하신 매물이 아직 거래 가능해요. 조금 더 자세히 살펴보시겠어요?',cta:'매물 다시 보기'},
+    ],
+    event:[
+      {title:'청약 공고 나왔어요!',body:'관심 등록하신 #{단지명} 청약 공고가 발표됐어요. 접수 기간을 놓치지 마세요.',cta:'청약 정보 확인'},
+      {title:'금리 인하 소식!',body:'오늘 기준금리가 인하됐어요. 지금이 대출 조건 확인하기 좋은 타이밍입니다.',cta:'대출 조건 보기'},
+    ],
+    contextual:[
+      {title:'퇴근길에 집 구경 어때요?',body:'지금 퇴근 시간이네요! 오늘 본 매물 중 마음에 드는 곳이 있었나요? 다시 확인해보세요.',cta:'찜 목록 보기'},
+      {title:'주말 이사 준비하셨나요?',body:'이번 주말 이사 성수기예요. 체크리스트와 추천 이사업체를 확인해보세요.',cta:'이사 준비하기'},
+    ],
+  },
+  hogangnono:{
+    immediate:[
+      {title:'관심 단지 시세 급등!',body:'#{단지명} 시세가 전주 대비 3,000만원 올랐어요. 지금 시세 추이를 확인해보세요.',cta:'시세 보기'},
+      {title:'급매 알림 — 지금 바로!',body:'관심 단지에 시세보다 5,000만원 낮은 급매가 나왔어요. 빠르게 확인하세요!',cta:'급매 확인'},
+    ],
+    scheduled:[
+      {title:'이번 주 시장 리포트',body:'서울·경기 주요 단지 실거래 동향을 정리했어요. 투자 판단에 참고하세요.',cta:'리포트 보기'},
+      {title:'월간 시세 분석 리포트',body:'이번 달 부동산 시장 흐름을 한눈에 파악해보세요. 관심 지역 분석도 있어요.',cta:'분석 보기'},
+    ],
+  },
+  jungkae:{
+    immediate:[
+      {title:'새 고객 문의 도착!',body:'방금 #{매물명} 매물에 새 고객 문의가 들어왔어요. 빠른 응대가 계약률을 높여요!',cta:'문의 확인'},
+      {title:'계약 성사 축하해요! 🎉',body:'#{매물명} 계약이 성공적으로 완료됐어요. 후기 남기면 다음 매물 홍보 지원!',cta:'후기 작성'},
+    ],
+  },
+};
+
+// Segment recommendations by service + trigger
+const SEG_RECS = {
+  zigbang:{
+    immediate:['s1','s2'],scheduled:['s1','s5'],behavioral:['s7'],
+    event:['s8','s1'],lifecycle:['s2','s3'],contextual:['s1','s5'],
+  },
+  hogangnono:{
+    immediate:['s5','s1'],scheduled:['s5'],behavioral:['s7'],
+    event:['s5','s8'],lifecycle:['s3'],contextual:['s5'],
+  },
+  jungkae:{
+    immediate:['s1'],scheduled:['s5'],behavioral:['s2'],
+    event:['s1'],lifecycle:['s2'],contextual:['s1'],
+  },
+};
+
+const SCENARIOS = {
+  zigbang:[
+    {id:'sc1',t:'봄 이사철 매물 추천',  trigger:'scheduled', seg:'s1',channels:['push','inapp'],    goal:'전환',   rate:'17.2%',tags:['seasonal','매물']},
+    {id:'sc2',t:'찜 후 미방문 재유도',  trigger:'behavioral',seg:'s7',channels:['push'],            goal:'재방문', rate:'12.1%',tags:['행동기반','리타겟']},
+    {id:'sc3',t:'신규 웰컴 온보딩',     trigger:'lifecycle', seg:'s2',channels:['push','inapp'],    goal:'활성화', rate:'39.0%',tags:['웰컴','신규']},
+    {id:'sc4',t:'14일 이탈 재활성화',   trigger:'lifecycle', seg:'s3',channels:['push','alimtalk'], goal:'재방문', rate:'8.4%', tags:['이탈','알림톡']},
+    {id:'sc5',t:'청약 관심 유저 알림',  trigger:'event',     seg:'s8',channels:['alimtalk'],        goal:'정보전달',rate:'21.3%',tags:['청약','이벤트']},
+    {id:'sc6',t:'리빙 콘텐츠 추천',     trigger:'contextual',seg:'s4',channels:['inapp'],           goal:'인게이지',rate:'14.7%',tags:['리빙','맥락']},
+  ],
+  hogangnono:[
+    {id:'sc7',t:'시세 변동 즉시 알림',  trigger:'event',     seg:'s1',channels:['push','alimtalk'], goal:'정보전달',rate:'24.1%',tags:['시세','이벤트']},
+    {id:'sc8',t:'관심 단지 가격 하락',  trigger:'event',     seg:'s5',channels:['push'],            goal:'전환',   rate:'31.2%',tags:['투자','기회']},
+    {id:'sc9',t:'주간 시장 리포트',     trigger:'scheduled', seg:'s5',channels:['push','inapp'],    goal:'인게이지',rate:'18.5%',tags:['리포트','주간']},
+    {id:'sc10',t:'14일 미접속 재유도',  trigger:'lifecycle', seg:'s3',channels:['alimtalk'],        goal:'재방문', rate:'9.2%', tags:['이탈','알림톡']},
+  ],
+  jungkae:[
+    {id:'sc11',t:'신규 문의 즉시 알림', trigger:'event',     seg:'s1',channels:['alimtalk','push'], goal:'전환',   rate:'52.3%',tags:['문의','즉시']},
+    {id:'sc12',t:'계약 만료 사전 알림', trigger:'lifecycle', seg:'s5',channels:['alimtalk'],        goal:'리텐션', rate:'38.7%',tags:['계약','생애주기']},
+    {id:'sc13',t:'매물 등록 안내',      trigger:'behavioral',seg:'s2',channels:['push','inapp'],    goal:'활성화', rate:'22.1%',tags:['등록','행동']},
+  ],
+};
+
+const JOURNEYS=[
+  {t:'웰컴 저니',d:'신규 가입 유저 온보딩',steps:[{l:'가입',c:'tb'},{l:'푸시 웰컴',c:'tg'},{l:'인앱 투어',c:'tp'},{l:'첫 찜',c:'tg'}]},
+  {t:'재활성화 저니',d:'30일↑ 미접속 유저',steps:[{l:'미접속 감지',c:'ta_'},{l:'알림톡',c:'tkk'},{l:'푸시 리마인드',c:'tg'},{l:'복귀',c:'tg'}]},
+  {t:'청약 알림 저니',d:'청약 관심 유저 단계별',steps:[{l:'관심 등록',c:'tb'},{l:'일정 알림톡',c:'tkk'},{l:'D-1 푸시',c:'ta_'},{l:'청약 완료',c:'tg'}]},
+  {t:'매물 전환 저니',d:'찜 후 미방문 전환',steps:[{l:'찜 등록',c:'tp'},{l:'인앱 배너',c:'tp'},{l:'푸시 리마인드',c:'tg'},{l:'매물 조회',c:'tg'}]},
+];
+
+// ── THEME ──────────────────────────────────────────
+function applyTheme(){document.documentElement.setAttribute('data-theme',isDark?'dark':'light');document.getElementById('ti-icon').className=isDark?'ti ti-sun':'ti ti-moon';}
+function toggleTheme(){isDark=!isDark;localStorage.setItem('tms_dark',isDark?'1':'0');applyTheme();}
+applyTheme();
+function toggleSettings(){const el=document.getElementById('sov');el.classList.toggle('show');if(el.classList.contains('show')&&API_KEY)document.getElementById('sp-key').value=API_KEY;}
+function saveSettings(){API_KEY=document.getElementById('sp-key').value.trim();if(API_KEY)localStorage.setItem('tms_api_key',API_KEY);const s=document.getElementById('sp-saved');s.style.display='block';setTimeout(()=>{s.style.display='none';toggleSettings();},1200);}
+
+// ── SERVICE ────────────────────────────────────────
+function setSvc(id,btn){
+  curSvc=id;BD.service=id;
+  document.querySelectorAll('.tsb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(curPage==='builder'||curPage==='audience')render(curPage);
+}
+function selectSvcInBuilder(id){
+  BD.service=id;curSvc=id;
+  document.querySelectorAll('.tsb').forEach((b,i)=>b.classList.toggle('on',Object.keys(SVCS)[i]===id));
+  renderBodyInPlace();
+}
+
+// ── NAV ────────────────────────────────────────────
+function nav(page,el){
+  curPage=page;
+  document.querySelectorAll('.sbn').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  const T={dash:'대시보드',builder:'캠페인 빌더',journey:'저니 빌더',audience:'오디언스',analytics:'성과 분석',agent:'AI 에이전트'};
+  const S={dash:`${SVCS[curSvc].label} 통합 메시징 콘솔`,builder:'',journey:'유저 여정 자동화',audience:'세그먼트 관리',analytics:'캠페인 성과',agent:'AI 자동화 어시스턴트'};
+  document.getElementById('hdr-t').textContent=T[page]||page;
+  document.getElementById('hdr-s').textContent=S[page]||'';
+  document.getElementById('hdr-r').innerHTML=page==='dash'?`<button class="btn btn-p btn-sm" onclick="builderStep=0;nav('builder',document.getElementById('sbn-builder'))"><i class="ti ti-plus" style="font-size:11px"></i>새 캠페인</button>`:'';
+  render(page);
+}
+function render(p){
+  const b=document.getElementById('body');if(!b)return;
+  if(p==='dash')b.innerHTML=renderDash();
+  else if(p==='builder'){if(builderStep===0){resetBD();builderStep=1;}b.innerHTML=renderBuilder();}
+  else if(p==='journey')b.innerHTML=renderJourney();
+  else if(p==='audience')b.innerHTML=renderAudience();
+  else if(p==='analytics')b.innerHTML=renderAnalytics();
+  else if(p==='agent'){b.innerHTML=renderAgent();initAgent();}
+}
+function renderBodyInPlace(){document.getElementById('body').innerHTML=renderBuilder();}
+
+function chTag(ch,sz=''){
+  if(ch==='push')    return `<span class="tag tb" style="font-size:${sz||'9px'}">📱 푸시</span>`;
+  if(ch==='inapp')   return `<span class="tag tp" style="font-size:${sz||'9px'}">💬 인앱</span>`;
+  if(ch==='alimtalk')return `<span class="tag tkk" style="font-size:${sz||'9px'}">💛 알림톡</span>`;
+  return '';
+}
+
+// ── DASHBOARD ──────────────────────────────────────
+function renderDash(){
+  const activeCnt=CAMPS.filter(c=>c.svc===curSvc||!c.svc).length;
+  return `
+<div class="mg">
+  <div class="mc"><div class="mc-l">총 캠페인</div><div class="mc-v">${CAMPS.length}</div><div class="mc-c">저장된 전체</div></div>
+  <div class="mc"><div class="mc-l">평균 오픈율</div><div class="mc-v" style="color:var(--g)">17.2%</div><div class="mc-c">업계 평균 +4.1%p</div></div>
+  <div class="mc"><div class="mc-l">이번 달 발송</div><div class="mc-v">83,190</div><div class="mc-c">누적</div></div>
+  <div class="mc"><div class="mc-l">AI 추천 적용</div><div class="mc-v" style="color:var(--bl)">12</div><div class="mc-c">이번 달</div></div>
+</div>
+<div class="card">
+  <div class="card-hd"><i class="ti ti-send" style="color:var(--g)"></i>캠페인 목록
+    <span style="font-size:10px;color:var(--tx3);font-weight:400;margin-left:4px">(${CAMPS.length}개 저장됨)</span>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>캠페인명</th><th>서비스</th><th>채널</th><th>세그먼트</th><th>대상</th><th>오픈율</th><th>상태</th><th></th></tr></thead>
+    <tbody>${CAMPS.map(c=>`<tr>
+      <td style="font-weight:600">${c.name}</td>
+      <td><span class="tag tgr" style="font-size:9px">${SVCS[c.svc||'zigbang']?.label||c.svc}</span></td>
+      <td style="white-space:nowrap">${(c.ch||[]).map(ch=>chTag(ch)).join(' ')}</td>
+      <td style="color:var(--tx2)">${c.seg}</td>
+      <td>${(c.tgt||0).toLocaleString()}</td>
+      <td style="color:var(--g);font-weight:700">${c.or}</td>
+      <td><span class="tag tg">완료</span></td>
+      <td><button class="camp-del" onclick="deleteCamp('${c.id}',event)" title="삭제"><i class="ti ti-trash"></i></button></td>
+    </tr>`).join('')}
+    ${CAMPS.length===0?'<tr><td colspan="8" style="text-align:center;color:var(--tx3);padding:20px">저장된 캠페인이 없어요. 새 캠페인을 만들어보세요!</td></tr>':''}
+    </tbody>
+  </table>
+</div>`;
+}
+
+function deleteCamp(id,e){
+  if(e)e.stopPropagation();
+  if(!confirm('이 캠페인을 삭제할까요?'))return;
+  CAMPS=CAMPS.filter(c=>c.id!==id);
+  localStorage.setItem(CAMP_KEY,JSON.stringify(CAMPS));
+  render('dash');
+}
+
+// ── BUILDER ────────────────────────────────────────
+function renderBuilder(){
+  const steps=['기본 설정','오디언스','채널·메시지','발송 설정'];
+  const stepBar=`<div class="step-bar">${steps.map((s,i)=>{const n=i+1;const cls=n<builderStep?'done':n===builderStep?'cur':'';return `<div class="si ${cls}" onclick="if(${n}<=${builderStep})goStep(${n})"><span class="sn">${n<builderStep?'✓':n}</span>${s}</div>`;}).join('')}</div>`;
+  let content='';
+  if(builderStep===1)content=renderStep1();
+  else if(builderStep===2)content=renderStep2();
+  else if(builderStep===3)content=renderStep3();
+  else if(builderStep===4)content=renderStep4();
+  const navBtns=`<div style="display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)">
+    <button class="btn" onclick="prevStep()" ${builderStep===1?'style="visibility:hidden"':''}>← 이전</button>
+    <button class="btn btn-p" onclick="nextStep()">${builderStep===4?'<i class="ti ti-rocket" style="font-size:11px"></i> 캠페인 저장':'다음 →'}</button>
+  </div>`;
+  return stepBar+content+navBtns+renderScenarios();
+}
+
+function renderStep1(){
+  const svc=BD.service||curSvc;
+  return `
+<div class="fl">
+  <div class="lbl">서비스 선택 <span class="req">*</span></div>
+  <div class="svc-tabs">${Object.entries(SVCS).map(([k,v])=>`
+    <div class="svct ${svc===k?'on':''}" onclick="selectSvcInBuilder('${k}')">
+      <div class="svct-icon">${v.icon}</div>
+      <div class="svct-l">${v.label}</div>
+      <div class="svct-d">${v.desc}</div>
+    </div>`).join('')}
+  </div>
+</div>
+<div class="fl">
+  <div class="lbl">캠페인 이름 <span class="req">*</span></div>
+  <input class="inp" id="b-name" placeholder="예: 5월 이사철 매물 추천 캠페인" value="${BD.name||''}" oninput="BD.name=this.value">
+</div>
+<div class="fl">
+  <div class="lbl">캠페인 목표</div>
+  <select class="inp sel" onchange="BD.goal=this.value">
+    <option value="">목표를 선택하세요</option>
+    ${['재방문 유도','전환 (매물 조회)','신규 활성화','리텐션','정보 전달','브랜드 인게이지먼트'].map(g=>`<option value="${g}" ${BD.goal===g?'selected':''}>${g}</option>`).join('')}
+  </select>
+</div>`;
+}
+
+function renderStep2(){
+  const svc=BD.service||curSvc;
+  const trig=BD.trigger;
+  const recs=(SEG_RECS[svc]||{})[trig]||[];
+  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
+  const fav=savedSegs.length>0?`
+  <div class="notice ni" style="margin-bottom:8px">
+    <i class="ti ti-star-filled" style="color:var(--am)"></i>
+    즐겨찾기: ${SEGMENTS.filter(s=>savedSegs.includes(s.id)).map(s=>`<strong style="cursor:pointer" onclick="BD.segId='${s.id}';renderBodyInPlace()">${s.name}</strong>`).join(', ')||'없음'}
+  </div>`:'';
+
+  const recHtml=recs.length>0?`
+  <div class="seg-rec">
+    <div class="seg-rec-hd"><i class="ti ti-sparkles"></i>서비스·트리거 기반 추천 세그먼트</div>
+    <div class="seg-rec-pills">${recs.map(id=>{const s=SEGMENTS.find(x=>x.id===id);if(!s)return'';return `<div class="seg-rec-pill ${BD.segId===id?'sel':''}" onclick="BD.segId='${id}';renderBodyInPlace()">
+      ${BD.segId===id?'✓ ':''}<span>${s.name}</span><span style="color:var(--tx3);font-size:10px">${s.cnt.toLocaleString()}명</span>
+    </div>`;}).join('')}
+    </div>
+  </div>`:'';
+
+  return fav+recHtml+`
+<div class="fl">
+  <div class="lbl">세그먼트 선택</div>
+  <div class="seg-grid">${SEGMENTS.map(s=>`
+    <div class="segc" style="${BD.segId===s.id?'border-color:var(--g);background:var(--g8)':''}" onclick="BD.segId='${s.id}';renderBodyInPlace()">
+      <div class="segc-hd">
+        <div class="segc-n">${s.name}</div>
+        ${savedSegs.includes(s.id)?'<span style="font-size:12px">⭐</span>':''}
+        ${recs.includes(s.id)?`<span class="tag tc" style="font-size:9px">추천</span>`:''}
+      </div>
+      <div class="segc-d">${s.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="segc-cnt">${s.cnt.toLocaleString()}명</div>
+        <div style="display:flex;gap:3px">${s.tags.map(t=>`<span class="tag tgr" style="font-size:9px">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>
+<div class="notice ns"><i class="ti ti-users"></i>선택: <strong>${seg.name}</strong> · 예상 도달 <strong>${seg.cnt.toLocaleString()}명</strong></div>`;
+}
+
+function renderStep3(){
+  const avail=CROSS_OPTS.filter(ct=>ct.req.every(r=>BD.channels.includes(r)));
+  const svc=BD.service||curSvc;
+  const atTpls=AT_TPLS[svc]||[];
+  const selTpl=atTpls.find(t=>t.id===BD.alimtalkTpl);
+  const trigKey=BD.trigger||'immediate';
+  const samples=(SAMPLE_MSGS[svc]||{})[trigKey]||[];
+
+  return `
+<div class="fl">
+  <div class="lbl">채널 선택 <span class="req">*</span> <span style="font-size:10px;color:var(--tx3);font-weight:400">(복수 선택 가능)</span></div>
+  <div class="ch-cards">
+    ${[{id:'push',ico:'📱',nm:'푸시 알림',ds:'iOS·Android 네이티브 푸시',cls:''},
+       {id:'inapp',ico:'💬',nm:'인앱 메시지',ds:'앱 내 팝업·배너·피드카드',cls:''},
+       {id:'alimtalk',ico:'💛',nm:'카카오 알림톡',ds:'카카오톡 채널 알림톡',cls:'kakao'}].map(ch=>`
+    <div class="chc ${ch.cls} ${BD.channels.includes(ch.id)?'on':''}" onclick="toggleChannel('${ch.id}')">
+      <div class="chk-box">${BD.channels.includes(ch.id)?'<i class="ti ti-check" style="font-size:9px;color:#fff"></i>':''}</div>
+      <div class="ch-ico">${ch.ico}</div>
+      <div class="ch-nm">${ch.nm}</div>
+      <div class="ch-ds">${ch.ds}</div>
+    </div>`).join('')}
+  </div>
+</div>
+
+${avail.length>0?`
+<div class="cross-wrap">
+  <div class="cross-hd"><i class="ti ti-arrows-exchange"></i>크로스 채널 디타겟 <span class="tag ta_" style="margin-left:auto;font-size:9px">미오픈·미수신 재발송</span></div>
+  ${avail.map(ct=>`<div class="cross-row">
+    <input type="checkbox" ${BD.crossTargets.includes(ct.id)?'checked':''} onchange="toggleCross('${ct.id}')">
+    <span class="cross-lbl">${ct.label}</span>
+    <span class="cross-after">${ct.after}</span>
+  </div>`).join('')}
+</div>`:''}
+
+${(BD.channels.includes('push')||BD.channels.includes('inapp'))&&samples.length>0?`
+<div class="sample-wrap">
+  <div class="sample-hd"><i class="ti ti-sparkles"></i>시나리오별 샘플 메시지 <span style="font-size:10px;font-weight:400;color:var(--pu)">${SVCS[svc].label} · ${(TRIGGERS.find(t=>t.id===trigKey)||{}).label||''} 맞춤</span></div>
+  <div class="sample-cards">${samples.map((s,i)=>`
+    <div class="samplec" onclick="applySample(${i})">
+      <div class="samplec-badge">${i===0?'A안':'B안'} 샘플 — 클릭하면 적용</div>
+      <div class="samplec-title">${s.title}</div>
+      <div class="samplec-body">${s.body.substring(0,50)}${s.body.length>50?'…':''}</div>
+      <div class="samplec-cta">→ ${s.cta}</div>
+    </div>`).join('')}
+  </div>
+</div>`:''}
+
+${BD.channels.includes('push')||BD.channels.includes('inapp')?`
+<div class="fl">
+  <div class="lbl" style="margin-bottom:7px">메시지 작성</div>
+  <div style="display:flex;align-items:center;gap:5px;margin-bottom:9px">
+    <button class="btn btn-sm ${BD.abMode==='a'?'btn-p':''}" onclick="BD.abMode='a';renderBodyInPlace()">단일(A)</button>
+    <button class="btn btn-sm ${BD.abMode==='ab'?'btn-p':''}" onclick="BD.abMode='ab';renderBodyInPlace()">A/B 테스트</button>
+    <button class="btn btn-sm btn-ai" onclick="aiRecommend()" style="margin-left:auto" ${!API_KEY?'title="설정에서 API 키 입력"':''}>
+      <i class="ti ti-sparkles" style="font-size:11px"></i>AI 자동추천
+    </button>
+  </div>
+  ${renderVariants()}
+</div>`:''}
+
+${BD.channels.includes('alimtalk')?`
+<div class="fl">
+  <div class="lbl"><span class="tag tkk">💛 알림톡</span> 템플릿</div>
+  <select class="inp sel" onchange="BD.alimtalkTpl=this.value;renderBodyInPlace()" style="margin-bottom:8px">
+    <option value="">템플릿 선택</option>
+    ${atTpls.map(t=>`<option value="${t.id}" ${BD.alimtalkTpl===t.id?'selected':''}>${t.name}</option>`).join('')}
+  </select>
+  ${selTpl?`<div class="at-prev">
+    <div class="at-ph"><span>📣</span>${SVCS[svc].label} 알림</div>
+    <div class="at-body">${selTpl.body}</div>
+    <button class="at-btn">확인하기</button>
+  </div>`:''}
+</div>`:''}
+
+<div id="ai-result"></div>`;
+}
+
+function renderVariants(){
+  const vars=BD.abMode==='a'?[BD.variants[0]]:BD.variants;
+  return vars.map((v,i)=>`<div class="ab-var">
+    <div class="ab-var-hd">
+      <span class="ab-badge ${i===0?'ab-badge-a':'ab-badge-b'}">${i===0?'A안':'B안'}</span>
+      ${i===0&&BD.abMode==='ab'?'<span style="font-size:10px;color:var(--tx3)">성과 비교 중 승리안 자동 적용</span>':''}
+    </div>
+    <input class="inp" placeholder="제목 (15자 이내 권장)" value="${v.title||''}" oninput="BD.variants[${i}].title=this.value" style="margin-bottom:6px">
+    <textarea class="inp ta_" placeholder="본문을 입력하세요" oninput="BD.variants[${i}].body=this.value" style="margin-bottom:6px">${v.body||''}</textarea>
+    <div style="display:flex;gap:6px">
+      <input class="inp" placeholder="CTA 버튼" value="${v.cta||'자세히 보기'}" oninput="BD.variants[${i}].cta=this.value" style="flex:1">
+      ${BD.channels.includes('inapp')?`<select class="inp sel" style="width:110px" onchange="BD.inappType=this.value">
+        ${['팝업','배너','피드카드','코치마크','바텀시트'].map(t=>`<option ${BD.inappType===t?'selected':''}>${t}</option>`).join('')}
+      </select>`:''}
+    </div>
+  </div>`).join('');
+}
+
+function renderStep4(){
+  const trig=TRIGGERS.find(t=>t.id===BD.trigger)||TRIGGERS[0];
+  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
+  return `
+<div class="fl">
+  <div class="lbl">발송 트리거 유형</div>
+  <div class="trig-grid">${TRIGGERS.map(t=>`
+    <div class="trc ${BD.trigger===t.id?'on':''}" style="${BD.trigger===t.id?`border-color:${t.color};background:${t.cbg}`:''}"
+      onclick="BD.trigger='${t.id}';renderBodyInPlace()">
+      <div class="trc-icon" style="background:${t.cbg};color:${t.color}"><i class="ti ${t.icon}"></i></div>
+      <div class="trc-l" style="${BD.trigger===t.id?`color:${t.color}`:''}"> ${t.label}</div>
+      <div class="trc-d">${t.desc}</div>
+    </div>`).join('')}
+  </div>
+</div>
+
+${BD.trigger==='scheduled'?`<div class="two-col">
+  <div class="fl"><div class="lbl">발송 날짜</div><input class="inp" type="date" value="${BD.schedDate}" onchange="BD.schedDate=this.value"></div>
+  <div class="fl"><div class="lbl">발송 시간</div><input class="inp" type="time" value="${BD.schedTime}" onchange="BD.schedTime=this.value"></div>
+</div>`:''}
+
+${BD.trigger==='behavioral'?`<div class="fl"><div class="lbl">행동 조건</div>
+  <select class="inp sel" onchange="BD.trigDetail=this.value">
+    <option value="">조건 선택</option>
+    ${['매물 상세 조회 후 뒤로가기','찜 목록 추가 후 미전환','검색 후 3분 미활동','앱 실행 후 N분 미이동'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
+  </select>
+</div>`:''}
+
+${BD.trigger==='lifecycle'?`<div class="fl"><div class="lbl">생애주기 단계</div>
+  <select class="inp sel" onchange="BD.trigDetail=this.value">
+    <option value="">단계 선택</option>
+    ${['가입 후 1일','가입 후 7일','첫 매물 조회','첫 찜 등록','30일 미접속','90일 미접속','계약 완료 후'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
+  </select>
+</div>`:''}
+
+${BD.trigger==='contextual'?`<div class="fl"><div class="lbl">맥락·패턴 조건</div>
+  <select class="inp sel" onchange="BD.trigDetail=this.value">
+    <option value="">조건 선택</option>
+    ${['주말 오전 (토·일 9~11시)','퇴근 시간대 (18~20시)','이사 성수기 (3~4월, 7~8월)','급매 등록 시 관심지역 매칭','금리 변동 뉴스 발생 시'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
+  </select>
+</div>`:''}
+
+${BD.trigger==='event'?`<div class="fl"><div class="lbl">이벤트 소스</div>
+  <select class="inp sel" onchange="BD.trigDetail=this.value">
+    <option value="">소스 선택</option>
+    ${['시세 DB 업데이트','신규 매물 등록','청약 일정 등록','외부 API 연동','푸시 미오픈 감지'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
+  </select>
+</div>`:''}
+
+<div class="notice ns"><i class="ti ti-check-circle"></i>
+  <strong>${BD.channels.map(ch=>({push:'푸시',inapp:'인앱',alimtalk:'알림톡'})[ch]).join(' + ')||'채널 미선택'}</strong>
+  &nbsp;·&nbsp;<strong>${trig.label}</strong>
+  &nbsp;·&nbsp;<strong>${seg.name}</strong> (${seg.cnt.toLocaleString()}명)
+  ${BD.crossTargets.length>0?`&nbsp;·&nbsp;<span class="tag ta_" style="font-size:9px">크로스 ${BD.crossTargets.length}개</span>`:''}
+  ${BD.abMode==='ab'?`&nbsp;·&nbsp;<span class="tag tb" style="font-size:9px">A/B 테스트</span>`:''}
+</div>`;
+}
+
+// ── SCENARIOS ──────────────────────────────────────
+function renderScenarios(){
+  const svc=BD.service||curSvc;
+  const list=SCENARIOS[svc]||SCENARIOS.zigbang;
+  const TC={seasonal:'tg',행동기반:'tp',신규:'tb',이탈:'ta_',웰컴:'tg',리타겟:'ta_',알림톡:'tkk',이벤트:'tc',투자:'ta_',리포트:'tb',문의:'tg',계약:'tpk',등록:'tp',행동:'tp',맥락:'tc',즉시:'tg',주간:'tb',기회:'ta_'};
+  return `
+<div class="sc-section">
+  <div class="sc-hd">
+    <div class="sc-hd-t"><i class="ti ti-stars" style="color:var(--am)"></i>추천 시나리오 <span class="tag ta_" style="font-size:10px">${SVCS[svc].label}</span></div>
+    <span style="font-size:10px;color:var(--tx3)">클릭 시 빌더에 자동 적용</span>
+  </div>
+  <div class="sc-scroll">${list.map(sc=>`
+    <div class="scc" onclick="applyScenario('${sc.id}')">
+      <div class="scc-t">${sc.t}</div>
+      <div class="scc-tags">
+        ${sc.channels.map(ch=>chTag(ch)).join('')}
+        ${sc.tags.map(t=>`<span class="tag ${TC[t]||'tgr'}" style="font-size:9px">${t}</span>`).join('')}
+      </div>
+      <div class="scc-rate"><i class="ti ti-chart-line" style="font-size:10px"></i> 평균 오픈율 ${sc.rate}</div>
+    </div>`).join('')}
+  </div>
+</div>`;
+}
+
+function applyScenario(id){
+  const sc=Object.values(SCENARIOS).flat().find(s=>s.id===id);
+  if(!sc)return;
+  BD.channels=[...sc.channels];BD.segId=sc.seg;BD.trigger=sc.trigger;BD.goal=sc.goal;
+  builderStep=1;renderBodyInPlace();showToast(`"${sc.t}" 시나리오 적용됐어요 ✨`);
+}
+
+function applySample(idx){
+  const svc=BD.service||curSvc;
+  const trigKey=BD.trigger||'immediate';
+  const samples=(SAMPLE_MSGS[svc]||{})[trigKey]||[];
+  if(!samples[idx])return;
+  const s=samples[idx];
+  BD.variants[idx]={title:s.title,body:s.body,cta:s.cta};
+  if(idx===1)BD.abMode='ab';
+  renderBodyInPlace();
+  showToast(`${idx===0?'A안':'B안'} 샘플 메시지를 적용했어요`);
+}
+
+// ── BUILDER HELPERS ────────────────────────────────
+function toggleChannel(ch){const i=BD.channels.indexOf(ch);if(i===-1)BD.channels.push(ch);else BD.channels.splice(i,1);renderBodyInPlace();}
+function toggleCross(id){const i=BD.crossTargets.indexOf(id);if(i===-1)BD.crossTargets.push(id);else BD.crossTargets.splice(i,1);}
+function goStep(n){builderStep=n;renderBodyInPlace();}
+function prevStep(){if(builderStep>1){builderStep--;renderBodyInPlace();}}
+function nextStep(){if(builderStep===4){saveCampaign();return;}builderStep++;renderBodyInPlace();}
+
+function saveCampaign(){
+  if(!BD.name){showToast('캠페인 이름을 입력해주세요','warn');builderStep=1;renderBodyInPlace();return;}
+  if(BD.channels.length===0){showToast('채널을 1개 이상 선택해주세요','warn');builderStep=3;renderBodyInPlace();return;}
+  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
+  const newCamp={
+    id:'c'+Date.now(),
+    name:BD.name||'새 캠페인',
+    svc:BD.service||curSvc,
+    seg:seg.name,
+    tgt:seg.cnt,
+    sent:new Date().toISOString().split('T')[0],
+    or:`${(Math.random()*25+5).toFixed(1)}%`,
+    ch:[...BD.channels],
+    goal:BD.goal||'전환',
+    trigger:BD.trigger,
+  };
+  CAMPS.unshift(newCamp);
+  localStorage.setItem(CAMP_KEY,JSON.stringify(CAMPS));
+  showToast(`"${newCamp.name}" 캠페인 저장됐어요! 🎉`);
+  builderStep=0;
+  setTimeout(()=>nav('dash',document.getElementById('sbn-dash')),1000);
+}
+
+// ── AI RECOMMEND ──────────────────────────────────
+async function aiRecommend(){
+  if(!API_KEY){showToast('⚙️ 설정에서 API 키를 먼저 입력해주세요','warn');toggleSettings();return;}
+  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
+  const svc=SVCS[BD.service||curSvc];
+  const trig=TRIGGERS.find(t=>t.id===BD.trigger)||TRIGGERS[0];
+  const el=document.getElementById('ai-result');
+  if(el)el.innerHTML=`<div class="notice ni"><i class="ti ti-sparkles ti-spin"></i>AI가 메시지를 추천 중이에요...</div>`;
+  const prompt=`다음 조건에 맞는 앱 메시지 2개(A안·B안)를 JSON으로만 응답해. 설명 없이 JSON만.
+서비스: ${svc.label} (${svc.desc})
+오디언스: ${seg.name} (${seg.desc})
+트리거: ${trig.label} — ${trig.desc}
+목표: ${BD.goal||'재방문 유도'}
+채널: ${BD.channels.join(', ')}
+
+{"a":{"title":"","body":"","cta":""},"b":{"title":"","body":"","cta":""}}
+규칙: 제목 15자↓ · 본문 45자↓ · CTA 6자↓ · A·B는 전략 차별화(혜택형 vs 긴급형 등) · 한국어`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})});
+    if(!r.ok)throw new Error(`API ${r.status}`);
+    const data=await r.json();
+    const p=JSON.parse(data.content[0].text.replace(/```json?|```/g,'').trim());
+    BD.variants[0]={title:p.a.title,body:p.a.body,cta:p.a.cta};
+    BD.variants[1]={title:p.b.title,body:p.b.body,cta:p.b.cta};
+    BD.abMode='ab';
+    renderBodyInPlace();showToast('AI 메시지 추천 완료 ✨');
+  }catch(e){
+    if(el)el.innerHTML=`<div class="notice nw"><i class="ti ti-alert-circle"></i>추천 실패: ${e.message}</div>`;
+  }
+}
+
+// ── AUDIENCE ──────────────────────────────────────
+function renderAudience(){
+  const saved=SEGMENTS.filter(s=>savedSegs.includes(s.id));
+  return `
+<div class="saved-wrap">
+  <div class="saved-hd">
+    <div class="saved-ht"><i class="ti ti-star-filled"></i>자주 사용 세그먼트 (${saved.length})</div>
+    <span style="font-size:10px;color:var(--am)">★ 을 눌러 즐겨찾기 관리</span>
+  </div>
+  ${saved.length>0?`<div class="saved-pills">${saved.map(s=>`
+    <div class="saved-pill">
+      <span style="font-weight:500">${s.name}</span>
+      <span style="color:var(--tx3);font-size:10px">${s.cnt.toLocaleString()}명</span>
+      <span class="saved-pill-x" onclick="toggleSave('${s.id}',event)">×</span>
+    </div>`).join('')}</div>`
+    :`<div style="font-size:11px;color:var(--tx3);padding:3px 0">즐겨찾기가 없어요. 아래 ★로 추가하세요.</div>`}
+</div>
+
+<div class="ai-gen-wrap">
+  <div class="ai-gen-hd"><i class="ti ti-wand"></i>AI 세그먼트 생성 <span style="font-size:10px;font-weight:400;color:var(--g)">자연어로 설명하면 자동 생성</span></div>
+  <div class="ai-gen-row">
+    <input class="ai-inp" id="ai-seg-inp" placeholder="예: 지난 30일간 매물 3개↑ 찜한 수도권 30대" onkeydown="if(event.key==='Enter')genAISeg()">
+    <button class="btn btn-p btn-sm" onclick="genAISeg()"><i class="ti ti-sparkles" style="font-size:11px"></i>생성</button>
+  </div>
+  <div id="ai-seg-result" style="margin-top:7px"></div>
+</div>
+
+<div class="sec-lbl" style="margin-top:4px">전체 세그먼트</div>
+<div class="seg-grid">${SEGMENTS.map(s=>`
+  <div class="segc">
+    <div class="segc-hd">
+      <div class="segc-n">${s.name}</div>
+      <button class="seg-star ${savedSegs.includes(s.id)?'on':''}" onclick="toggleSave('${s.id}',event)" title="즐겨찾기">
+        <i class="ti ti-star${savedSegs.includes(s.id)?'-filled':''}"></i>
+      </button>
+      <button class="seg-del" onclick="deleteSeg('${s.id}',event)" title="삭제"><i class="ti ti-trash"></i></button>
+    </div>
+    <div class="segc-d">${s.desc}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+      <div class="segc-cnt">${s.cnt.toLocaleString()}명</div>
+      <div style="display:flex;gap:3px">${s.tags.map(t=>`<span class="tag tgr" style="font-size:9px">${t}</span>`).join('')}</div>
+    </div>
+  </div>`).join('')}
+</div>`;
+}
+
+function toggleSave(id,e){
+  if(e)e.stopPropagation();
+  const i=savedSegs.indexOf(id);if(i===-1)savedSegs.push(id);else savedSegs.splice(i,1);
+  localStorage.setItem(SAVED_KEY,JSON.stringify(savedSegs));render('audience');
+}
+function deleteSeg(id,e){
+  if(e)e.stopPropagation();
+  if(!confirm('이 세그먼트를 삭제할까요?'))return;
+  const i=SEGMENTS.findIndex(s=>s.id===id);
+  if(i!==-1){SEGMENTS.splice(i,1);savedSegs=savedSegs.filter(s=>s!==id);localStorage.setItem(SAVED_KEY,JSON.stringify(savedSegs));}
+  render('audience');
+}
+async function genAISeg(){
+  const desc=document.getElementById('ai-seg-inp')?.value.trim();if(!desc)return;
+  const res=document.getElementById('ai-seg-result');
+  if(!API_KEY){res.innerHTML=`<div class="notice nw"><i class="ti ti-lock"></i>설정에서 API 키를 입력해주세요</div>`;return;}
+  res.innerHTML=`<div class="notice ni"><i class="ti ti-sparkles ti-spin"></i>AI가 세그먼트를 생성 중이에요...</div>`;
+  const prompt=`다음 설명으로 CRM 세그먼트를 JSON으로만 만들어줘. 설명 없이 JSON만.
+설명: "${desc}"
+{"name":"이름","desc":"SQL/조건 설명","cnt":예상수,"tags":["태그1","태그2"]}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});
+    if(!r.ok)throw new Error(`API ${r.status}`);
+    const data=await r.json();
+    const p=JSON.parse(data.content[0].text.replace(/```json?|```/g,'').trim());
+    const newSeg={id:'ai'+Date.now(),name:p.name,desc:p.desc,cnt:p.cnt,tags:p.tags||[]};
+    SEGMENTS.push(newSeg);
+    res.innerHTML=`<div class="notice ns"><i class="ti ti-check-circle"></i>"<strong>${newSeg.name}</strong>" 생성됐어요 (${newSeg.cnt.toLocaleString()}명 예상)</div>`;
+    document.getElementById('ai-seg-inp').value='';
+    setTimeout(()=>render('audience'),800);
+  }catch(ex){res.innerHTML=`<div class="notice nw"><i class="ti ti-alert-circle"></i>생성 실패: ${ex.message}</div>`;}
+}
+
+// ── JOURNEY ───────────────────────────────────────
+function renderJourney(){
+  return `<div class="notice ni" style="margin-bottom:12px"><i class="ti ti-info-circle"></i>저니를 클릭하면 캠페인 빌더에서 이어서 설정할 수 있어요</div>
+  <div class="j-grid">${JOURNEYS.map(j=>`<div class="jc">
+    <div class="jc-t">${j.t}</div>
+    <div class="jc-d">${j.d}</div>
+    <div class="j-steps">${j.steps.map((s,i)=>`${i>0?'<span class="j-arr">→</span>':''}<span class="tag ${s.c}">${s.l}</span>`).join('')}</div>
+  </div>`).join('')}</div>`;
+}
+
+// ── ANALYTICS ─────────────────────────────────────
+function renderAnalytics(){
+  // Demo data
+  const campPerf=[
+    {name:'봄 이사철 특가',sent:12840,click:2197,view:1841,inquiry:312,aRate:'17.1%',bRate:'14.3%',winner:'A'},
+    {name:'신규 웰컴',     sent:3210, click:1251,view:987, inquiry:201,aRate:'39.0%',bRate:'31.2%',winner:'A'},
+    {name:'재방문 유도',   sent:28930,click:2314,view:1734,inquiry:189,aRate:'8.0%', bRate:'9.3%', winner:'B'},
+    {name:'청약 정보',     sent:18720,click:3931,view:3112,inquiry:445,aRate:'21.0%',bRate:'18.7%',winner:'A'},
+    {name:'리빙 콘텐츠',  sent:8450, click:1225,view:941, inquiry:127,aRate:'14.5%',bRate:'12.1%',winner:'A'},
+  ];
+
+  // Funnel data (aggregate)
+  const funnelTotal={발송:83190,클릭:14302,조회:11001,문의:1274};
+  const funnelMax=funnelTotal['발송'];
+
+  // Bar chart for campaign comparison
+  const barData=campPerf.map(c=>({l:c.name.substring(0,5),v:parseFloat(c.aRate)}));
+  const maxBar=Math.max(...barData.map(d=>d.v));
+
+  // Gender
+  const genderData=[{l:'남성',v:47.3,c:'#3B82F6'},{l:'여성',v:38.1,c:'#EC4899'},{l:'알수없음',v:14.6,c:'#9ca3af'}];
+  // Channel opt-in
+  const chanOpt=[{l:'푸시 알림',v:71.2,c:'var(--g)'},{l:'카카오 알림톡',v:94.1,c:'#d4b800'},{l:'인앱 메시지',v:100,c:'var(--pu)'}];
+  // OS
+  const osData=[{l:'iOS',v:58.3,c:'var(--bl)'},{l:'Android',v:38.9,c:'var(--g)'},{l:'기타',v:2.8,c:'var(--tx3)'}];
+
+  // SVG donut
+  const donutR=48,cx=58,cy=58;
+  let cumPct=0;
+  function donutSlice(pct,color,prev){
+    const r=donutR,stroke=22;
+    const circumf=2*Math.PI*r;
+    const dashArr=pct/100*circumf;
+    const offset=circumf*(1-prev/100);
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-dasharray="${dashArr} ${circumf-dashArr}" stroke-dashoffset="${offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
+  }
+  let donutSvg=`<svg class="donut-svg" width="116" height="116" viewBox="0 0 116 116">
+    <circle cx="${cx}" cy="${cy}" r="${donutR}" fill="none" stroke="var(--bg3)" stroke-width="22"/>`;
+  let prev=0;
+  for(const g of genderData){donutSvg+=donutSlice(g.v,g.c,prev);prev+=g.v;}
+  donutSvg+=`<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--tx)">성별</text></svg>`;
+
+  return `
+<div class="mg">
+  <div class="mc"><div class="mc-l">총 발송</div><div class="mc-v">83,190</div><div class="mc-c">이번 달</div></div>
+  <div class="mc"><div class="mc-l">전체 오픈율</div><div class="mc-v" style="color:var(--g)">17.2%</div><div class="mc-c">↑ 2.1%p</div></div>
+  <div class="mc"><div class="mc-l">A/B 테스트</div><div class="mc-v" style="color:var(--bl)">5건</div><div class="mc-c">A안 승률 80%</div></div>
+  <div class="mc"><div class="mc-l">총 문의 전환</div><div class="mc-v" style="color:var(--pk)">1,274</div><div class="mc-c">문의 도달</div></div>
+</div>
+
+<!-- A/B 테스트 위너 -->
+<div class="card" style="margin-bottom:10px">
+  <div class="card-hd"><i class="ti ti-trophy" style="color:var(--am)"></i>A/B 테스트 위너 확인</div>
+  <div class="ab-winner-grid">${campPerf.filter(c=>c.aRate&&c.bRate).slice(0,4).map(c=>`
+    <div class="abwc ${c.winner==='A'?'winner':''}">
+      <div class="abwc-hd">
+        <div style="font-size:12px;font-weight:600;flex:1">${c.name.substring(0,8)}</div>
+        <span class="ab-badge ${c.winner==='A'?'ab-badge-a':'ab-badge-b'}">${c.winner}안 승리</span>
+        ${c.winner==='A'?'<span class="winner-badge">WINNER</span>':''}
+      </div>
+      <div class="abwc-stat"><span>A안 오픈율</span><span style="font-weight:700;color:var(--g)">${c.aRate}</span></div>
+      <div class="abwc-stat"><span>B안 오픈율</span><span style="font-weight:700;color:var(--bl)">${c.bRate}</span></div>
+      <div class="abwc-stat"><span>클릭수</span><span>${c.click.toLocaleString()}</span></div>
+    </div>`).join('')}
+  </div>
+</div>
+
+<!-- 퍼널 + 캠페인별 성과 -->
+<div class="ana-grid" style="margin-bottom:10px">
+  <div class="chart-box">
+    <div class="chart-hd">퍼널별 유저수 <span class="tag tg" style="font-size:10px">전체 합산</span></div>
+    <div class="funnel-wrap">${Object.entries(funnelTotal).map(([k,v],i)=>{
+      const colors=['var(--g)','var(--bl)','var(--pu)','var(--pk)'];
+      const w=Math.round(v/funnelMax*100);
+      return `<div class="funnel-row">
+        <div class="funnel-lbl">${k}</div>
+        <div class="funnel-bar-outer">
+          <div class="funnel-bar-fill" style="width:${w}%;background:${colors[i]}">${k}</div>
+        </div>
+        <div class="funnel-num" style="color:${colors[i]}">${v.toLocaleString()}</div>
+      </div>`;
+    }).join('')}
+    </div>
+    <div style="font-size:10px;color:var(--tx3);margin-top:8px">클릭율 ${(funnelTotal['클릭']/funnelTotal['발송']*100).toFixed(1)}% · 조회율 ${(funnelTotal['조회']/funnelTotal['발송']*100).toFixed(1)}% · 문의전환 ${(funnelTotal['문의']/funnelTotal['발송']*100).toFixed(1)}%</div>
+  </div>
+  <div class="chart-box">
+    <div class="chart-hd">캠페인별 오픈율 비교</div>
+    <div class="bar-wrap">${barData.map(d=>`
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center">
+        <div class="bar" style="height:${Math.round(d.v/maxBar*100)}%"></div>
+        <div class="bar-lbl">${d.l}</div>
+      </div>`).join('')}
+    </div>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">${barData.map(d=>`<div style="font-size:10px;color:var(--tx2)">${d.l} <strong style="color:var(--g)">${d.v}%</strong></div>`).join('')}</div>
+  </div>
+</div>
+
+<!-- 성별 + 채널 수신동의율 -->
+<div class="ana-grid" style="margin-bottom:10px">
+  <div class="chart-box">
+    <div class="chart-hd">전체 유저 성별 비율</div>
+    <div class="donut-wrap">
+      ${donutSvg}
+      <div class="donut-legend">${genderData.map(g=>`
+        <div class="dleg-row">
+          <div class="dleg-dot" style="background:${g.c}"></div>
+          <span>${g.l}</span>
+          <strong style="color:${g.c};margin-left:4px">${g.v}%</strong>
+        </div>`).join('')}
+        <div style="font-size:10px;color:var(--tx3);margin-top:6px">전체 ${(12840+3210+28930+8450).toLocaleString()}명 기준</div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-box">
+    <div class="chart-hd">채널별 수신동의율</div>
+    ${chanOpt.map(d=>`
+    <div class="hbar-row">
+      <div class="hbar-lbl">${d.l}</div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${d.v}%;background:${d.c}"></div></div>
+      <div class="hbar-val" style="color:${d.c}">${d.v}%</div>
+    </div>`).join('')}
+    <div style="font-size:10px;color:var(--tx3);margin-top:8px">인앱은 앱 실행 시 100% 도달 (수신동의 불필요)</div>
+  </div>
+</div>
+
+<!-- OS 분석 + 캠페인 상세 -->
+<div class="ana-grid">
+  <div class="chart-box">
+    <div class="chart-hd">OS별 분석</div>
+    ${osData.map(d=>`
+    <div class="hbar-row">
+      <div class="hbar-lbl">${d.l}</div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${d.v}%;background:${d.c}"></div></div>
+      <div class="hbar-val" style="color:${d.c}">${d.v}%</div>
+    </div>`).join('')}
+    <div style="font-size:10px;color:var(--tx3);margin-top:8px">iOS 평균 오픈율 18.4% / Android 15.9%</div>
+  </div>
+  <div class="chart-box">
+    <div class="chart-hd">캠페인별 성과 상세</div>
+    <table class="tbl" style="font-size:10px">
+      <thead><tr><th>캠페인</th><th>발송</th><th>클릭</th><th>조회</th><th>문의</th></tr></thead>
+      <tbody>${campPerf.map(c=>`<tr>
+        <td style="font-weight:600">${c.name.substring(0,6)}</td>
+        <td>${c.sent.toLocaleString()}</td>
+        <td style="color:var(--g)">${c.click.toLocaleString()}</td>
+        <td style="color:var(--bl)">${c.view.toLocaleString()}</td>
+        <td style="color:var(--pk)">${c.inquiry.toLocaleString()}</td>
+      </tr>`).join('')}</tbody>
+    </table>
+  </div>
+</div>`;
+}
+
+// ── AGENT ─────────────────────────────────────────
+let agentHist=[],agentBusy=false;
+function renderAgent(){
+  const h=window.innerHeight||700;
+  return `<div class="agent-wrap" style="height:${h-110}px">
+    <div class="chat-area" id="chat-area" style="flex:1">
+      <div class="msg msg-a">안녕하세요! 직방 TMS AI 에이전트입니다.<br>자연어로 캠페인을 설계하거나 세그먼트를 분석해드려요.<br><br><strong>예시:</strong> "서울 30대 iOS 유저에게 이사철 매물 추천 알림톡+푸시 만들어줘"</div>
+    </div>
+    <div class="chat-foot">
+      <textarea class="chat-inp" id="chat-inp" placeholder="메시지를 입력하세요..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+      <button class="chat-send" id="chat-send" onclick="sendMsg()"><i class="ti ti-send" style="font-size:14px"></i></button>
+    </div>
+  </div>`;
+}
+function initAgent(){setTimeout(()=>{const i=document.getElementById('chat-inp');if(i)i.focus();},100);}
+async function sendMsg(){
+  if(agentBusy)return;
+  const inp=document.getElementById('chat-inp');
+  const msg=inp?.value.trim();if(!msg)return;
+  inp.value='';addMsg(msg,'u');
+  if(!API_KEY){addMsg('API 키를 먼저 설정해주세요. 상단 ⚙️ 를 눌러 입력해주세요.','a');return;}
+  agentBusy=true;document.getElementById('chat-send').disabled=true;addTyping();
+  agentHist.push({role:'user',content:msg});
+  const sys=`당신은 직방·호갱노노 TMS AI 에이전트입니다. 현재 서비스: ${SVCS[curSvc].label}.
+캠페인 설계, 세그먼트 분석, A/B 메시지 작성을 도와주세요. 한국어로 간결하게 답변하세요.
+채널: 푸시 / 인앱 메시지 / 카카오 알림톡
+세그먼트: ${SEGMENTS.map(s=>s.name).join(', ')}
+트리거: ${TRIGGERS.map(t=>t.label).join(', ')}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,system:sys,messages:agentHist})});
+    removeTyping();
+    if(!r.ok)throw new Error(`API ${r.status}`);
+    const data=await r.json();const reply=data.content[0].text;
+    agentHist.push({role:'assistant',content:reply});addMsg(reply,'a');
+  }catch(ex){removeTyping();addMsg(`오류: ${ex.message}`,'a');}
+  finally{agentBusy=false;const s=document.getElementById('chat-send');if(s)s.disabled=false;}
+}
+function addMsg(txt,t){const ca=document.getElementById('chat-area');if(!ca)return;const d=document.createElement('div');d.className=`msg msg-${t}`;d.innerHTML=txt.replace(/\n/g,'<br>');ca.appendChild(d);ca.scrollTop=ca.scrollHeight;}
+function addTyping(){const ca=document.getElementById('chat-area');if(!ca)return;const d=document.createElement('div');d.className='msg msg-a typing';d.id='typ';d.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';ca.appendChild(d);ca.scrollTop=ca.scrollHeight;}
+function removeTyping(){document.getElementById('typ')?.remove();}
+
+// ── TOAST ─────────────────────────────────────────
+let toastT=null;
+function showToast(msg,type='s'){
+  clearTimeout(toastT);
+  let el=document.getElementById('toast');
+  if(!el){el=document.createElement('div');el.id='toast';el.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:8px 14px;border-radius:8px;font-size:12px;z-index:9999;box-shadow:0 4px 14px rgba(0,0,0,.15);white-space:nowrap;font-family:var(--f);transition:opacity .2s;';document.body.appendChild(el);}
+  el.style.cssText+=type==='warn'?'background:#fffbeb;border:1px solid var(--am2);color:#92400e;':'background:var(--g8);border:1px solid var(--g2);color:var(--g);';
+  el.textContent=msg;el.style.opacity='1';
+  toastT=setTimeout(()=>{el.style.opacity='0';},2200);
+}
+
+// ── INIT ──────────────────────────────────────────
+nav('dash',document.getElementById('sbn-dash'));
+</script>
+</body>
+</html>
