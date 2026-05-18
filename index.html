@@ -1,1241 +1,1330 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="light">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>직방 TMS — 토탈 메시징 솔루션</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>직방·호갱노노 토탈 메시징 솔루션</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.3.0/dist/tabler-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#ffffff;--bg2:#f6f5f1;--bg3:#eeece6;--bg4:#e4e2db;
-  --tx:#111827;--tx2:#6b7280;--tx3:#9ca3af;
-  --bd:rgba(0,0,0,.07);--bd2:rgba(0,0,0,.13);--bd3:rgba(0,0,0,.22);
-  --r:8px;--r2:12px;
-  --f:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;
-  --g:#1D9E75;--g8:rgba(29,158,117,.08);--g2:rgba(29,158,117,.2);--gd:rgba(29,158,117,.5);
-  --bl:#3B82F6;--bl8:rgba(59,130,246,.08);--bl2:rgba(59,130,246,.2);
-  --pu:#8B5CF6;--pu8:rgba(139,92,246,.08);--pu2:rgba(139,92,246,.2);
-  --am:#F59E0B;--am8:rgba(245,158,11,.08);--am2:rgba(245,158,11,.2);
-  --pk:#EC4899;--pk8:rgba(236,72,153,.08);--pk2:rgba(236,72,153,.2);
-  --cy:#06B6D4;--cy8:rgba(6,182,212,.08);--cy2:rgba(6,182,212,.2);
-  --rd:#EF4444;--rd8:rgba(239,68,68,.08);--rd2:rgba(239,68,68,.2);
-  --kk:#FEE500;--kkt:#3A1D1D;--kk2:rgba(254,229,0,.35);
-  --page:#eceae3;--sh:0 2px 8px rgba(0,0,0,.08);
+  --bg:#f0ede6;--panel:#ffffff;--panel2:#f7f5f0;--panel3:#edeae3;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.13);
+  --txt:#111827;--txt2:#6b7280;--txt3:#9ca3af;
+  --ac:#1D9E75;--ac2:#17855f;--ac-bg:rgba(29,158,117,.1);--ac-border:rgba(29,158,117,.25);
+  --info-bg:#eff6ff;--info-txt:#1d4ed8;--info-border:rgba(59,130,246,.2);
+  --warn-bg:#fffbeb;--warn-txt:#92400e;--warn-border:rgba(245,158,11,.2);
+  --danger-bg:#fff5f5;--danger-txt:#b91c1c;--danger-border:rgba(239,68,68,.2);
+  --ok-bg:#f0fdf4;--ok-txt:#166534;--ok-border:rgba(34,197,94,.2);
+  --r:8px;--r2:12px;--shadow:0 2px 10px rgba(0,0,0,.07);
+  --font:'Noto Sans KR',-apple-system,sans-serif;
 }
 [data-theme=dark]{
-  --bg:#1e1e1e;--bg2:#252525;--bg3:#2d2d2d;--bg4:#383838;
-  --tx:#f0ede8;--tx2:#9ca3af;--tx3:#555;
-  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.12);--bd3:rgba(255,255,255,.2);
-  --page:#0f0f0f;--sh:0 2px 8px rgba(0,0,0,.5);--kkt:#FEE500;
+  --bg:#161616;--panel:#1e1e1e;--panel2:#252525;--panel3:#2c2c2c;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --txt:#f3f4f6;--txt2:#9ca3af;--txt3:#6b7280;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--f);background:var(--page);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;font-size:13px;line-height:1.5}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-@keyframes bar-grow{from{width:0}to{width:var(--w)}}
-.ti-spin{display:inline-block;animation:spin 1s linear infinite}
-/* TOPBAR */
-.topbar{height:44px;display:flex;align-items:center;padding:0 12px;background:var(--bg);border-bottom:1px solid var(--bd);gap:7px;flex-shrink:0;position:sticky;top:0;z-index:100}
-.tb-logo{width:26px;height:26px;border-radius:6px;background:var(--g);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:11px;flex-shrink:0}
-.tb-title{font-size:14px;font-weight:700;letter-spacing:-.02em}
-.tb-svc{display:flex;gap:2px;margin-left:6px;background:var(--bg3);border-radius:6px;padding:2px;border:1px solid var(--bd)}
-.tsb{padding:3px 9px;border-radius:5px;border:none;background:transparent;color:var(--tx2);font-size:11px;cursor:pointer;transition:all .15s;font-family:var(--f);font-weight:500}
-.tsb.on{background:var(--bg);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.tsb:hover:not(.on){color:var(--tx)}
-.tb-r{margin-left:auto;display:flex;gap:4px;align-items:center}
-.tbb{width:30px;height:30px;border:none;background:transparent;border-radius:6px;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;transition:all .15s}
-.tbb:hover{background:var(--bg2);color:var(--tx)}
-/* SETTINGS */
-.sov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;display:none;align-items:flex-start;justify-content:flex-end;padding:52px 10px 0}
-.sov.show{display:flex}
-.sp{width:290px;background:var(--bg);border-radius:var(--r2);border:1px solid var(--bd2);padding:14px;box-shadow:var(--sh);animation:fadein .2s}
-.sp-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.sp-hd span{font-size:13px;font-weight:600}
-.sp-close{border:none;background:none;cursor:pointer;font-size:18px;color:var(--tx2);line-height:1;padding:2px 4px;border-radius:4px}
-.sp-close:hover{background:var(--bg2)}
-.sp-lbl{font-size:11px;color:var(--tx2);margin-bottom:4px;display:block}
-.sp-inp{width:100%;border:1px solid var(--bd2);border-radius:var(--r);padding:6px 8px;background:var(--bg2);color:var(--tx);font-size:12px;font-family:var(--f);margin-bottom:10px;outline:none}
-.sp-inp:focus{border-color:var(--g)}
-.sp-saved{display:none;font-size:11px;color:var(--g);text-align:center;margin-top:6px}
-/* LAYOUT */
-.wrap{display:flex;flex:1;min-height:0;overflow:hidden}
-.sb{width:52px;display:flex;flex-direction:column;align-items:center;padding:8px 0 10px;border-right:1px solid var(--bd);background:var(--bg);flex-shrink:0;gap:1px}
-.sb-sep{width:22px;height:1px;background:var(--bd);margin:4px 0}
-.sbn{width:40px;height:37px;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--tx3);transition:all .15s;border:1px solid transparent}
-.sbn:hover{color:var(--tx2);background:var(--bg2)}.sbn.on{color:var(--g);background:var(--g8);border-color:var(--g2)}
-.sbn i{font-size:15px}.sbn span{font-size:8px;font-weight:500}
-.content{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;background:var(--bg)}
-.hdr{height:42px;display:flex;align-items:center;padding:0 13px;border-bottom:1px solid var(--bd);flex-shrink:0;gap:8px}
-.hdr-t{font-size:14px;font-weight:700;letter-spacing:-.02em}
-.hdr-s{font-size:11px;color:var(--tx2)}
-.hdr-r{margin-left:auto;display:flex;gap:5px}
-.body{flex:1;overflow-y:auto;padding:13px}
-.body::-webkit-scrollbar{width:3px}.body::-webkit-scrollbar-thumb{background:var(--bd2)}
-/* BUTTONS */
-.btn{padding:5px 10px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg2);color:var(--tx);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-weight:500}
-.btn:hover{background:var(--bg3)}.btn:active{transform:scale(.98)}
-.btn-p{background:var(--g);color:#fff;border-color:var(--g)}.btn-p:hover{opacity:.88}
-.btn-sm{padding:3px 8px;font-size:11px}.btn-xs{padding:2px 6px;font-size:10px;border-radius:5px}
-.btn-ghost{background:transparent;border-color:transparent;color:var(--tx2)}.btn-ghost:hover{background:var(--bg2);color:var(--tx)}
-.btn-ai{background:var(--g8);border-color:var(--g2);color:var(--g)}.btn-ai:hover{background:var(--g2)}
-.btn-rd{background:var(--rd8);border-color:var(--rd2);color:var(--rd)}.btn-rd:hover{background:var(--rd2)}
-/* TAGS */
-.tag{display:inline-flex;align-items:center;gap:2px;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500}
-.tg{background:var(--g8);color:var(--g);border:1px solid var(--g2)}
-.tb{background:var(--bl8);color:var(--bl);border:1px solid var(--bl2)}
-.tp{background:var(--pu8);color:var(--pu);border:1px solid var(--pu2)}
-.ta_{background:var(--am8);color:var(--am);border:1px solid var(--am2)}
-.tpk{background:var(--pk8);color:var(--pk);border:1px solid var(--pk2)}
-.tc{background:var(--cy8);color:var(--cy);border:1px solid var(--cy2)}
-.tkk{background:rgba(254,229,0,.15);color:#927700;border:1px solid var(--kk2)}
-[data-theme=dark] .tkk{color:#c9a800}
-.tgr{background:var(--bg3);color:var(--tx2);border:1px solid var(--bd2)}
-.trd{background:var(--rd8);color:var(--rd);border:1px solid var(--rd2)}
-/* CARDS */
-.card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:11px}
-.card-hd{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px}
-/* KPI GRID */
-.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:10px}
-.mc-l{font-size:10px;color:var(--tx2);margin-bottom:2px}.mc-v{font-size:20px;font-weight:700}.mc-c{font-size:10px;color:var(--tx3);margin-top:1px}
-/* TABLE */
-.tbl{width:100%;border-collapse:collapse}
-.tbl th{text-align:left;font-size:11px;font-weight:500;color:var(--tx2);padding:5px 8px;border-bottom:1px solid var(--bd)}
-.tbl td{padding:7px 8px;border-bottom:1px solid var(--bd);font-size:12px;vertical-align:middle}
-.tbl tr:last-child td{border-bottom:none}.tbl tr:hover td{background:var(--bg2)}
-/* STEP BAR */
-.step-bar{display:flex;margin-bottom:14px;border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;background:var(--bg2)}
-.si{flex:1;padding:8px 5px;text-align:center;font-size:11px;color:var(--tx3);border-right:1px solid var(--bd);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px}
-.si:last-child{border-right:none}.si.done{color:var(--g);background:var(--g8)}.si.cur{color:var(--tx);font-weight:600;background:var(--bg)}
-.sn{width:16px;height:16px;border-radius:50%;background:var(--bd2);display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
-.si.done .sn{background:var(--g);color:#fff}.si.cur .sn{background:var(--tx);color:var(--bg)}
-/* SERVICE TABS */
-.svc-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
-.svct{border:2px solid var(--bd2);border-radius:var(--r);padding:10px 8px;cursor:pointer;text-align:center;transition:all .15s;background:var(--bg2)}
-.svct:hover{border-color:var(--bd3)}.svct.on{border-color:var(--g);background:var(--g8)}
-.svct-icon{font-size:22px;margin-bottom:3px}.svct-l{font-size:12px;font-weight:700;letter-spacing:-.02em}.svct-d{font-size:10px;color:var(--tx2);margin-top:1px}
-.svct.on .svct-l{color:var(--g)}
-/* FORM */
-.fl{margin-bottom:11px}
-.lbl{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:4px;display:flex;align-items:center;gap:4px}
-.req{color:var(--rd);font-size:10px}
-.inp{width:100%;border:1px solid var(--bd2);border-radius:var(--r);padding:7px 9px;background:var(--bg);color:var(--tx);font-size:12px;font-family:var(--f);outline:none;transition:border-color .15s}
-.inp:focus{border-color:var(--g)}.inp::placeholder{color:var(--tx3)}
-.ta_{resize:vertical;min-height:56px;max-height:110px}
-.sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
-/* CHANNEL CARDS */
-.ch-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}
-.chc{border:2px solid var(--bd2);border-radius:var(--r);padding:10px;cursor:pointer;transition:all .15s;background:var(--bg2);position:relative}
-.chc:hover{border-color:var(--bd3);background:var(--bg)}.chc.on{border-color:var(--g);background:var(--g8)}
-.chc.kakao.on{border-color:#d4b800;background:rgba(254,229,0,.09)}
-.chk-box{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--bd2);background:var(--bg);display:flex;align-items:center;justify-content:center;position:absolute;top:8px;right:8px;transition:all .15s}
-.chc.on .chk-box{background:var(--g);border-color:var(--g)}.chc.kakao.on .chk-box{background:#d4b800;border-color:#d4b800}
-.ch-ico{font-size:22px;margin-bottom:4px}.ch-nm{font-size:12px;font-weight:600;margin-bottom:1px}.ch-ds{font-size:10px;color:var(--tx2)}
-/* CROSS TARGET */
-.cross-wrap{background:var(--am8);border:1px solid var(--am2);border-radius:var(--r);padding:10px;margin-bottom:11px;animation:fadein .2s}
-.cross-hd{font-size:11px;font-weight:600;color:var(--am);margin-bottom:8px;display:flex;align-items:center;gap:4px}
-.cross-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(245,158,11,.12)}
-.cross-row:last-child{border-bottom:none}
-.cross-row input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--am);flex-shrink:0}
-.cross-lbl{flex:1;font-size:11px}.cross-after{font-size:10px;color:var(--tx3);flex-shrink:0;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;padding:1px 5px}
-/* TRIGGER GRID */
-.trig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
-.trc{border:2px solid var(--bd2);border-radius:var(--r);padding:9px;cursor:pointer;transition:all .15s;background:var(--bg2)}
-.trc:hover{border-color:var(--bd3);background:var(--bg)}.trc.on{border-width:2px}
-.trc-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:5px}
-.trc-l{font-size:12px;font-weight:600;margin-bottom:1px}.trc-d{font-size:10px;color:var(--tx2);line-height:1.4}
-/* A/B VARIANTS */
-.ab-var{border:1px solid var(--bd2);border-radius:var(--r);padding:10px;background:var(--bg2);margin-bottom:6px;animation:fadein .2s}
-.ab-var-hd{display:flex;align-items:center;gap:6px;margin-bottom:7px}
-.ab-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px}
-.ab-badge-a{background:var(--g8);color:var(--g);border:1px solid var(--g2)}
-.ab-badge-b{background:var(--bl8);color:var(--bl);border:1px solid var(--bl2)}
-/* SAMPLE SUGGEST */
-.sample-wrap{background:var(--pu8);border:1px solid var(--pu2);border-radius:var(--r);padding:10px;margin-bottom:11px;animation:fadein .2s}
-.sample-hd{font-size:11px;font-weight:600;color:var(--pu);margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.sample-cards{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.samplec{border:1px solid var(--pu2);border-radius:var(--r);padding:9px;background:var(--bg);cursor:pointer;transition:all .15s}
-.samplec:hover{border-color:var(--pu);background:var(--pu8)}
-.samplec-badge{font-size:9px;font-weight:700;color:var(--pu);margin-bottom:4px}
-.samplec-title{font-size:11px;font-weight:600;margin-bottom:3px;line-height:1.4}
-.samplec-body{font-size:10px;color:var(--tx2);line-height:1.5;margin-bottom:4px}
-.samplec-cta{font-size:10px;color:var(--g);font-weight:600}
-/* SEG RECOMMENDATION */
-.seg-rec{background:var(--cy8);border:1px solid var(--cy2);border-radius:var(--r);padding:9px;margin-bottom:10px;animation:fadein .2s}
-.seg-rec-hd{font-size:11px;font-weight:600;color:var(--cy);margin-bottom:7px;display:flex;align-items:center;gap:4px}
-.seg-rec-pills{display:flex;flex-wrap:wrap;gap:5px}
-.seg-rec-pill{padding:4px 10px;border-radius:20px;border:1px solid var(--cy2);background:var(--bg);font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
-.seg-rec-pill:hover{border-color:var(--cy);background:var(--cy8)}
-.seg-rec-pill.sel{border-color:var(--cy);background:var(--cy8);font-weight:600;color:var(--cy)}
-/* SCENARIOS */
-.sc-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--bd)}
-.sc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.sc-hd-t{font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px}
-.sc-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px}
-.sc-scroll::-webkit-scrollbar{height:3px}.sc-scroll::-webkit-scrollbar-thumb{background:var(--bd2)}
-.scc{flex-shrink:0;width:158px;border:1px solid var(--bd);border-radius:var(--r);padding:10px;background:var(--bg2);cursor:pointer;transition:all .15s}
-.scc:hover{border-color:var(--gd);background:var(--g8)}.scc-t{font-size:11px;font-weight:600;margin-bottom:5px;line-height:1.4}
-.scc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px}.scc-rate{font-size:10px;color:var(--tx2)}
-/* NOTICE */
-.notice{padding:7px 10px;border-radius:var(--r);font-size:11px;display:flex;align-items:center;gap:6px;margin-bottom:9px;line-height:1.45}
-.ni{background:var(--bl8);border:1px solid var(--bl2);color:var(--bl)}
-.nw{background:var(--am8);border:1px solid var(--am2);color:#92400e}
-.ns{background:var(--g8);border:1px solid var(--g2);color:var(--g)}
-[data-theme=dark] .nw{color:var(--am)}[data-theme=dark] .ni{color:var(--bl)}
-/* AUDIENCE */
-.seg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
-.segc{border:1px solid var(--bd);border-radius:var(--r);padding:10px;background:var(--bg2);transition:border-color .15s}
-.segc:hover{border-color:var(--bd2)}.segc-hd{display:flex;align-items:center;gap:5px;margin-bottom:4px}
-.segc-n{font-size:12px;font-weight:600;flex:1}.segc-d{font-size:10px;color:var(--tx2);margin-bottom:5px}.segc-cnt{font-size:13px;font-weight:700;color:var(--g)}
-.seg-star{border:none;background:none;cursor:pointer;color:var(--tx3);font-size:14px;padding:1px;transition:color .15s;line-height:1}
-.seg-star.on{color:var(--am)}.seg-del{border:none;background:none;cursor:pointer;color:var(--tx3);font-size:13px;padding:1px;transition:color .15s;line-height:1}
-.seg-del:hover{color:var(--rd)}
-.saved-wrap{background:var(--am8);border:1px solid var(--am2);border-radius:var(--r);padding:10px;margin-bottom:12px}
-.saved-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.saved-ht{font-size:11px;font-weight:600;color:var(--am);display:flex;align-items:center;gap:4px}
-.saved-pills{display:flex;flex-wrap:wrap;gap:5px}
-.saved-pill{display:flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;background:var(--bg);border:1px solid var(--bd2);font-size:11px;cursor:pointer;transition:all .15s}
-.saved-pill:hover{border-color:var(--bd3)}.saved-pill-x{color:var(--tx3);font-size:10px}
-.saved-pill-x:hover{color:var(--rd)}
-.ai-gen-wrap{border:1.5px dashed var(--gd);border-radius:var(--r);padding:12px;background:var(--g8);margin-bottom:12px}
-.ai-gen-hd{font-size:12px;font-weight:600;color:var(--g);margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.ai-gen-row{display:flex;gap:6px}
-.ai-inp{flex:1;border:1px solid var(--g2);border-radius:var(--r);padding:6px 9px;background:var(--bg);color:var(--tx);font-size:12px;font-family:var(--f);outline:none}
-.ai-inp:focus{border-color:var(--g)}.ai-inp::placeholder{color:var(--tx3)}
-/* JOURNEY */
-.j-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.jc{border:1px solid var(--bd);border-radius:var(--r2);padding:12px;background:var(--bg2);cursor:pointer;transition:all .15s}
-.jc:hover{border-color:var(--gd);background:var(--g8)}.jc-t{font-size:13px;font-weight:700;margin-bottom:3px}.jc-d{font-size:11px;color:var(--tx2);margin-bottom:9px}
-.j-steps{display:flex;gap:2px;align-items:center;flex-wrap:wrap}.j-arr{color:var(--tx3);font-size:10px}
-/* ANALYTICS */
-.ana-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.chart-box{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:12px}
-.chart-hd{font-size:12px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-/* Horizontal bar chart */
-.hbar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.hbar-lbl{font-size:11px;width:90px;flex-shrink:0;text-align:right;color:var(--tx2)}
-.hbar-track{flex:1;height:10px;background:var(--bg3);border-radius:5px;overflow:hidden}
-.hbar-fill{height:100%;border-radius:5px;transition:width .6s}
-.hbar-val{font-size:11px;font-weight:700;width:44px;text-align:right;flex-shrink:0}
-/* Vertical bar chart */
-.bar-wrap{display:flex;align-items:flex-end;gap:5px;height:80px;border-bottom:1px solid var(--bd);padding-bottom:2px}
-.bar{flex:1;background:var(--g8);border-top-left-radius:3px;border-top-right-radius:3px;border:1px solid var(--g2);border-bottom:none}
-.bar-lbl{font-size:9px;color:var(--tx3);text-align:center;margin-top:3px}
-/* Gender donut */
-.donut-wrap{display:flex;align-items:center;gap:14px}
-.donut-svg{flex-shrink:0}
-.donut-legend{display:flex;flex-direction:column;gap:6px}
-.dleg-row{display:flex;align-items:center;gap:6px;font-size:11px}
-.dleg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-/* Funnel */
-.funnel-wrap{display:flex;flex-direction:column;gap:5px}
-.funnel-row{display:flex;align-items:center;gap:10px}
-.funnel-bar-outer{flex:1;height:28px;background:var(--bg3);border-radius:6px;overflow:hidden;position:relative}
-.funnel-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:600;color:#fff;transition:width .7s}
-.funnel-num{font-size:11px;font-weight:700;width:60px;text-align:right;flex-shrink:0}
-.funnel-lbl{font-size:11px;width:36px;flex-shrink:0;color:var(--tx2)}
-/* AB winner */
-.ab-winner-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.abwc{border:2px solid var(--bd);border-radius:var(--r);padding:10px}
-.abwc.winner{border-color:var(--g);background:var(--g8)}
-.abwc-hd{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.abwc-stat{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;padding:2px 0;border-bottom:1px solid var(--bd)}
-.abwc-stat:last-child{border-bottom:none}
-/* Campaign list in dash */
-.camp-del{border:none;background:none;cursor:pointer;color:var(--tx3);font-size:13px;padding:2px;transition:color .15s;line-height:1;vertical-align:middle}
-.camp-del:hover{color:var(--rd)}
-/* AGENT */
-.agent-wrap{display:flex;flex-direction:column}
-.chat-area{overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
-.chat-area::-webkit-scrollbar{width:3px}.chat-area::-webkit-scrollbar-thumb{background:var(--bd2)}
-.msg{max-width:78%;padding:8px 11px;border-radius:var(--r2);font-size:12px;line-height:1.55;animation:fadein .2s}
-.msg-u{align-self:flex-end;background:var(--g);color:#fff;border-bottom-right-radius:4px}
-.msg-a{align-self:flex-start;background:var(--bg2);border:1px solid var(--bd);border-bottom-left-radius:4px}
-.typing{display:flex;gap:4px;align-items:center;padding:10px 12px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--tx3);animation:bounce .8s infinite}
-.dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
-.chat-foot{padding:8px;border-top:1px solid var(--bd);display:flex;gap:6px}
-.chat-inp{flex:1;border:1px solid var(--bd2);border-radius:var(--r);padding:7px 9px;background:var(--bg);color:var(--tx);font-size:12px;font-family:var(--f);outline:none;resize:none;min-height:36px;max-height:80px}
-.chat-inp:focus{border-color:var(--g)}.chat-inp::placeholder{color:var(--tx3)}
-.chat-send{width:34px;height:34px;border-radius:var(--r);background:var(--g);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.chat-send:hover{opacity:.85}.chat-send:disabled{opacity:.35;cursor:not-allowed}
-/* AT PREVIEW */
-.at-prev{background:#e8f4e8;border-radius:10px;padding:12px;font-size:12px;line-height:1.6;border:1px solid #c8e6c9;animation:fadein .2s}
-.at-ph{font-weight:700;font-size:12px;margin-bottom:6px;color:#1b5e20;display:flex;align-items:center;gap:5px}
-.at-body{color:#2e4d2e;margin-bottom:8px;white-space:pre-wrap;font-size:11px}
-.at-btn{background:var(--kk);color:var(--kkt);border:none;border-radius:6px;padding:7px;width:100%;text-align:center;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f)}
-/* MISC */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.sec-lbl{font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px;margin-top:12px}
-.winner-badge{background:var(--g);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:4px}
-@media(max-width:680px){
-  .mg{grid-template-columns:repeat(2,1fr)}
-  .ch-cards,.trig-grid,.sample-cards{grid-template-columns:1fr 1fr}
-  .seg-grid,.j-grid,.ana-grid,.two-col,.ab-winner-grid{grid-template-columns:1fr}
-}
+body{font-family:var(--font);font-size:13px;background:var(--bg);color:var(--txt);height:100vh;display:flex;flex-direction:column}
+
+/* ── TOPBAR ── */
+.topbar{height:44px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;z-index:10}
+.logo{font-size:13px;font-weight:700;color:var(--ac);letter-spacing:-.3px}
+.logo span{color:var(--txt2);font-weight:400}
+.topbar-r{margin-left:auto;display:flex;align-items:center;gap:7px}
+.api-wrap{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:3px 8px}
+.api-wrap input{font-family:var(--font);font-size:11px;border:none;background:transparent;color:var(--txt2);width:210px;outline:none}
+.api-wrap input::placeholder{color:var(--txt3)}
+.theme-btn{width:28px;height:28px;border-radius:var(--r);border:1px solid var(--border);background:var(--panel2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt2);font-size:14px}
+.theme-btn:hover{background:var(--panel3)}
+
+/* ── LAYOUT ── */
+.wrap{display:flex;flex:1;overflow:hidden}
+.sb{width:52px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:2px;flex-shrink:0}
+.sbn{width:38px;height:36px;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;color:var(--txt3);border:1px solid transparent;transition:all .15s;text-decoration:none}
+.sbn:hover{color:var(--txt);background:var(--panel2)}
+.sbn.on{color:var(--ac);background:var(--ac-bg);border-color:var(--ac-border)}
+.sbn i{font-size:16px}
+.sbn span{font-size:7.5px;font-weight:600;letter-spacing:.01em}
+.sb-sep{width:22px;height:1px;background:var(--border);margin:3px 0;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.mhdr{height:42px;display:flex;align-items:center;padding:0 14px;gap:8px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--panel)}
+.mhdr-t{font-size:13px;font-weight:600}
+.mhdr-s{font-size:11px;color:var(--txt2)}
+.mhdr-r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.mbody{flex:1;overflow-y:auto;padding:14px}
+.mbody::-webkit-scrollbar{width:4px}.mbody::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* ── COMPONENTS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--r);border:1px solid var(--border2);background:var(--panel);color:var(--txt);font-size:12px;font-family:var(--font);cursor:pointer;transition:all .12s}
+.btn:hover{background:var(--panel2)}
+.btn-p{background:var(--ac);color:#fff;border-color:transparent}
+.btn-p:hover{background:var(--ac2)}
+.btn-sm{padding:4px 9px;font-size:11px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:13px;margin-bottom:9px}
+.card-t{font-size:12px;font-weight:600;margin-bottom:10px;color:var(--txt2)}
+.sec{font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:9px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px}
+.stat-l{font-size:11px;color:var(--txt2);margin-bottom:4px}
+.stat-v{font-size:20px;font-weight:700;letter-spacing:-.5px}
+.stat-d{font-size:11px;margin-top:3px}
+.stat-d.up{color:var(--ac)}
+.stat-d.dn{color:var(--danger-txt)}
+.stat-d.nu{color:var(--txt3)}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);background:var(--panel2);font-size:11px;color:var(--txt2);cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap}
+.chip:hover{border-color:var(--ac);color:var(--ac)}
+.chip.on{background:var(--ac-bg);color:var(--ac);border-color:var(--ac-border);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.inp{width:100%;padding:7px 10px;border-radius:var(--r);border:1px solid var(--border2);background:var(--panel);font-family:var(--font);font-size:12px;color:var(--txt);outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--ac)}
+.inp::placeholder{color:var(--txt3)}
+.lbl{font-size:11px;font-weight:500;color:var(--txt2);margin-bottom:5px;display:block}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500}
+.badge-ok{background:var(--ok-bg);color:var(--ok-txt);border:1px solid var(--ok-border)}
+.badge-warn{background:var(--warn-bg);color:var(--warn-txt);border:1px solid var(--warn-border)}
+.badge-info{background:var(--info-bg);color:var(--info-txt);border:1px solid var(--info-border)}
+.divider{height:1px;background:var(--border);margin:10px 0}
+.tip{font-size:11px;color:var(--txt3);line-height:1.5}
+.row{display:flex;align-items:center;gap:8px}
+.frow{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.tab-bar{display:flex;gap:1px;background:var(--panel2);border-radius:var(--r);padding:3px;margin-bottom:10px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:4px 8px;border-radius:6px;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:500;color:var(--txt2);cursor:pointer;transition:all .12s}
+.tab-btn.on{background:var(--panel);color:var(--txt);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+select.inp{cursor:pointer}
+textarea.inp{resize:vertical;min-height:58px;line-height:1.5}
+
+/* ── CAMPAIGN CARD ── */
+.cc{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:6px;cursor:pointer;transition:all .12s}
+.cc:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.cc-n{font-size:12px;font-weight:500;margin-bottom:3px}
+.cc-m{display:flex;gap:8px;font-size:11px;color:var(--txt2)}
+.cc-s{display:flex;align-items:center;gap:10px}
+.cc-st{font-size:14px;font-weight:700;color:var(--ac);text-align:right}
+.cc-sl{font-size:10px;color:var(--txt3)}
+
+/* ── BUILDER STEPPER ── */
+.steps{display:flex;gap:0;margin-bottom:14px}
+.step{flex:1;display:flex;align-items:center}
+.step-dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;transition:all .2s}
+.step.done .step-dot{background:var(--ac);border-color:var(--ac);color:#fff}
+.step.cur .step-dot{border-color:var(--ac);color:var(--ac)}
+.step-lbl{font-size:10px;color:var(--txt3);margin-left:6px;white-space:nowrap}
+.step.done .step-lbl,.step.cur .step-lbl{color:var(--txt2);font-weight:500}
+.step-line{flex:1;height:1px;background:var(--border);margin:0 6px}
+.step.done .step-line{background:var(--ac)}
+
+/* ── CHANNEL CARD ── */
+.ch-card{border:1px solid var(--border);border-radius:var(--r2);padding:12px;cursor:pointer;transition:all .15s;background:var(--panel)}
+.ch-card:hover{border-color:var(--border2)}
+.ch-card.on{border-color:var(--ac);background:var(--ac-bg)}
+.ch-card-ico{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:7px}
+.ch-card-t{font-size:12px;font-weight:600;margin-bottom:3px}
+.ch-card-d{font-size:10px;color:var(--txt2)}
+
+/* ── MSG PREVIEW ── */
+.preview{background:#1c1c1e;border-radius:16px;padding:12px 14px;color:#fff}
+.preview-bar{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.preview-ico{width:20px;height:20px;border-radius:5px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-size:10px}
+.preview-app{font-size:10px;font-weight:600}
+.preview-time{font-size:10px;color:rgba(255,255,255,.4);margin-left:auto}
+.preview-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.preview-body{font-size:11px;color:rgba(255,255,255,.7);line-height:1.5}
+
+/* ── JOURNEY FLOW ── */
+.jflow{display:flex;flex-direction:column;gap:0}
+.jnode{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:10px 12px;font-size:12px}
+.jnode-t{font-weight:600;margin-bottom:2px}
+.jnode-d{font-size:10px;color:var(--txt2)}
+.jarrow{display:flex;align-items:center;justify-content:center;height:22px;color:var(--txt3);font-size:16px}
+.jnode.trigger{border-color:var(--info-border);background:var(--info-bg)}
+.jnode.action{border-color:var(--ac-border);background:var(--ac-bg)}
+.jnode.cond{border-color:var(--warn-border);background:var(--warn-bg)}
+
+/* ── AGENT ── */
+.agent-wrap{display:flex;flex-direction:column;height:100%;min-height:520px}
+.agent-msgs{flex:1;overflow-y:auto;padding:4px 0 10px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.agent-msgs::-webkit-scrollbar{width:3px}.agent-msgs::-webkit-scrollbar-thumb{background:var(--border2)}
+.amsg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.6;white-space:pre-wrap}
+.amsg.user{align-self:flex-end;background:var(--ac);color:#fff;border-radius:12px 12px 3px 12px}
+.amsg.agent{align-self:flex-start;background:var(--panel2);border:1px solid var(--border);border-radius:3px 12px 12px 12px}
+.amsg.err{border-color:var(--danger-border);background:var(--danger-bg);color:var(--danger-txt)}
+.amsg.tool{align-self:flex-start;background:var(--info-bg);border:1px solid var(--info-border);border-radius:var(--r);font-size:11px;color:var(--info-txt);font-family:monospace;max-width:94%}
+.agent-sug{display:flex;flex-wrap:wrap;gap:5px;padding:8px 0 10px}
+.agent-sug-btn{padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:var(--panel2);color:var(--txt2);font-size:11px;font-family:var(--font);cursor:pointer;transition:all .12s;text-align:left;line-height:1.4}
+.agent-sug-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--ac-bg)}
+.agent-inp{display:flex;gap:6px;align-items:flex-end;padding-top:6px;border-top:1px solid var(--border)}
+.agent-inp textarea{flex:1;font-family:var(--font);font-size:12px;padding:8px 10px;border-radius:var(--r);border:1px solid var(--border2);background:var(--panel);color:var(--txt);resize:none;height:36px;max-height:68px;outline:none;line-height:1.5;transition:border-color .15s}
+.agent-inp textarea:focus{border-color:var(--ac)}
+.agent-inp button{width:34px;height:34px;border-radius:var(--r);border:none;background:var(--ac);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:opacity .15s}
+.agent-inp button:disabled{opacity:.4}
+.typing{display:flex;gap:3px;align-items:center;padding:9px 12px}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--txt3);animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+/* ── DEEPLINK INPUT ── */
+.dl-wrap{display:flex;gap:5px;align-items:center}
+.dl-wrap .inp{flex:1}
+.dl-badge{font-size:10px;padding:3px 7px;background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);color:var(--txt2);white-space:nowrap;cursor:default}
+
+/* ── SEGMENT LIST ── */
+.seg-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:6px}
+.seg-name{font-size:12px;font-weight:500}
+.seg-cnt{font-size:11px;color:var(--txt2)}
+
+/* ── ANALYTICS ── */
+.perf-bar{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11px}
+.bar-track{flex:1;height:6px;border-radius:3px;background:var(--panel2);overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:var(--ac);transition:width .4s ease}
+
+/* ── CROSS-CHANNEL RETARGET ── */
+.retarget-flow{display:flex;flex-direction:column;gap:0;position:relative}
+.rt-node{display:flex;gap:10px;align-items:flex-start;position:relative}
+.rt-line{width:1px;background:var(--border2);height:24px;margin-left:19px;flex-shrink:0}
+.rt-ch-dot{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:2px solid transparent}
+.rt-body{flex:1;min-width:0}
+.rt-label{font-size:11px;font-weight:600;margin-bottom:3px}
+.rt-cond{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500;margin-bottom:6px}
+.rt-msg{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;font-size:11px}
+.rt-msg-t{font-weight:600;margin-bottom:2px}
+.rt-msg-d{color:var(--txt2);line-height:1.5}
+.rt-del{font-size:10px;color:var(--txt3);margin-top:4px}
+.rt-toggle{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;margin-bottom:10px}
+.rt-toggle:hover{border-color:var(--border2)}
+.rt-toggle.on{border-color:var(--ac-border);background:var(--ac-bg)}
+.switch{width:32px;height:18px;border-radius:9px;background:var(--panel3);position:relative;transition:background .2s;flex-shrink:0}
+.switch.on{background:var(--ac)}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch.on::after{transform:translateX(14px)}
+.rt-step-card{background:var(--panel);border:1.5px solid var(--border);border-radius:var(--r2);padding:12px;margin-bottom:8px;position:relative}
+.rt-step-card .step-num{position:absolute;top:-10px;left:12px;background:var(--panel);padding:0 6px;font-size:10px;font-weight:700;color:var(--txt2)}
+.rt-del-btn{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:var(--r);border:1px solid var(--border);background:var(--panel2);color:var(--txt3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px}
+.rt-del-btn:hover{color:var(--danger-txt);border-color:var(--danger-border);background:var(--danger-bg)}
+.ch-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;border:1.5px solid}
+.funnel-row{display:flex;align-items:center;gap:0;margin-bottom:12px}
+.funnel-ch{flex:1;text-align:center;padding:10px 6px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);position:relative}
+.funnel-ch .funnel-label{font-size:10px;font-weight:600;margin-bottom:4px}
+.funnel-ch .funnel-val{font-size:16px;font-weight:700}
+.funnel-ch .funnel-sub{font-size:10px;color:var(--txt2)}
+.funnel-arrow{width:32px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--txt3)}
+.funnel-arrow .cond-lbl{font-size:9px;color:var(--danger-txt);font-weight:600;text-align:center;white-space:nowrap}
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <div class="tb-logo">직</div>
-  <div class="tb-title" style="font-size:13px">TMS</div>
-  <div class="tb-svc" id="tb-svc">
-    <button class="tsb on" onclick="setSvc('zigbang',this)">직방</button>
-    <button class="tsb" onclick="setSvc('hogangnono',this)">호갱노노</button>
-    <button class="tsb" onclick="setSvc('jungkae',this)">중개사</button>
-  </div>
-  <div class="tb-r">
-    <button class="tbb" onclick="toggleTheme()" title="테마"><i id="ti-icon" class="ti ti-moon" style="font-size:16px"></i></button>
-    <button class="tbb" onclick="toggleSettings()" title="설정"><i class="ti ti-settings" style="font-size:16px"></i></button>
+  <div class="logo">직방 TMS <span>토탈 메시징 솔루션</span></div>
+  <div class="topbar-r">
+    <div class="api-wrap">
+      <i class="ti ti-key" style="font-size:12px;color:var(--txt3)"></i>
+      <input type="password" id="apiKeyInp" placeholder="Claude API Key (sk-ant-...)">
+      <button class="btn btn-sm" onclick="saveKey()" style="padding:2px 7px;font-size:10px">저장</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()"><i class="ti ti-moon" id="themeIco"></i></button>
   </div>
 </div>
 
-<div class="sov" id="sov" onclick="if(event.target===this)toggleSettings()">
-  <div class="sp">
-    <div class="sp-hd"><span><i class="ti ti-settings" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>설정</span><button class="sp-close" onclick="toggleSettings()">×</button></div>
-    <label class="sp-lbl">Anthropic API 키</label>
-    <input type="password" class="sp-inp" id="sp-key" placeholder="sk-ant-api03-...">
-    <div style="font-size:10px;color:var(--tx3);margin-top:-7px;margin-bottom:10px">AI 자동추천 · 세그먼트 생성에 필요합니다</div>
-    <button class="btn btn-p" style="width:100%" onclick="saveSettings()">저장</button>
-    <div class="sp-saved" id="sp-saved">✓ 저장됐어요</div>
-  </div>
-</div>
-
+<!-- MAIN LAYOUT -->
 <div class="wrap">
+  <!-- SIDEBAR -->
   <div class="sb">
-    <div class="sbn on" id="sbn-dash" onclick="nav('dash',this)" title="대시보드"><i class="ti ti-layout-dashboard"></i><span>홈</span></div>
-    <div class="sbn" id="sbn-builder" onclick="builderStep=0;nav('builder',this)" title="캠페인 빌더"><i class="ti ti-rocket"></i><span>빌더</span></div>
+    <a class="sbn on" id="sbn-dash" onclick="nav('dash',this)">
+      <i class="ti ti-layout-dashboard"></i><span>대시보드</span>
+    </a>
+    <a class="sbn" id="sbn-builder" onclick="nav('builder',this)">
+      <i class="ti ti-send"></i><span>빌더</span>
+    </a>
+    <a class="sbn" id="sbn-journey" onclick="nav('journey',this)">
+      <i class="ti ti-route"></i><span>저니</span>
+    </a>
     <div class="sb-sep"></div>
-    <div class="sbn" id="sbn-journey" onclick="nav('journey',this)" title="저니 빌더"><i class="ti ti-timeline"></i><span>저니</span></div>
-    <div class="sbn" id="sbn-audience" onclick="nav('audience',this)" title="오디언스"><i class="ti ti-users"></i><span>고객</span></div>
+    <a class="sbn" id="sbn-audience" onclick="nav('audience',this)">
+      <i class="ti ti-users"></i><span>오디언스</span>
+    </a>
+    <a class="sbn" id="sbn-analytics" onclick="nav('analytics',this)">
+      <i class="ti ti-chart-bar"></i><span>성과</span>
+    </a>
     <div class="sb-sep"></div>
-    <div class="sbn" id="sbn-analytics" onclick="nav('analytics',this)" title="성과 분석"><i class="ti ti-chart-bar"></i><span>성과</span></div>
-    <div class="sbn" id="sbn-agent" onclick="nav('agent',this)" title="AI 에이전트"><i class="ti ti-robot"></i><span>AI</span></div>
+    <a class="sbn" id="sbn-agent" onclick="nav('agent',this)">
+      <i class="ti ti-robot"></i><span>AI</span>
+    </a>
   </div>
-  <div class="content">
-    <div class="hdr">
-      <div class="hdr-t" id="hdr-t">대시보드</div>
-      <div class="hdr-s" id="hdr-s"></div>
-      <div class="hdr-r" id="hdr-r">
-        <button class="btn btn-p btn-sm" onclick="builderStep=0;nav('builder',document.getElementById('sbn-builder'))"><i class="ti ti-plus" style="font-size:11px"></i>새 캠페인</button>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="mhdr">
+      <span class="mhdr-t" id="mhdr-t">대시보드</span>
+      <span class="mhdr-s" id="mhdr-s">직방 · 호갱노노 통합 메시징 콘솔</span>
+      <div class="mhdr-r" id="mhdr-r">
+        <button class="btn btn-p btn-sm" onclick="nav('builder',document.getElementById('sbn-builder'))"><i class="ti ti-plus" style="font-size:11px"></i>새 캠페인</button>
       </div>
     </div>
-    <div class="body" id="body"></div>
+    <div class="mbody" id="mbody"></div>
   </div>
 </div>
 
 <script>
-'use strict';
-let API_KEY = localStorage.getItem('tms_api_key')||'';
-let isDark = localStorage.getItem('tms_dark')==='1';
-let curSvc = 'zigbang';
-let curPage = 'dash';
+// ═══════════════════════════════════════════════════════════════════════════
+//  DEEPLINK MAP v3 — 173개 딥링크 기반 캠페인 유형별 추천 딥링크
+// ═══════════════════════════════════════════════════════════════════════════
+const DEEPLINK_MAP = {
+  apt_map:          { link:'zigbang:///home/apt/map',                        desc:'아파트 지도 (재방문 유도 기본값)' },
+  apt_danji:        { link:'zigbang:///home/apt/danjis/:area_danji_id',       desc:'아파트 단지 상세' },
+  apt_item:         { link:'zigbang:///home/apt/item/:itemId',                desc:'아파트 매물 상세' },
+  apt_zzim:         { link:'zigbang:///home/apt/items/zzim',                  desc:'아파트 찜한 매물 (찜 리마인더)' },
+  apt_item_list:    { link:'zigbang:///home/apt/danji/item/list',             desc:'아파트 매물 목록' },
+  apt_subs:         { link:'zigbang:///home/apt/subscriptions',               desc:'관심 단지 리스트 (알림 유도)' },
+  apt_offer_all:    { link:'zigbang:///home/apt/offer/all',                   desc:'전체 분양 리스트' },
+  apt_offer_map:    { link:'zigbang:///home/apt/map/offer',                   desc:'아파트 지도 – 신축분양' },
+  apt_monthly:      { link:'zigbang:///home/apt/monthlyReport/:pnu',          desc:'월간 분석 리포트' },
+  apt_danji_review: { link:'zigbang:///home/apt/danjis/:area_danji_id/reviews', desc:'단지 리뷰' },
+  apt_catalog:      { link:'zigbang:///home/apt/item-catalog',                desc:'아파트 매물 카탈로그' },
+  oneroom_map:      { link:'zigbang:///home/oneroom/map',                     desc:'원룸 지도 (재방문 유도)' },
+  oneroom_items:    { link:'zigbang:///home/oneroom/items',                   desc:'원룸 매물 목록' },
+  oneroom_zzim:     { link:'zigbang:///home/oneroom/items/zzim',              desc:'원룸 찜 리스트' },
+  oneroom_recent:   { link:'zigbang:///home/oneroom/items/recent',            desc:'원룸 최근 본 방' },
+  oneroom_recommend:{ link:'zigbang:///home/oneroom/recommend/item_list',     desc:'원룸 오늘의 추천방' },
+  villa_map:        { link:'zigbang:///home/villa/map',                       desc:'빌라 지도' },
+  villa_zzim:       { link:'zigbang:///home/villa/items/zzim',                desc:'빌라 찜 리스트' },
+  ofc_map:          { link:'zigbang:///home/officetel/map',                   desc:'오피스텔 지도' },
+  ofc_zzim:         { link:'zigbang:///home/officetel/items/zzim',            desc:'오피스텔 찜 리스트' },
+  ofc_recommend:    { link:'zigbang:///home/officetel/recommend/item_list',   desc:'오피스텔 오늘의 추천방' },
+  ai_zena:          { link:'zigbang:///home/ai/zena',                         desc:'AI Agent Zena (AI 중개사 유도)' },
+  subscription_add: { link:'zigbang:///home/housing_subscription/add/intro',  desc:'청약진단 서비스' },
+  myhomeplus:       { link:'zigbang:///myhomeplus',                           desc:'우리집+' },
+  resident_certify: { link:'zigbang:///resident/certify/intro',               desc:'거주자 인증 인트로' },
+  real_estate_trend:{ link:'zigbang:///home/real_estate_trend',               desc:'최신 부동산 동향' },
+  popular_search:   { link:'zigbang:///search/popular',                       desc:'실시간 인기 단지 Top100' },
+  room_checklist:   { link:'zigbang:///room/checklist',                       desc:'좋은집 체크리스트' },
+  zikim_intro:      { link:'zigbang:///zikim-report/intro',                   desc:'지킴진단 소개 (사기 예방)' },
+  channel_list:     { link:'zigbang:///channel/list',                         desc:'채팅 목록 (중개사 채팅 유도)' },
+  request_items:    { link:'zigbang:///home/request_items_list',              desc:'문의한 매물 리스트' },
+  offer_locals:     { link:'zigbang:///offer/locals/all',                     desc:'지역별 분양 목록' },
+  notifications:    { link:'zigbang:///app/notifications',                    desc:'알림/소식' },
+  inapp_content:    { link:'zigbang:///home/inapp-content',                   desc:'최신 부동산 동향 상세' },
+};
+
+const CAMPAIGN_DEEPLINK_SUGGEST = {
+  '아파트_재방문':    ['apt_map','apt_zzim','apt_subs'],
+  '아파트_문의유도':  ['apt_danji','apt_item','apt_item_list'],
+  '아파트_찜리마인더':['apt_zzim','apt_subs'],
+  '아파트_분양':      ['apt_offer_all','apt_offer_map','offer_locals'],
+  '원룸_재방문':      ['oneroom_map','oneroom_zzim','oneroom_recommend'],
+  '원룸_문의유도':    ['oneroom_items','oneroom_recent'],
+  '빌라_재방문':      ['villa_map','villa_zzim'],
+  '오피스텔_재방문':  ['ofc_map','ofc_zzim','ofc_recommend'],
+  'AI중개사_유도':    ['ai_zena'],
+  '청약_관심':        ['subscription_add','apt_offer_all'],
+  '콘텐츠_유도':      ['real_estate_trend','inapp_content','apt_monthly'],
+  '거주민인증_유도':  ['resident_certify','myhomeplus'],
+  '체크리스트_유도':  ['room_checklist','zikim_intro'],
+  '채팅_유도':        ['channel_list','request_items'],
+  '인기탐색':         ['popular_search','apt_map'],
+};
+
+function suggestDeeplinks(audience, message) {
+  const combined = `${audience} ${message}`.toLowerCase();
+  const scores = {};
+  const rules = [
+    {keys:['아파트','apt','단지'],         campaigns:['아파트_재방문','아파트_문의유도']},
+    {keys:['찜','zzim','저장','관심'],      campaigns:['아파트_찜리마인더','원룸_재방문']},
+    {keys:['분양','청약'],                  campaigns:['아파트_분양','청약_관심']},
+    {keys:['원룸','원오빌','빌라','오피스텔'],campaigns:['원룸_재방문','원룸_문의유도']},
+    {keys:['ai','zena','제나','중개사'],    campaigns:['AI중개사_유도']},
+    {keys:['동향','리포트','뉴스'],          campaigns:['콘텐츠_유도']},
+    {keys:['거주','인증'],                   campaigns:['거주민인증_유도']},
+    {keys:['체크','사기','지킴'],            campaigns:['체크리스트_유도']},
+    {keys:['인기','랭킹'],                   campaigns:['인기탐색']},
+  ];
+  rules.forEach(({keys,campaigns})=>{
+    if(keys.some(k=>combined.includes(k))) campaigns.forEach(c=>{scores[c]=(scores[c]||0)+1;});
+  });
+  const top = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([c])=>c);
+  if(!top.length) top.push('아파트_재방문');
+  const keys = [...new Set(top.flatMap(c=>CAMPAIGN_DEEPLINK_SUGGEST[c]||[]))].slice(0,3);
+  return keys.map(k=>DEEPLINK_MAP[k]).filter(Boolean);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════════════════
+let activeSection = 'dash';
 let builderStep = 0;
-let BD = {};
-
-const CAMP_KEY = 'tms_campaigns';
-const SAVED_KEY = 'tms_saved_segs';
-
-function resetBD(){
-  BD={service:curSvc,name:'',goal:'',channels:[],crossTargets:[],segId:'s1',
-    abMode:'a',variants:[{title:'',body:'',cta:'자세히 보기'},{title:'',body:'',cta:'자세히 보기'}],
-    trigger:'immediate',schedDate:'',schedTime:'',trigDetail:'',alimtalkTpl:'',inappType:'팝업'};
-}
-resetBD();
-
-// ── DATA ──────────────────────────────────────────
-const SVCS = {
-  zigbang:   {label:'직방',  color:'var(--g)', icon:'🏠', desc:'아파트·빌라·원룸 매물'},
-  hogangnono:{label:'호갱노노',color:'var(--bl)',icon:'📊', desc:'시세·투자 분석 데이터'},
-  jungkae:   {label:'중개사',color:'var(--pu)',icon:'🤝', desc:'중개사 B2B 서비스'},
+let selectedJourney = null;
+let agentHist = [];
+let agentBusy = false;
+let BD = {
+  service:'zigbang', channel:'push', segId:'s1', trigger:'immediate',
+  titleA:'', bodyA:'', ctaA:'', deeplinkA:'',
+  titleB:'', bodyB:'', ctaB:'', deeplinkB:'',
+  abTest:false, inappType:'팝업',
+  // 크로스 채널 디타겟
+  retargetEnabled: false,
+  retargetSteps: [
+    { condition:'no_open', delay:24, delayUnit:'h', channel:'inapp',  title:'', body:'', deeplink:'' },
+    { condition:'no_click', delay:48, delayUnit:'h', channel:'kakao',  title:'', body:'', deeplink:'' },
+  ]
 };
 
-let SEGMENTS = [
-  {id:'s1',name:'서울 30대 iOS 활성', desc:'서울·30~39세·iOS·active',   cnt:12840,tags:['서울','30대','iOS']},
-  {id:'s2',name:'신규 가입 7일 이내', desc:'가입일 기준 7일 이내',       cnt:3210, tags:['신규','전국']},
-  {id:'s3',name:'14일 미접속 전국',   desc:'last_active < 14일',         cnt:28930,tags:['미접속','전국']},
-  {id:'s4',name:'직방 리빙 유저',     desc:'직방 리빙 서비스 사용',       cnt:8450, tags:['리빙','직방']},
-  {id:'s5',name:'30~40대 iOS 전국',   desc:'30~49세·iOS·전국',           cnt:18720,tags:['30-40대','iOS']},
-  {id:'s6',name:'인천·경기 Android',  desc:'인천·경기·Android 사용자',    cnt:9340, tags:['인천','경기']},
-  {id:'s7',name:'매물 찜 7일 미방문', desc:'찜 후 7일 내 앱 미방문',     cnt:5620, tags:['관심매물','미방문']},
-  {id:'s8',name:'청약 관심 유저',     desc:'청약 페이지 3회+ 조회',      cnt:7890, tags:['청약','관심']},
+// 채널 메타
+const CH_META = {
+  push:  { label:'푸시 알림',    icon:'ti-device-mobile-vibration', color:'#6366f1' },
+  inapp: { label:'인앱 메시지',  icon:'ti-app-window',              color:'#0ea5e9' },
+  kakao: { label:'카카오 알림톡',icon:'ti-message-dots',            color:'#fbbf24' },
+};
+const COND_META = {
+  no_open:    { label:'미오픈',       icon:'ti-mail',         color:'var(--danger-txt)',  bg:'var(--danger-bg)',  border:'var(--danger-border)' },
+  no_click:   { label:'오픈 후 미클릭', icon:'ti-cursor-text',  color:'var(--warn-txt)',   bg:'var(--warn-bg)',    border:'var(--warn-border)' },
+  no_convert: { label:'클릭 후 미전환', icon:'ti-repeat-off',   color:'var(--info-txt)',   bg:'var(--info-bg)',    border:'var(--info-border)' },
+};
+
+const SEGS = [
+  {id:'s1', name:'서울특별시 30대 iOS Active',       cnt:'52,340', filters:'current_local1=서울특별시, age_group=30대, platform=ios, lifecycle_stage=active'},
+  {id:'s2', name:'CRM 코어 (500등급) 전국',           cnt:'18,420', filters:'apart_crm_grade=500, lifecycle_stage=active, is_push_enabled=허용'},
+  {id:'s3', name:'찜 보유·문의 미경험 (300등급)',      cnt:'41,200', filters:'apart_crm_grade=300, call_cnt=0, lifecycle_stage=active'},
+  {id:'s4', name:'이사 긴박도 높음 (즉시+1–3개월)',    cnt:'38,200', filters:'urgency_level=즉시, lifecycle_stage=active'},
+  {id:'s5', name:'경기도 아파트 매매 관심',             cnt:'89,340', filters:'current_local1=경기도, pref_property_type=아파트, pref_transaction_type=매매'},
+  {id:'s6', name:'청약 관심 유저 (분양 조회 이력)',    cnt:'24,180', filters:'apart_crm_grade>=200, lifecycle_stage=active'},
+  {id:'s7', name:'7일+ 미접속 Active→Inactive',       cnt:'68,920', filters:'lifecycle_stage=inactive, last_visit_date < NOW()-7days'},
+  {id:'s8', name:'원오빌 관심 20대',                   cnt:'31,450', filters:'pref_property_type=원오빌, age_group=20대, lifecycle_stage=active'},
 ];
 
-let savedSegs = JSON.parse(localStorage.getItem(SAVED_KEY)||'["s1","s2"]');
-
-// Saved campaigns from localStorage (seeded with demo data if empty)
-function loadCamps(){
-  const raw = localStorage.getItem(CAMP_KEY);
-  if(raw) return JSON.parse(raw);
-  const demo=[
-    {id:'c1',name:'봄 이사철 특가',   svc:'zigbang',seg:'서울 30대',  sent:'2026-05-10',tgt:12840,or:'17.1%',ch:['push','inapp'],   goal:'전환',   trigger:'scheduled'},
-    {id:'c2',name:'신규가입 웰컴',    svc:'zigbang',seg:'신규 7일',   sent:'2026-05-08',tgt:3210, or:'39.0%',ch:['push'],            goal:'활성화', trigger:'lifecycle'},
-    {id:'c3',name:'재방문 유도',      svc:'zigbang',seg:'14일 미접속',sent:'2026-05-05',tgt:28930,or:'8.0%', ch:['push','alimtalk'],goal:'재방문', trigger:'lifecycle'},
-    {id:'c4',name:'청약 정보 알림',   svc:'hogangnono',seg:'30-40대 iOS',sent:'2026-04-28',tgt:18720,or:'21.0%',ch:['alimtalk'],   goal:'정보전달',trigger:'event'},
-    {id:'c5',name:'리빙 콘텐츠',      svc:'zigbang',seg:'리빙 유저',  sent:'2026-04-20',tgt:8450, or:'14.5%',ch:['inapp'],           goal:'인게이지',trigger:'contextual'},
-  ];
-  localStorage.setItem(CAMP_KEY, JSON.stringify(demo));
-  return demo;
-}
-let CAMPS = loadCamps();
-
-const TRIGGERS = [
-  {id:'immediate',  icon:'ti-bolt',         label:'즉시발송',  desc:'저장 즉시 전송',       color:'var(--g)', cbg:'var(--g8)'},
-  {id:'scheduled',  icon:'ti-calendar-event',label:'예약발송',  desc:'날짜·시간 지정',       color:'var(--bl)',cbg:'var(--bl8)'},
-  {id:'behavioral', icon:'ti-click',         label:'행동기반',  desc:'앱 내 행동 트리거',    color:'var(--pu)',cbg:'var(--pu8)'},
-  {id:'event',      icon:'ti-flag-3',        label:'이벤트기반',desc:'외부 이벤트 연동',     color:'var(--am)',cbg:'var(--am8)'},
-  {id:'lifecycle',  icon:'ti-user-heart',    label:'생애주기',  desc:'가입·거래 단계별',     color:'var(--pk)',cbg:'var(--pk8)'},
-  {id:'contextual', icon:'ti-brain',         label:'맥락·패턴', desc:'시간·위치·패턴 기반',  color:'var(--cy)',cbg:'var(--cy8)'},
+const CAMPS = [
+  {id:'c1', name:'5월 청약 마감 D-3 알림',  seg:'30–40대 iOS Active', tgt:18420, sent:'18,420', oRate:'18.4%', st:'완료', deeplink:'zigbang:///home/housing_subscription/add/intro',
+   retarget:[{cond:'no_open',delay:24,unit:'h',ch:'inapp',msg:'청약 마감 내일까지예요! 놓치지 마세요'},{cond:'no_click',delay:48,unit:'h',ch:'kakao',msg:'마지막 안내 드립니다'}]},
+  {id:'c2', name:'관심 단지 가격 하락 알림', seg:'찜 보유·문의 미경험', tgt:41200, sent:'41,200', oRate:'22.1%', st:'완료', deeplink:'zigbang:///home/apt/items/zzim',
+   retarget:[{cond:'no_open',delay:24,unit:'h',ch:'inapp',msg:'찜한 매물 가격이 내려갔어요 📉'}]},
+  {id:'c3', name:'재방문 유도 — 서울 30대',  seg:'7일+ 미접속',        tgt:24800, sent:'—',      oRate:'—',     st:'예약', deeplink:'zigbang:///home/apt/map',
+   retarget:[{cond:'no_open',delay:48,unit:'h',ch:'inapp',msg:'관심 지역 새 매물을 확인해보세요'},{cond:'no_click',delay:72,unit:'h',ch:'kakao',msg:'전문 상담사가 도움을 드릴게요'}]},
+  {id:'c4', name:'AI 중개사 첫 이용 안내',   seg:'긴박도 높음',        tgt:38200, sent:'38,200', oRate:'14.8%', st:'완료', deeplink:'zigbang:///home/ai/zena',
+   retarget:[]},
+  {id:'c5', name:'원룸 추천방 알림',         seg:'원오빌 관심 20대',   tgt:31450, sent:'—',      oRate:'—',     st:'예약', deeplink:'zigbang:///home/oneroom/recommend/item_list',
+   retarget:[{cond:'no_open',delay:24,unit:'h',ch:'inapp',msg:'오늘의 추천방 마감 임박!'}]},
 ];
 
-const CROSS_OPTS = [
-  {id:'p2a',  label:'푸시 미오픈 → 알림톡 재발송',  after:'24시간 후',   req:['push','alimtalk']},
-  {id:'a2i',  label:'알림톡 미수신 → 인앱 팝업',    after:'앱 재방문 시', req:['alimtalk','inapp']},
-  {id:'i2p',  label:'인앱 미전환 → 푸시 리마인드',  after:'12시간 후',   req:['inapp','push']},
-  {id:'p2i',  label:'푸시 미오픈 → 인앱 배너',      after:'앱 재방문 시', req:['push','inapp']},
-  {id:'a2p',  label:'알림톡 미수신 → 푸시 보완',    after:'6시간 후',    req:['alimtalk','push']},
+const JOURNEYS = [
+  {id:'welcome',   name:'웰컴 시리즈',    desc:'설치 후 3일 온보딩', icon:'ti-confetti', nodes:[
+    {type:'trigger',t:'앱 첫 설치',d:'NRU 진입'},
+    {type:'action', t:'D+0 웰컴 푸시', d:'앱 기능 소개 · zigbang:///home/apt/map'},
+    {type:'cond',   t:'D+1 오픈 여부',  d:'오픈 vs 미오픈 분기'},
+    {type:'action', t:'D+2 재유도 푸시', d:'매물 추천 강조 · zigbang:///home/apt/subscriptions'},
+    {type:'action', t:'D+3 기능 소개',   d:'AI 중개사 안내 · zigbang:///home/ai/zena'},
+  ]},
+  {id:'reactivation', name:'재방문 유도', desc:'7일 미접속 자동 발송', icon:'ti-refresh', nodes:[
+    {type:'trigger',t:'7일 미접속',     d:'lifecycle_stage=inactive 전환'},
+    {type:'action', t:'D+0 재방문 푸시',d:'관심 지역 신규 매물 · zigbang:///home/apt/map'},
+    {type:'cond',   t:'D+1 방문 여부',  d:'방문 vs 미방문'},
+    {type:'action', t:'D+3 찜 리마인더',d:'저장 매물 가격 변동 · zigbang:///home/apt/items/zzim'},
+    {type:'action', t:'D+7 인앱 메시지',d:'복귀 시 팝업 표시'},
+  ]},
+  {id:'subscription_deadline', name:'청약 마감 D-3', desc:'마감 전 자동 알림', icon:'ti-calendar-event', nodes:[
+    {type:'trigger',t:'청약 마감 D-3',   d:'분양 일정 기준 자동 트리거'},
+    {type:'action', t:'푸시 발송',        d:'마감 안내 · zigbang:///home/housing_subscription/add/intro'},
+    {type:'cond',   t:'D-1 오픈 여부',   d:'오픈 vs 미오픈'},
+    {type:'action', t:'D-1 재발송',       d:'마지막 기회 강조'},
+  ]},
+  {id:'wishlist', name:'찜 리마인더', desc:'찜 후 미문의 재유도', icon:'ti-heart', nodes:[
+    {type:'trigger',t:'찜 등록 3일 후 미문의', d:'apart_crm_grade=300 & call_cnt=0'},
+    {type:'action', t:'D+3 리마인더 푸시', d:'찜한 매물 알림 · zigbang:///home/apt/items/zzim'},
+    {type:'cond',   t:'문의 여부',          d:'문의 완료 vs 미문의'},
+    {type:'action', t:'D+7 가격비교 안내',  d:'유사 단지 비교 · zigbang:///home/apt/item-catalog'},
+  ]},
 ];
 
-const AT_TPLS = {
-  zigbang:[
-    {id:'at1',name:'매물 알림',    body:'안녕하세요, #{이름}님!\n관심 등록하신 #{지역} 매물에 변동이 있어 안내드립니다.\n\n📍 #{매물명}\n💰 #{가격}\n\n지금 바로 확인해보세요!'},
-    {id:'at2',name:'이사 일정 알림',body:'#{이름}님, 이사 예정일이 #{D}일 남았습니다.\n이사 전 체크리스트를 지금 확인하세요.'},
-  ],
-  hogangnono:[
-    {id:'at3',name:'시세 변동 알림',body:'#{이름}님이 관심 등록하신\n#{단지명}의 실거래가가 변동됐어요.\n\n📈 #{변동금액} #{변동방향}\n\n자세한 시세를 확인해보세요.'},
-    {id:'at4',name:'급매 알림',     body:'#{이름}님이 관심 단지에\n급매 매물이 등록됐어요!\n\n#{단지명} #{매물정보}\n\n빠르게 확인해보세요.'},
-  ],
-  jungkae:[
-    {id:'at5',name:'신규 문의 알림',body:'안녕하세요, #{중개사명}님!\n새 고객 문의가 접수됐습니다.\n\n고객명: #{고객명}\n매물: #{매물정보}\n\n빠른 답변 부탁드립니다.'},
-    {id:'at6',name:'계약 만료 알림',body:'#{계약자명}님의 계약 만료일이\n#{D}일 앞으로 다가왔습니다.\n\n갱신 상담 연락을 드려보세요.'},
-  ],
-};
-
-// Sample messages per service+trigger (demo, no API needed)
-const SAMPLE_MSGS = {
-  zigbang:{
-    immediate:[
-      {title:'지금 딱 맞는 매물 발견!',body:'관심지역에 새 매물이 올라왔어요. 오늘만 중개보수 50% 할인이니 서두르세요!',cta:'매물 보기'},
-      {title:'이 매물 놓치면 후회해요',body:'#{지역} 신규 매물 알림 — 방금 등록된 매물, 관심고객이 이미 보고 있어요.',cta:'바로 확인'},
-    ],
-    scheduled:[
-      {title:'주말에 집 구경 어때요?',body:'이번 주말 오픈하우스 일정을 확인해보세요. 관심 매물 3곳이 방문 가능합니다.',cta:'일정 확인'},
-      {title:'이사철 맞춤 매물 정리',body:'3~4월 이사 시즌! 서울 주요 지역 가격 내린 매물을 모아봤어요.',cta:'지금 보기'},
-    ],
-    lifecycle:[
-      {title:'가입 축하드려요 🎉',body:'직방에 오신 걸 환영해요! 지금 앱에서 관심지역을 설정하면 맞춤 매물 알림을 드릴게요.',cta:'관심지역 설정'},
-      {title:'다시 만나서 반가워요!',body:'오랜만에 돌아오셨네요. 그동안 #{지역} 매물이 많이 바뀌었어요. 지금 확인해보세요.',cta:'새 매물 보기'},
-    ],
-    behavioral:[
-      {title:'찜한 매물, 가격 협의 가능!',body:'관심 등록하신 매물이 가격 협의 가능 상태로 변경됐어요. 지금 바로 연락해보세요.',cta:'문의하기'},
-      {title:'다시 한번 볼까요?',body:'최근 조회하신 매물이 아직 거래 가능해요. 조금 더 자세히 살펴보시겠어요?',cta:'매물 다시 보기'},
-    ],
-    event:[
-      {title:'청약 공고 나왔어요!',body:'관심 등록하신 #{단지명} 청약 공고가 발표됐어요. 접수 기간을 놓치지 마세요.',cta:'청약 정보 확인'},
-      {title:'금리 인하 소식!',body:'오늘 기준금리가 인하됐어요. 지금이 대출 조건 확인하기 좋은 타이밍입니다.',cta:'대출 조건 보기'},
-    ],
-    contextual:[
-      {title:'퇴근길에 집 구경 어때요?',body:'지금 퇴근 시간이네요! 오늘 본 매물 중 마음에 드는 곳이 있었나요? 다시 확인해보세요.',cta:'찜 목록 보기'},
-      {title:'주말 이사 준비하셨나요?',body:'이번 주말 이사 성수기예요. 체크리스트와 추천 이사업체를 확인해보세요.',cta:'이사 준비하기'},
-    ],
-  },
-  hogangnono:{
-    immediate:[
-      {title:'관심 단지 시세 급등!',body:'#{단지명} 시세가 전주 대비 3,000만원 올랐어요. 지금 시세 추이를 확인해보세요.',cta:'시세 보기'},
-      {title:'급매 알림 — 지금 바로!',body:'관심 단지에 시세보다 5,000만원 낮은 급매가 나왔어요. 빠르게 확인하세요!',cta:'급매 확인'},
-    ],
-    scheduled:[
-      {title:'이번 주 시장 리포트',body:'서울·경기 주요 단지 실거래 동향을 정리했어요. 투자 판단에 참고하세요.',cta:'리포트 보기'},
-      {title:'월간 시세 분석 리포트',body:'이번 달 부동산 시장 흐름을 한눈에 파악해보세요. 관심 지역 분석도 있어요.',cta:'분석 보기'},
-    ],
-  },
-  jungkae:{
-    immediate:[
-      {title:'새 고객 문의 도착!',body:'방금 #{매물명} 매물에 새 고객 문의가 들어왔어요. 빠른 응대가 계약률을 높여요!',cta:'문의 확인'},
-      {title:'계약 성사 축하해요! 🎉',body:'#{매물명} 계약이 성공적으로 완료됐어요. 후기 남기면 다음 매물 홍보 지원!',cta:'후기 작성'},
-    ],
-  },
-};
-
-// Segment recommendations by service + trigger
-const SEG_RECS = {
-  zigbang:{
-    immediate:['s1','s2'],scheduled:['s1','s5'],behavioral:['s7'],
-    event:['s8','s1'],lifecycle:['s2','s3'],contextual:['s1','s5'],
-  },
-  hogangnono:{
-    immediate:['s5','s1'],scheduled:['s5'],behavioral:['s7'],
-    event:['s5','s8'],lifecycle:['s3'],contextual:['s5'],
-  },
-  jungkae:{
-    immediate:['s1'],scheduled:['s5'],behavioral:['s2'],
-    event:['s1'],lifecycle:['s2'],contextual:['s1'],
-  },
-};
-
-const SCENARIOS = {
-  zigbang:[
-    {id:'sc1',t:'봄 이사철 매물 추천',  trigger:'scheduled', seg:'s1',channels:['push','inapp'],    goal:'전환',   rate:'17.2%',tags:['seasonal','매물']},
-    {id:'sc2',t:'찜 후 미방문 재유도',  trigger:'behavioral',seg:'s7',channels:['push'],            goal:'재방문', rate:'12.1%',tags:['행동기반','리타겟']},
-    {id:'sc3',t:'신규 웰컴 온보딩',     trigger:'lifecycle', seg:'s2',channels:['push','inapp'],    goal:'활성화', rate:'39.0%',tags:['웰컴','신규']},
-    {id:'sc4',t:'14일 이탈 재활성화',   trigger:'lifecycle', seg:'s3',channels:['push','alimtalk'], goal:'재방문', rate:'8.4%', tags:['이탈','알림톡']},
-    {id:'sc5',t:'청약 관심 유저 알림',  trigger:'event',     seg:'s8',channels:['alimtalk'],        goal:'정보전달',rate:'21.3%',tags:['청약','이벤트']},
-    {id:'sc6',t:'리빙 콘텐츠 추천',     trigger:'contextual',seg:'s4',channels:['inapp'],           goal:'인게이지',rate:'14.7%',tags:['리빙','맥락']},
-  ],
-  hogangnono:[
-    {id:'sc7',t:'시세 변동 즉시 알림',  trigger:'event',     seg:'s1',channels:['push','alimtalk'], goal:'정보전달',rate:'24.1%',tags:['시세','이벤트']},
-    {id:'sc8',t:'관심 단지 가격 하락',  trigger:'event',     seg:'s5',channels:['push'],            goal:'전환',   rate:'31.2%',tags:['투자','기회']},
-    {id:'sc9',t:'주간 시장 리포트',     trigger:'scheduled', seg:'s5',channels:['push','inapp'],    goal:'인게이지',rate:'18.5%',tags:['리포트','주간']},
-    {id:'sc10',t:'14일 미접속 재유도',  trigger:'lifecycle', seg:'s3',channels:['alimtalk'],        goal:'재방문', rate:'9.2%', tags:['이탈','알림톡']},
-  ],
-  jungkae:[
-    {id:'sc11',t:'신규 문의 즉시 알림', trigger:'event',     seg:'s1',channels:['alimtalk','push'], goal:'전환',   rate:'52.3%',tags:['문의','즉시']},
-    {id:'sc12',t:'계약 만료 사전 알림', trigger:'lifecycle', seg:'s5',channels:['alimtalk'],        goal:'리텐션', rate:'38.7%',tags:['계약','생애주기']},
-    {id:'sc13',t:'매물 등록 안내',      trigger:'behavioral',seg:'s2',channels:['push','inapp'],    goal:'활성화', rate:'22.1%',tags:['등록','행동']},
-  ],
-};
-
-const JOURNEYS=[
-  {t:'웰컴 저니',d:'신규 가입 유저 온보딩',steps:[{l:'가입',c:'tb'},{l:'푸시 웰컴',c:'tg'},{l:'인앱 투어',c:'tp'},{l:'첫 찜',c:'tg'}]},
-  {t:'재활성화 저니',d:'30일↑ 미접속 유저',steps:[{l:'미접속 감지',c:'ta_'},{l:'알림톡',c:'tkk'},{l:'푸시 리마인드',c:'tg'},{l:'복귀',c:'tg'}]},
-  {t:'청약 알림 저니',d:'청약 관심 유저 단계별',steps:[{l:'관심 등록',c:'tb'},{l:'일정 알림톡',c:'tkk'},{l:'D-1 푸시',c:'ta_'},{l:'청약 완료',c:'tg'}]},
-  {t:'매물 전환 저니',d:'찜 후 미방문 전환',steps:[{l:'찜 등록',c:'tp'},{l:'인앱 배너',c:'tp'},{l:'푸시 리마인드',c:'tg'},{l:'매물 조회',c:'tg'}]},
-];
-
-// ── THEME ──────────────────────────────────────────
-function applyTheme(){document.documentElement.setAttribute('data-theme',isDark?'dark':'light');document.getElementById('ti-icon').className=isDark?'ti ti-sun':'ti ti-moon';}
-function toggleTheme(){isDark=!isDark;localStorage.setItem('tms_dark',isDark?'1':'0');applyTheme();}
-applyTheme();
-function toggleSettings(){const el=document.getElementById('sov');el.classList.toggle('show');if(el.classList.contains('show')&&API_KEY)document.getElementById('sp-key').value=API_KEY;}
-function saveSettings(){API_KEY=document.getElementById('sp-key').value.trim();if(API_KEY)localStorage.setItem('tms_api_key',API_KEY);const s=document.getElementById('sp-saved');s.style.display='block';setTimeout(()=>{s.style.display='none';toggleSettings();},1200);}
-
-// ── SERVICE ────────────────────────────────────────
-function setSvc(id,btn){
-  curSvc=id;BD.service=id;
-  document.querySelectorAll('.tsb').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  if(curPage==='builder'||curPage==='audience')render(curPage);
-}
-function selectSvcInBuilder(id){
-  BD.service=id;curSvc=id;
-  document.querySelectorAll('.tsb').forEach((b,i)=>b.classList.toggle('on',Object.keys(SVCS)[i]===id));
-  renderBodyInPlace();
-}
-
-// ── NAV ────────────────────────────────────────────
-function nav(page,el){
-  curPage=page;
-  document.querySelectorAll('.sbn').forEach(b=>b.classList.remove('on'));
-  if(el)el.classList.add('on');
+// ═══════════════════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════
+function nav(section, el) {
+  activeSection = section;
+  document.querySelectorAll('.sbn').forEach(s=>s.classList.remove('on'));
+  if(el) el.classList.add('on');
   const T={dash:'대시보드',builder:'캠페인 빌더',journey:'저니 빌더',audience:'오디언스',analytics:'성과 분석',agent:'AI 에이전트'};
-  const S={dash:`${SVCS[curSvc].label} 통합 메시징 콘솔`,builder:'',journey:'유저 여정 자동화',audience:'세그먼트 관리',analytics:'캠페인 성과',agent:'AI 자동화 어시스턴트'};
-  document.getElementById('hdr-t').textContent=T[page]||page;
-  document.getElementById('hdr-s').textContent=S[page]||'';
-  document.getElementById('hdr-r').innerHTML=page==='dash'?`<button class="btn btn-p btn-sm" onclick="builderStep=0;nav('builder',document.getElementById('sbn-builder'))"><i class="ti ti-plus" style="font-size:11px"></i>새 캠페인</button>`:'';
-  render(page);
-}
-function render(p){
-  const b=document.getElementById('body');if(!b)return;
-  if(p==='dash')b.innerHTML=renderDash();
-  else if(p==='builder'){if(builderStep===0){resetBD();builderStep=1;}b.innerHTML=renderBuilder();}
-  else if(p==='journey')b.innerHTML=renderJourney();
-  else if(p==='audience')b.innerHTML=renderAudience();
-  else if(p==='analytics')b.innerHTML=renderAnalytics();
-  else if(p==='agent'){b.innerHTML=renderAgent();initAgent();}
-}
-function renderBodyInPlace(){document.getElementById('body').innerHTML=renderBuilder();}
-
-function chTag(ch,sz=''){
-  if(ch==='push')    return `<span class="tag tb" style="font-size:${sz||'9px'}">📱 푸시</span>`;
-  if(ch==='inapp')   return `<span class="tag tp" style="font-size:${sz||'9px'}">💬 인앱</span>`;
-  if(ch==='alimtalk')return `<span class="tag tkk" style="font-size:${sz||'9px'}">💛 알림톡</span>`;
-  return '';
+  const S={dash:'직방 · 호갱노노 통합 메시징 콘솔',builder:'채널 선택부터 발송까지 한 흐름으로',journey:'이벤트 기반 자동화 메시지 시퀀스',audience:'유저 세그먼트 관리',analytics:'캠페인 성과 추적',agent:'자연어로 모든 기능을 제어하세요'};
+  document.getElementById('mhdr-t').textContent = T[section];
+  document.getElementById('mhdr-s').textContent = S[section];
+  const R = document.getElementById('mhdr-r');
+  if(section==='dash') R.innerHTML=`<button class="btn btn-p btn-sm" onclick="nav('builder',document.getElementById('sbn-builder'))"><i class="ti ti-plus" style="font-size:11px"></i>새 캠페인</button>`;
+  else if(section==='audience') R.innerHTML=`<button class="btn btn-p btn-sm" onclick="agentSug('새 세그먼트 만들어줘')"><i class="ti ti-sparkles" style="font-size:11px"></i>AI로 생성</button>`;
+  else R.innerHTML = '';
+  render();
 }
 
-// ── DASHBOARD ──────────────────────────────────────
-function renderDash(){
-  const activeCnt=CAMPS.filter(c=>c.svc===curSvc||!c.svc).length;
+// ═══════════════════════════════════════════════════════════════════════════
+//  RENDER DISPATCHER
+// ═══════════════════════════════════════════════════════════════════════════
+function render() {
+  const b = document.getElementById('mbody');
+  if(activeSection==='dash')      b.innerHTML = renderDash();
+  else if(activeSection==='builder') b.innerHTML = renderBuilder();
+  else if(activeSection==='journey') b.innerHTML = renderJourney();
+  else if(activeSection==='audience') b.innerHTML = renderAudience();
+  else if(activeSection==='analytics') b.innerHTML = renderAnalytics();
+  else if(activeSection==='agent') { b.innerHTML = renderAgent(); initAgentUI(); }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════════════════════════
+function renderDash() {
+  const badge = (st) => `<span class="badge ${st==='완료'?'badge-ok':'badge-warn'}">${st}</span>`;
   return `
-<div class="mg">
-  <div class="mc"><div class="mc-l">총 캠페인</div><div class="mc-v">${CAMPS.length}</div><div class="mc-c">저장된 전체</div></div>
-  <div class="mc"><div class="mc-l">평균 오픈율</div><div class="mc-v" style="color:var(--g)">17.2%</div><div class="mc-c">업계 평균 +4.1%p</div></div>
-  <div class="mc"><div class="mc-l">이번 달 발송</div><div class="mc-v">83,190</div><div class="mc-c">누적</div></div>
-  <div class="mc"><div class="mc-l">AI 추천 적용</div><div class="mc-v" style="color:var(--bl)">12</div><div class="mc-c">이번 달</div></div>
-</div>
-<div class="card">
-  <div class="card-hd"><i class="ti ti-send" style="color:var(--g)"></i>캠페인 목록
-    <span style="font-size:10px;color:var(--tx3);font-weight:400;margin-left:4px">(${CAMPS.length}개 저장됨)</span>
+  <div class="grid4">
+    <div class="stat"><div class="stat-l">전체 활성 유저</div><div class="stat-v">142,847</div><div class="stat-d up">↑ 2.3% vs 지난주</div></div>
+    <div class="stat"><div class="stat-l">DAU</div><div class="stat-v">18,293</div><div class="stat-d up">↑ 5.1%</div></div>
+    <div class="stat"><div class="stat-l">평균 오픈율</div><div class="stat-v">14.2%</div><div class="stat-d dn">↓ 0.8%p</div></div>
+    <div class="stat"><div class="stat-l">이번달 발송</div><div class="stat-v">7건</div><div class="stat-d nu">38.2만 건</div></div>
   </div>
-  <table class="tbl">
-    <thead><tr><th>캠페인명</th><th>서비스</th><th>채널</th><th>세그먼트</th><th>대상</th><th>오픈율</th><th>상태</th><th></th></tr></thead>
-    <tbody>${CAMPS.map(c=>`<tr>
-      <td style="font-weight:600">${c.name}</td>
-      <td><span class="tag tgr" style="font-size:9px">${SVCS[c.svc||'zigbang']?.label||c.svc}</span></td>
-      <td style="white-space:nowrap">${(c.ch||[]).map(ch=>chTag(ch)).join(' ')}</td>
-      <td style="color:var(--tx2)">${c.seg}</td>
-      <td>${(c.tgt||0).toLocaleString()}</td>
-      <td style="color:var(--g);font-weight:700">${c.or}</td>
-      <td><span class="tag tg">완료</span></td>
-      <td><button class="camp-del" onclick="deleteCamp('${c.id}',event)" title="삭제"><i class="ti ti-trash"></i></button></td>
-    </tr>`).join('')}
-    ${CAMPS.length===0?'<tr><td colspan="8" style="text-align:center;color:var(--tx3);padding:20px">저장된 캠페인이 없어요. 새 캠페인을 만들어보세요!</td></tr>':''}
-    </tbody>
-  </table>
-</div>`;
-}
-
-function deleteCamp(id,e){
-  if(e)e.stopPropagation();
-  if(!confirm('이 캠페인을 삭제할까요?'))return;
-  CAMPS=CAMPS.filter(c=>c.id!==id);
-  localStorage.setItem(CAMP_KEY,JSON.stringify(CAMPS));
-  render('dash');
-}
-
-// ── BUILDER ────────────────────────────────────────
-function renderBuilder(){
-  const steps=['기본 설정','오디언스','채널·메시지','발송 설정'];
-  const stepBar=`<div class="step-bar">${steps.map((s,i)=>{const n=i+1;const cls=n<builderStep?'done':n===builderStep?'cur':'';return `<div class="si ${cls}" onclick="if(${n}<=${builderStep})goStep(${n})"><span class="sn">${n<builderStep?'✓':n}</span>${s}</div>`;}).join('')}</div>`;
-  let content='';
-  if(builderStep===1)content=renderStep1();
-  else if(builderStep===2)content=renderStep2();
-  else if(builderStep===3)content=renderStep3();
-  else if(builderStep===4)content=renderStep4();
-  const navBtns=`<div style="display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)">
-    <button class="btn" onclick="prevStep()" ${builderStep===1?'style="visibility:hidden"':''}>← 이전</button>
-    <button class="btn btn-p" onclick="nextStep()">${builderStep===4?'<i class="ti ti-rocket" style="font-size:11px"></i> 캠페인 저장':'다음 →'}</button>
+  <div class="sec">최근 캠페인</div>
+  ${CAMPS.map(c=>`
+  <div class="cc" onclick="nav('builder',document.getElementById('sbn-builder'))">
+    <div>
+      <div class="cc-n">${c.name}</div>
+      <div class="cc-m">
+        <span>${c.seg}</span>
+        <span>타겟 ${c.tgt.toLocaleString()}명</span>
+        <span style="color:var(--txt3);font-size:10px">${c.deeplink}</span>
+        ${c.retarget&&c.retarget.length?`<span class="badge badge-info" style="font-size:9px"><i class="ti ti-arrows-shuffle" style="font-size:9px"></i>${c.retarget.length}단계 디타겟</span>`:''}
+      </div>
+    </div>
+    <div class="cc-s">
+      ${c.oRate!=='—'?`<div><div class="cc-st">${c.oRate}</div><div class="cc-sl">오픈율</div></div>`:''}
+      ${badge(c.st)}
+    </div>
+  </div>`).join('')}
+  <div class="sec" style="margin-top:16px">빠른 실행</div>
+  <div class="grid3">
+    <div class="card" style="cursor:pointer" onclick="nav('builder',document.getElementById('sbn-builder'))">
+      <div style="font-size:18px;margin-bottom:6px">✉️</div>
+      <div style="font-size:12px;font-weight:600">캠페인 빌더</div>
+      <div class="tip">새 캠페인 만들기</div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="nav('journey',document.getElementById('sbn-journey'))">
+      <div style="font-size:18px;margin-bottom:6px">🗺️</div>
+      <div style="font-size:12px;font-weight:600">저니 템플릿</div>
+      <div class="tip">자동화 시퀀스 설계</div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="nav('agent',document.getElementById('sbn-agent'))">
+      <div style="font-size:18px;margin-bottom:6px">🤖</div>
+      <div style="font-size:12px;font-weight:600">AI 에이전트</div>
+      <div class="tip">자연어로 모수 조회 + 캠페인 생성</div>
+    </div>
   </div>`;
-  return stepBar+content+navBtns+renderScenarios();
 }
 
-function renderStep1(){
-  const svc=BD.service||curSvc;
-  return `
-<div class="fl">
-  <div class="lbl">서비스 선택 <span class="req">*</span></div>
-  <div class="svc-tabs">${Object.entries(SVCS).map(([k,v])=>`
-    <div class="svct ${svc===k?'on':''}" onclick="selectSvcInBuilder('${k}')">
-      <div class="svct-icon">${v.icon}</div>
-      <div class="svct-l">${v.label}</div>
-      <div class="svct-d">${v.desc}</div>
-    </div>`).join('')}
-  </div>
-</div>
-<div class="fl">
-  <div class="lbl">캠페인 이름 <span class="req">*</span></div>
-  <input class="inp" id="b-name" placeholder="예: 5월 이사철 매물 추천 캠페인" value="${BD.name||''}" oninput="BD.name=this.value">
-</div>
-<div class="fl">
-  <div class="lbl">캠페인 목표</div>
-  <select class="inp sel" onchange="BD.goal=this.value">
-    <option value="">목표를 선택하세요</option>
-    ${['재방문 유도','전환 (매물 조회)','신규 활성화','리텐션','정보 전달','브랜드 인게이지먼트'].map(g=>`<option value="${g}" ${BD.goal===g?'selected':''}>${g}</option>`).join('')}
-  </select>
-</div>`;
-}
+// ═══════════════════════════════════════════════════════════════════════════
+//  CAMPAIGN BUILDER
+// ═══════════════════════════════════════════════════════════════════════════
+function renderBuilder() {
+  const steps = ['채널','오디언스','메시지','검토'];
+  const stepHtml = steps.map((s,i)=>`
+    <div class="step ${i<builderStep?'done':i===builderStep?'cur':''}">
+      <div class="step-dot">${i<builderStep?'✓':(i+1)}</div>
+      <span class="step-lbl">${s}</span>
+      ${i<steps.length-1?'<div class="step-line"></div>':''}
+    </div>`).join('');
 
-function renderStep2(){
-  const svc=BD.service||curSvc;
-  const trig=BD.trigger;
-  const recs=(SEG_RECS[svc]||{})[trig]||[];
-  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
-  const fav=savedSegs.length>0?`
-  <div class="notice ni" style="margin-bottom:8px">
-    <i class="ti ti-star-filled" style="color:var(--am)"></i>
-    즐겨찾기: ${SEGMENTS.filter(s=>savedSegs.includes(s.id)).map(s=>`<strong style="cursor:pointer" onclick="BD.segId='${s.id}';renderBodyInPlace()">${s.name}</strong>`).join(', ')||'없음'}
-  </div>`:'';
-
-  const recHtml=recs.length>0?`
-  <div class="seg-rec">
-    <div class="seg-rec-hd"><i class="ti ti-sparkles"></i>서비스·트리거 기반 추천 세그먼트</div>
-    <div class="seg-rec-pills">${recs.map(id=>{const s=SEGMENTS.find(x=>x.id===id);if(!s)return'';return `<div class="seg-rec-pill ${BD.segId===id?'sel':''}" onclick="BD.segId='${id}';renderBodyInPlace()">
-      ${BD.segId===id?'✓ ':''}<span>${s.name}</span><span style="color:var(--tx3);font-size:10px">${s.cnt.toLocaleString()}명</span>
-    </div>`;}).join('')}
+  if(builderStep===0) return `
+    ${stepHtml}
+    <div class="sec">서비스 선택</div>
+    <div class="tab-bar">
+      <button class="tab-btn ${BD.service==='zigbang'?'on':''}" onclick="BD.service='zigbang';render()">직방</button>
+      <button class="tab-btn ${BD.service==='hogangnono'?'on':''}" onclick="BD.service='hogangnono';render()">호갱노노</button>
     </div>
-  </div>`:'';
-
-  return fav+recHtml+`
-<div class="fl">
-  <div class="lbl">세그먼트 선택</div>
-  <div class="seg-grid">${SEGMENTS.map(s=>`
-    <div class="segc" style="${BD.segId===s.id?'border-color:var(--g);background:var(--g8)':''}" onclick="BD.segId='${s.id}';renderBodyInPlace()">
-      <div class="segc-hd">
-        <div class="segc-n">${s.name}</div>
-        ${savedSegs.includes(s.id)?'<span style="font-size:12px">⭐</span>':''}
-        ${recs.includes(s.id)?`<span class="tag tc" style="font-size:9px">추천</span>`:''}
-      </div>
-      <div class="segc-d">${s.desc}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div class="segc-cnt">${s.cnt.toLocaleString()}명</div>
-        <div style="display:flex;gap:3px">${s.tags.map(t=>`<span class="tag tgr" style="font-size:9px">${t}</span>`).join('')}</div>
-      </div>
-    </div>`).join('')}
-  </div>
-</div>
-<div class="notice ns"><i class="ti ti-users"></i>선택: <strong>${seg.name}</strong> · 예상 도달 <strong>${seg.cnt.toLocaleString()}명</strong></div>`;
-}
-
-function renderStep3(){
-  const avail=CROSS_OPTS.filter(ct=>ct.req.every(r=>BD.channels.includes(r)));
-  const svc=BD.service||curSvc;
-  const atTpls=AT_TPLS[svc]||[];
-  const selTpl=atTpls.find(t=>t.id===BD.alimtalkTpl);
-  const trigKey=BD.trigger||'immediate';
-  const samples=(SAMPLE_MSGS[svc]||{})[trigKey]||[];
-
-  return `
-<div class="fl">
-  <div class="lbl">채널 선택 <span class="req">*</span> <span style="font-size:10px;color:var(--tx3);font-weight:400">(복수 선택 가능)</span></div>
-  <div class="ch-cards">
-    ${[{id:'push',ico:'📱',nm:'푸시 알림',ds:'iOS·Android 네이티브 푸시',cls:''},
-       {id:'inapp',ico:'💬',nm:'인앱 메시지',ds:'앱 내 팝업·배너·피드카드',cls:''},
-       {id:'alimtalk',ico:'💛',nm:'카카오 알림톡',ds:'카카오톡 채널 알림톡',cls:'kakao'}].map(ch=>`
-    <div class="chc ${ch.cls} ${BD.channels.includes(ch.id)?'on':''}" onclick="toggleChannel('${ch.id}')">
-      <div class="chk-box">${BD.channels.includes(ch.id)?'<i class="ti ti-check" style="font-size:9px;color:#fff"></i>':''}</div>
-      <div class="ch-ico">${ch.ico}</div>
-      <div class="ch-nm">${ch.nm}</div>
-      <div class="ch-ds">${ch.ds}</div>
-    </div>`).join('')}
-  </div>
-</div>
-
-${avail.length>0?`
-<div class="cross-wrap">
-  <div class="cross-hd"><i class="ti ti-arrows-exchange"></i>크로스 채널 디타겟 <span class="tag ta_" style="margin-left:auto;font-size:9px">미오픈·미수신 재발송</span></div>
-  ${avail.map(ct=>`<div class="cross-row">
-    <input type="checkbox" ${BD.crossTargets.includes(ct.id)?'checked':''} onchange="toggleCross('${ct.id}')">
-    <span class="cross-lbl">${ct.label}</span>
-    <span class="cross-after">${ct.after}</span>
-  </div>`).join('')}
-</div>`:''}
-
-${(BD.channels.includes('push')||BD.channels.includes('inapp'))&&samples.length>0?`
-<div class="sample-wrap">
-  <div class="sample-hd"><i class="ti ti-sparkles"></i>시나리오별 샘플 메시지 <span style="font-size:10px;font-weight:400;color:var(--pu)">${SVCS[svc].label} · ${(TRIGGERS.find(t=>t.id===trigKey)||{}).label||''} 맞춤</span></div>
-  <div class="sample-cards">${samples.map((s,i)=>`
-    <div class="samplec" onclick="applySample(${i})">
-      <div class="samplec-badge">${i===0?'A안':'B안'} 샘플 — 클릭하면 적용</div>
-      <div class="samplec-title">${s.title}</div>
-      <div class="samplec-body">${s.body.substring(0,50)}${s.body.length>50?'…':''}</div>
-      <div class="samplec-cta">→ ${s.cta}</div>
-    </div>`).join('')}
-  </div>
-</div>`:''}
-
-${BD.channels.includes('push')||BD.channels.includes('inapp')?`
-<div class="fl">
-  <div class="lbl" style="margin-bottom:7px">메시지 작성</div>
-  <div style="display:flex;align-items:center;gap:5px;margin-bottom:9px">
-    <button class="btn btn-sm ${BD.abMode==='a'?'btn-p':''}" onclick="BD.abMode='a';renderBodyInPlace()">단일(A)</button>
-    <button class="btn btn-sm ${BD.abMode==='ab'?'btn-p':''}" onclick="BD.abMode='ab';renderBodyInPlace()">A/B 테스트</button>
-    <button class="btn btn-sm btn-ai" onclick="aiRecommend()" style="margin-left:auto" ${!API_KEY?'title="설정에서 API 키 입력"':''}>
-      <i class="ti ti-sparkles" style="font-size:11px"></i>AI 자동추천
-    </button>
-  </div>
-  ${renderVariants()}
-</div>`:''}
-
-${BD.channels.includes('alimtalk')?`
-<div class="fl">
-  <div class="lbl"><span class="tag tkk">💛 알림톡</span> 템플릿</div>
-  <select class="inp sel" onchange="BD.alimtalkTpl=this.value;renderBodyInPlace()" style="margin-bottom:8px">
-    <option value="">템플릿 선택</option>
-    ${atTpls.map(t=>`<option value="${t.id}" ${BD.alimtalkTpl===t.id?'selected':''}>${t.name}</option>`).join('')}
-  </select>
-  ${selTpl?`<div class="at-prev">
-    <div class="at-ph"><span>📣</span>${SVCS[svc].label} 알림</div>
-    <div class="at-body">${selTpl.body}</div>
-    <button class="at-btn">확인하기</button>
-  </div>`:''}
-</div>`:''}
-
-<div id="ai-result"></div>`;
-}
-
-function renderVariants(){
-  const vars=BD.abMode==='a'?[BD.variants[0]]:BD.variants;
-  return vars.map((v,i)=>`<div class="ab-var">
-    <div class="ab-var-hd">
-      <span class="ab-badge ${i===0?'ab-badge-a':'ab-badge-b'}">${i===0?'A안':'B안'}</span>
-      ${i===0&&BD.abMode==='ab'?'<span style="font-size:10px;color:var(--tx3)">성과 비교 중 승리안 자동 적용</span>':''}
-    </div>
-    <input class="inp" placeholder="제목 (15자 이내 권장)" value="${v.title||''}" oninput="BD.variants[${i}].title=this.value" style="margin-bottom:6px">
-    <textarea class="inp ta_" placeholder="본문을 입력하세요" oninput="BD.variants[${i}].body=this.value" style="margin-bottom:6px">${v.body||''}</textarea>
-    <div style="display:flex;gap:6px">
-      <input class="inp" placeholder="CTA 버튼" value="${v.cta||'자세히 보기'}" oninput="BD.variants[${i}].cta=this.value" style="flex:1">
-      ${BD.channels.includes('inapp')?`<select class="inp sel" style="width:110px" onchange="BD.inappType=this.value">
-        ${['팝업','배너','피드카드','코치마크','바텀시트'].map(t=>`<option ${BD.inappType===t?'selected':''}>${t}</option>`).join('')}
-      </select>`:''}
-    </div>
-  </div>`).join('');
-}
-
-function renderStep4(){
-  const trig=TRIGGERS.find(t=>t.id===BD.trigger)||TRIGGERS[0];
-  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
-  return `
-<div class="fl">
-  <div class="lbl">발송 트리거 유형</div>
-  <div class="trig-grid">${TRIGGERS.map(t=>`
-    <div class="trc ${BD.trigger===t.id?'on':''}" style="${BD.trigger===t.id?`border-color:${t.color};background:${t.cbg}`:''}"
-      onclick="BD.trigger='${t.id}';renderBodyInPlace()">
-      <div class="trc-icon" style="background:${t.cbg};color:${t.color}"><i class="ti ${t.icon}"></i></div>
-      <div class="trc-l" style="${BD.trigger===t.id?`color:${t.color}`:''}"> ${t.label}</div>
-      <div class="trc-d">${t.desc}</div>
-    </div>`).join('')}
-  </div>
-</div>
-
-${BD.trigger==='scheduled'?`<div class="two-col">
-  <div class="fl"><div class="lbl">발송 날짜</div><input class="inp" type="date" value="${BD.schedDate}" onchange="BD.schedDate=this.value"></div>
-  <div class="fl"><div class="lbl">발송 시간</div><input class="inp" type="time" value="${BD.schedTime}" onchange="BD.schedTime=this.value"></div>
-</div>`:''}
-
-${BD.trigger==='behavioral'?`<div class="fl"><div class="lbl">행동 조건</div>
-  <select class="inp sel" onchange="BD.trigDetail=this.value">
-    <option value="">조건 선택</option>
-    ${['매물 상세 조회 후 뒤로가기','찜 목록 추가 후 미전환','검색 후 3분 미활동','앱 실행 후 N분 미이동'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
-  </select>
-</div>`:''}
-
-${BD.trigger==='lifecycle'?`<div class="fl"><div class="lbl">생애주기 단계</div>
-  <select class="inp sel" onchange="BD.trigDetail=this.value">
-    <option value="">단계 선택</option>
-    ${['가입 후 1일','가입 후 7일','첫 매물 조회','첫 찜 등록','30일 미접속','90일 미접속','계약 완료 후'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
-  </select>
-</div>`:''}
-
-${BD.trigger==='contextual'?`<div class="fl"><div class="lbl">맥락·패턴 조건</div>
-  <select class="inp sel" onchange="BD.trigDetail=this.value">
-    <option value="">조건 선택</option>
-    ${['주말 오전 (토·일 9~11시)','퇴근 시간대 (18~20시)','이사 성수기 (3~4월, 7~8월)','급매 등록 시 관심지역 매칭','금리 변동 뉴스 발생 시'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
-  </select>
-</div>`:''}
-
-${BD.trigger==='event'?`<div class="fl"><div class="lbl">이벤트 소스</div>
-  <select class="inp sel" onchange="BD.trigDetail=this.value">
-    <option value="">소스 선택</option>
-    ${['시세 DB 업데이트','신규 매물 등록','청약 일정 등록','외부 API 연동','푸시 미오픈 감지'].map(o=>`<option ${BD.trigDetail===o?'selected':''}>${o}</option>`).join('')}
-  </select>
-</div>`:''}
-
-<div class="notice ns"><i class="ti ti-check-circle"></i>
-  <strong>${BD.channels.map(ch=>({push:'푸시',inapp:'인앱',alimtalk:'알림톡'})[ch]).join(' + ')||'채널 미선택'}</strong>
-  &nbsp;·&nbsp;<strong>${trig.label}</strong>
-  &nbsp;·&nbsp;<strong>${seg.name}</strong> (${seg.cnt.toLocaleString()}명)
-  ${BD.crossTargets.length>0?`&nbsp;·&nbsp;<span class="tag ta_" style="font-size:9px">크로스 ${BD.crossTargets.length}개</span>`:''}
-  ${BD.abMode==='ab'?`&nbsp;·&nbsp;<span class="tag tb" style="font-size:9px">A/B 테스트</span>`:''}
-</div>`;
-}
-
-// ── SCENARIOS ──────────────────────────────────────
-function renderScenarios(){
-  const svc=BD.service||curSvc;
-  const list=SCENARIOS[svc]||SCENARIOS.zigbang;
-  const TC={seasonal:'tg',행동기반:'tp',신규:'tb',이탈:'ta_',웰컴:'tg',리타겟:'ta_',알림톡:'tkk',이벤트:'tc',투자:'ta_',리포트:'tb',문의:'tg',계약:'tpk',등록:'tp',행동:'tp',맥락:'tc',즉시:'tg',주간:'tb',기회:'ta_'};
-  return `
-<div class="sc-section">
-  <div class="sc-hd">
-    <div class="sc-hd-t"><i class="ti ti-stars" style="color:var(--am)"></i>추천 시나리오 <span class="tag ta_" style="font-size:10px">${SVCS[svc].label}</span></div>
-    <span style="font-size:10px;color:var(--tx3)">클릭 시 빌더에 자동 적용</span>
-  </div>
-  <div class="sc-scroll">${list.map(sc=>`
-    <div class="scc" onclick="applyScenario('${sc.id}')">
-      <div class="scc-t">${sc.t}</div>
-      <div class="scc-tags">
-        ${sc.channels.map(ch=>chTag(ch)).join('')}
-        ${sc.tags.map(t=>`<span class="tag ${TC[t]||'tgr'}" style="font-size:9px">${t}</span>`).join('')}
-      </div>
-      <div class="scc-rate"><i class="ti ti-chart-line" style="font-size:10px"></i> 평균 오픈율 ${sc.rate}</div>
-    </div>`).join('')}
-  </div>
-</div>`;
-}
-
-function applyScenario(id){
-  const sc=Object.values(SCENARIOS).flat().find(s=>s.id===id);
-  if(!sc)return;
-  BD.channels=[...sc.channels];BD.segId=sc.seg;BD.trigger=sc.trigger;BD.goal=sc.goal;
-  builderStep=1;renderBodyInPlace();showToast(`"${sc.t}" 시나리오 적용됐어요 ✨`);
-}
-
-function applySample(idx){
-  const svc=BD.service||curSvc;
-  const trigKey=BD.trigger||'immediate';
-  const samples=(SAMPLE_MSGS[svc]||{})[trigKey]||[];
-  if(!samples[idx])return;
-  const s=samples[idx];
-  BD.variants[idx]={title:s.title,body:s.body,cta:s.cta};
-  if(idx===1)BD.abMode='ab';
-  renderBodyInPlace();
-  showToast(`${idx===0?'A안':'B안'} 샘플 메시지를 적용했어요`);
-}
-
-// ── BUILDER HELPERS ────────────────────────────────
-function toggleChannel(ch){const i=BD.channels.indexOf(ch);if(i===-1)BD.channels.push(ch);else BD.channels.splice(i,1);renderBodyInPlace();}
-function toggleCross(id){const i=BD.crossTargets.indexOf(id);if(i===-1)BD.crossTargets.push(id);else BD.crossTargets.splice(i,1);}
-function goStep(n){builderStep=n;renderBodyInPlace();}
-function prevStep(){if(builderStep>1){builderStep--;renderBodyInPlace();}}
-function nextStep(){if(builderStep===4){saveCampaign();return;}builderStep++;renderBodyInPlace();}
-
-function saveCampaign(){
-  if(!BD.name){showToast('캠페인 이름을 입력해주세요','warn');builderStep=1;renderBodyInPlace();return;}
-  if(BD.channels.length===0){showToast('채널을 1개 이상 선택해주세요','warn');builderStep=3;renderBodyInPlace();return;}
-  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
-  const newCamp={
-    id:'c'+Date.now(),
-    name:BD.name||'새 캠페인',
-    svc:BD.service||curSvc,
-    seg:seg.name,
-    tgt:seg.cnt,
-    sent:new Date().toISOString().split('T')[0],
-    or:`${(Math.random()*25+5).toFixed(1)}%`,
-    ch:[...BD.channels],
-    goal:BD.goal||'전환',
-    trigger:BD.trigger,
-  };
-  CAMPS.unshift(newCamp);
-  localStorage.setItem(CAMP_KEY,JSON.stringify(CAMPS));
-  showToast(`"${newCamp.name}" 캠페인 저장됐어요! 🎉`);
-  builderStep=0;
-  setTimeout(()=>nav('dash',document.getElementById('sbn-dash')),1000);
-}
-
-// ── AI RECOMMEND ──────────────────────────────────
-async function aiRecommend(){
-  if(!API_KEY){showToast('⚙️ 설정에서 API 키를 먼저 입력해주세요','warn');toggleSettings();return;}
-  const seg=SEGMENTS.find(s=>s.id===BD.segId)||SEGMENTS[0];
-  const svc=SVCS[BD.service||curSvc];
-  const trig=TRIGGERS.find(t=>t.id===BD.trigger)||TRIGGERS[0];
-  const el=document.getElementById('ai-result');
-  if(el)el.innerHTML=`<div class="notice ni"><i class="ti ti-sparkles ti-spin"></i>AI가 메시지를 추천 중이에요...</div>`;
-  const prompt=`다음 조건에 맞는 앱 메시지 2개(A안·B안)를 JSON으로만 응답해. 설명 없이 JSON만.
-서비스: ${svc.label} (${svc.desc})
-오디언스: ${seg.name} (${seg.desc})
-트리거: ${trig.label} — ${trig.desc}
-목표: ${BD.goal||'재방문 유도'}
-채널: ${BD.channels.join(', ')}
-
-{"a":{"title":"","body":"","cta":""},"b":{"title":"","body":"","cta":""}}
-규칙: 제목 15자↓ · 본문 45자↓ · CTA 6자↓ · A·B는 전략 차별화(혜택형 vs 긴급형 등) · 한국어`;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})});
-    if(!r.ok)throw new Error(`API ${r.status}`);
-    const data=await r.json();
-    const p=JSON.parse(data.content[0].text.replace(/```json?|```/g,'').trim());
-    BD.variants[0]={title:p.a.title,body:p.a.body,cta:p.a.cta};
-    BD.variants[1]={title:p.b.title,body:p.b.body,cta:p.b.cta};
-    BD.abMode='ab';
-    renderBodyInPlace();showToast('AI 메시지 추천 완료 ✨');
-  }catch(e){
-    if(el)el.innerHTML=`<div class="notice nw"><i class="ti ti-alert-circle"></i>추천 실패: ${e.message}</div>`;
-  }
-}
-
-// ── AUDIENCE ──────────────────────────────────────
-function renderAudience(){
-  const saved=SEGMENTS.filter(s=>savedSegs.includes(s.id));
-  return `
-<div class="saved-wrap">
-  <div class="saved-hd">
-    <div class="saved-ht"><i class="ti ti-star-filled"></i>자주 사용 세그먼트 (${saved.length})</div>
-    <span style="font-size:10px;color:var(--am)">★ 을 눌러 즐겨찾기 관리</span>
-  </div>
-  ${saved.length>0?`<div class="saved-pills">${saved.map(s=>`
-    <div class="saved-pill">
-      <span style="font-weight:500">${s.name}</span>
-      <span style="color:var(--tx3);font-size:10px">${s.cnt.toLocaleString()}명</span>
-      <span class="saved-pill-x" onclick="toggleSave('${s.id}',event)">×</span>
-    </div>`).join('')}</div>`
-    :`<div style="font-size:11px;color:var(--tx3);padding:3px 0">즐겨찾기가 없어요. 아래 ★로 추가하세요.</div>`}
-</div>
-
-<div class="ai-gen-wrap">
-  <div class="ai-gen-hd"><i class="ti ti-wand"></i>AI 세그먼트 생성 <span style="font-size:10px;font-weight:400;color:var(--g)">자연어로 설명하면 자동 생성</span></div>
-  <div class="ai-gen-row">
-    <input class="ai-inp" id="ai-seg-inp" placeholder="예: 지난 30일간 매물 3개↑ 찜한 수도권 30대" onkeydown="if(event.key==='Enter')genAISeg()">
-    <button class="btn btn-p btn-sm" onclick="genAISeg()"><i class="ti ti-sparkles" style="font-size:11px"></i>생성</button>
-  </div>
-  <div id="ai-seg-result" style="margin-top:7px"></div>
-</div>
-
-<div class="sec-lbl" style="margin-top:4px">전체 세그먼트</div>
-<div class="seg-grid">${SEGMENTS.map(s=>`
-  <div class="segc">
-    <div class="segc-hd">
-      <div class="segc-n">${s.name}</div>
-      <button class="seg-star ${savedSegs.includes(s.id)?'on':''}" onclick="toggleSave('${s.id}',event)" title="즐겨찾기">
-        <i class="ti ti-star${savedSegs.includes(s.id)?'-filled':''}"></i>
-      </button>
-      <button class="seg-del" onclick="deleteSeg('${s.id}',event)" title="삭제"><i class="ti ti-trash"></i></button>
-    </div>
-    <div class="segc-d">${s.desc}</div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
-      <div class="segc-cnt">${s.cnt.toLocaleString()}명</div>
-      <div style="display:flex;gap:3px">${s.tags.map(t=>`<span class="tag tgr" style="font-size:9px">${t}</span>`).join('')}</div>
-    </div>
-  </div>`).join('')}
-</div>`;
-}
-
-function toggleSave(id,e){
-  if(e)e.stopPropagation();
-  const i=savedSegs.indexOf(id);if(i===-1)savedSegs.push(id);else savedSegs.splice(i,1);
-  localStorage.setItem(SAVED_KEY,JSON.stringify(savedSegs));render('audience');
-}
-function deleteSeg(id,e){
-  if(e)e.stopPropagation();
-  if(!confirm('이 세그먼트를 삭제할까요?'))return;
-  const i=SEGMENTS.findIndex(s=>s.id===id);
-  if(i!==-1){SEGMENTS.splice(i,1);savedSegs=savedSegs.filter(s=>s!==id);localStorage.setItem(SAVED_KEY,JSON.stringify(savedSegs));}
-  render('audience');
-}
-async function genAISeg(){
-  const desc=document.getElementById('ai-seg-inp')?.value.trim();if(!desc)return;
-  const res=document.getElementById('ai-seg-result');
-  if(!API_KEY){res.innerHTML=`<div class="notice nw"><i class="ti ti-lock"></i>설정에서 API 키를 입력해주세요</div>`;return;}
-  res.innerHTML=`<div class="notice ni"><i class="ti ti-sparkles ti-spin"></i>AI가 세그먼트를 생성 중이에요...</div>`;
-  const prompt=`다음 설명으로 CRM 세그먼트를 JSON으로만 만들어줘. 설명 없이 JSON만.
-설명: "${desc}"
-{"name":"이름","desc":"SQL/조건 설명","cnt":예상수,"tags":["태그1","태그2"]}`;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});
-    if(!r.ok)throw new Error(`API ${r.status}`);
-    const data=await r.json();
-    const p=JSON.parse(data.content[0].text.replace(/```json?|```/g,'').trim());
-    const newSeg={id:'ai'+Date.now(),name:p.name,desc:p.desc,cnt:p.cnt,tags:p.tags||[]};
-    SEGMENTS.push(newSeg);
-    res.innerHTML=`<div class="notice ns"><i class="ti ti-check-circle"></i>"<strong>${newSeg.name}</strong>" 생성됐어요 (${newSeg.cnt.toLocaleString()}명 예상)</div>`;
-    document.getElementById('ai-seg-inp').value='';
-    setTimeout(()=>render('audience'),800);
-  }catch(ex){res.innerHTML=`<div class="notice nw"><i class="ti ti-alert-circle"></i>생성 실패: ${ex.message}</div>`;}
-}
-
-// ── JOURNEY ───────────────────────────────────────
-function renderJourney(){
-  return `<div class="notice ni" style="margin-bottom:12px"><i class="ti ti-info-circle"></i>저니를 클릭하면 캠페인 빌더에서 이어서 설정할 수 있어요</div>
-  <div class="j-grid">${JOURNEYS.map(j=>`<div class="jc">
-    <div class="jc-t">${j.t}</div>
-    <div class="jc-d">${j.d}</div>
-    <div class="j-steps">${j.steps.map((s,i)=>`${i>0?'<span class="j-arr">→</span>':''}<span class="tag ${s.c}">${s.l}</span>`).join('')}</div>
-  </div>`).join('')}</div>`;
-}
-
-// ── ANALYTICS ─────────────────────────────────────
-function renderAnalytics(){
-  // Demo data
-  const campPerf=[
-    {name:'봄 이사철 특가',sent:12840,click:2197,view:1841,inquiry:312,aRate:'17.1%',bRate:'14.3%',winner:'A'},
-    {name:'신규 웰컴',     sent:3210, click:1251,view:987, inquiry:201,aRate:'39.0%',bRate:'31.2%',winner:'A'},
-    {name:'재방문 유도',   sent:28930,click:2314,view:1734,inquiry:189,aRate:'8.0%', bRate:'9.3%', winner:'B'},
-    {name:'청약 정보',     sent:18720,click:3931,view:3112,inquiry:445,aRate:'21.0%',bRate:'18.7%',winner:'A'},
-    {name:'리빙 콘텐츠',  sent:8450, click:1225,view:941, inquiry:127,aRate:'14.5%',bRate:'12.1%',winner:'A'},
-  ];
-
-  // Funnel data (aggregate)
-  const funnelTotal={발송:83190,클릭:14302,조회:11001,문의:1274};
-  const funnelMax=funnelTotal['발송'];
-
-  // Bar chart for campaign comparison
-  const barData=campPerf.map(c=>({l:c.name.substring(0,5),v:parseFloat(c.aRate)}));
-  const maxBar=Math.max(...barData.map(d=>d.v));
-
-  // Gender
-  const genderData=[{l:'남성',v:47.3,c:'#3B82F6'},{l:'여성',v:38.1,c:'#EC4899'},{l:'알수없음',v:14.6,c:'#9ca3af'}];
-  // Channel opt-in
-  const chanOpt=[{l:'푸시 알림',v:71.2,c:'var(--g)'},{l:'카카오 알림톡',v:94.1,c:'#d4b800'},{l:'인앱 메시지',v:100,c:'var(--pu)'}];
-  // OS
-  const osData=[{l:'iOS',v:58.3,c:'var(--bl)'},{l:'Android',v:38.9,c:'var(--g)'},{l:'기타',v:2.8,c:'var(--tx3)'}];
-
-  // SVG donut
-  const donutR=48,cx=58,cy=58;
-  let cumPct=0;
-  function donutSlice(pct,color,prev){
-    const r=donutR,stroke=22;
-    const circumf=2*Math.PI*r;
-    const dashArr=pct/100*circumf;
-    const offset=circumf*(1-prev/100);
-    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-dasharray="${dashArr} ${circumf-dashArr}" stroke-dashoffset="${offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
-  }
-  let donutSvg=`<svg class="donut-svg" width="116" height="116" viewBox="0 0 116 116">
-    <circle cx="${cx}" cy="${cy}" r="${donutR}" fill="none" stroke="var(--bg3)" stroke-width="22"/>`;
-  let prev=0;
-  for(const g of genderData){donutSvg+=donutSlice(g.v,g.c,prev);prev+=g.v;}
-  donutSvg+=`<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--tx)">성별</text></svg>`;
-
-  return `
-<div class="mg">
-  <div class="mc"><div class="mc-l">총 발송</div><div class="mc-v">83,190</div><div class="mc-c">이번 달</div></div>
-  <div class="mc"><div class="mc-l">전체 오픈율</div><div class="mc-v" style="color:var(--g)">17.2%</div><div class="mc-c">↑ 2.1%p</div></div>
-  <div class="mc"><div class="mc-l">A/B 테스트</div><div class="mc-v" style="color:var(--bl)">5건</div><div class="mc-c">A안 승률 80%</div></div>
-  <div class="mc"><div class="mc-l">총 문의 전환</div><div class="mc-v" style="color:var(--pk)">1,274</div><div class="mc-c">문의 도달</div></div>
-</div>
-
-<!-- A/B 테스트 위너 -->
-<div class="card" style="margin-bottom:10px">
-  <div class="card-hd"><i class="ti ti-trophy" style="color:var(--am)"></i>A/B 테스트 위너 확인</div>
-  <div class="ab-winner-grid">${campPerf.filter(c=>c.aRate&&c.bRate).slice(0,4).map(c=>`
-    <div class="abwc ${c.winner==='A'?'winner':''}">
-      <div class="abwc-hd">
-        <div style="font-size:12px;font-weight:600;flex:1">${c.name.substring(0,8)}</div>
-        <span class="ab-badge ${c.winner==='A'?'ab-badge-a':'ab-badge-b'}">${c.winner}안 승리</span>
-        ${c.winner==='A'?'<span class="winner-badge">WINNER</span>':''}
-      </div>
-      <div class="abwc-stat"><span>A안 오픈율</span><span style="font-weight:700;color:var(--g)">${c.aRate}</span></div>
-      <div class="abwc-stat"><span>B안 오픈율</span><span style="font-weight:700;color:var(--bl)">${c.bRate}</span></div>
-      <div class="abwc-stat"><span>클릭수</span><span>${c.click.toLocaleString()}</span></div>
-    </div>`).join('')}
-  </div>
-</div>
-
-<!-- 퍼널 + 캠페인별 성과 -->
-<div class="ana-grid" style="margin-bottom:10px">
-  <div class="chart-box">
-    <div class="chart-hd">퍼널별 유저수 <span class="tag tg" style="font-size:10px">전체 합산</span></div>
-    <div class="funnel-wrap">${Object.entries(funnelTotal).map(([k,v],i)=>{
-      const colors=['var(--g)','var(--bl)','var(--pu)','var(--pk)'];
-      const w=Math.round(v/funnelMax*100);
-      return `<div class="funnel-row">
-        <div class="funnel-lbl">${k}</div>
-        <div class="funnel-bar-outer">
-          <div class="funnel-bar-fill" style="width:${w}%;background:${colors[i]}">${k}</div>
-        </div>
-        <div class="funnel-num" style="color:${colors[i]}">${v.toLocaleString()}</div>
-      </div>`;
-    }).join('')}
-    </div>
-    <div style="font-size:10px;color:var(--tx3);margin-top:8px">클릭율 ${(funnelTotal['클릭']/funnelTotal['발송']*100).toFixed(1)}% · 조회율 ${(funnelTotal['조회']/funnelTotal['발송']*100).toFixed(1)}% · 문의전환 ${(funnelTotal['문의']/funnelTotal['발송']*100).toFixed(1)}%</div>
-  </div>
-  <div class="chart-box">
-    <div class="chart-hd">캠페인별 오픈율 비교</div>
-    <div class="bar-wrap">${barData.map(d=>`
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center">
-        <div class="bar" style="height:${Math.round(d.v/maxBar*100)}%"></div>
-        <div class="bar-lbl">${d.l}</div>
+    <div class="sec">채널 선택</div>
+    <div class="grid3">
+      ${[
+        {k:'push',  ico:'ti-device-mobile-vibration', t:'푸시 알림',   d:'iOS · Android 알림'},
+        {k:'inapp', ico:'ti-app-window',               t:'인앱 메시지', d:'앱 내 팝업 · 배너'},
+        {k:'kakao', ico:'ti-message-dots',             t:'카카오 알림톡',d:'카카오톡 비즈메시지'},
+      ].map(c=>`
+      <div class="ch-card ${BD.channel===c.k?'on':''}" onclick="BD.channel='${c.k}';render()">
+        <div class="ch-card-ico" style="background:${BD.channel===c.k?'var(--ac)':'var(--panel2)'}"><i class="${c.ico}" style="color:${BD.channel===c.k?'#fff':'var(--txt2)'}"></i></div>
+        <div class="ch-card-t">${c.t}</div>
+        <div class="ch-card-d">${c.d}</div>
       </div>`).join('')}
     </div>
-    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">${barData.map(d=>`<div style="font-size:10px;color:var(--tx2)">${d.l} <strong style="color:var(--g)">${d.v}%</strong></div>`).join('')}</div>
-  </div>
-</div>
+    <div style="display:flex;justify-content:flex-end;margin-top:4px">
+      <button class="btn btn-p btn-sm" onclick="builderStep=1;render()">다음 <i class="ti ti-arrow-right" style="font-size:11px"></i></button>
+    </div>`;
 
-<!-- 성별 + 채널 수신동의율 -->
-<div class="ana-grid" style="margin-bottom:10px">
-  <div class="chart-box">
-    <div class="chart-hd">전체 유저 성별 비율</div>
-    <div class="donut-wrap">
-      ${donutSvg}
-      <div class="donut-legend">${genderData.map(g=>`
-        <div class="dleg-row">
-          <div class="dleg-dot" style="background:${g.c}"></div>
-          <span>${g.l}</span>
-          <strong style="color:${g.c};margin-left:4px">${g.v}%</strong>
-        </div>`).join('')}
-        <div style="font-size:10px;color:var(--tx3);margin-top:6px">전체 ${(12840+3210+28930+8450).toLocaleString()}명 기준</div>
+  if(builderStep===1) {
+    const seg = SEGS.find(s=>s.id===BD.segId)||SEGS[0];
+    return `
+    ${stepHtml}
+    <div class="sec">오디언스 선택</div>
+    ${SEGS.map(s=>`
+    <div class="seg-item" style="cursor:pointer;${BD.segId===s.id?'border-color:var(--ac);background:var(--ac-bg)':''}" onclick="BD.segId='${s.id}';render()">
+      <div>
+        <div class="seg-name">${s.name}</div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:2px">${s.filters}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:13px;font-weight:700;color:var(--ac)">${s.cnt}</div>
+        <div style="font-size:10px;color:var(--txt3)">명</div>
+      </div>
+    </div>`).join('')}
+    <div style="display:flex;justify-content:space-between;margin-top:8px">
+      <button class="btn btn-sm" onclick="builderStep=0;render()"><i class="ti ti-arrow-left" style="font-size:11px"></i> 이전</button>
+      <button class="btn btn-p btn-sm" onclick="builderStep=2;render()">다음 <i class="ti ti-arrow-right" style="font-size:11px"></i></button>
+    </div>`;
+  }
+
+  if(builderStep===2) {
+    // 딥링크 자동 추천
+    const suggested = suggestDeeplinks(SEGS.find(s=>s.id===BD.segId)?.name||'', BD.bodyA||'');
+    const dl = suggested[0]?.link || 'zigbang:///home/apt/map';
+    if(!BD.deeplinkA) BD.deeplinkA = dl;
+    const dlDesc = Object.values(DEEPLINK_MAP).find(d=>d.link===BD.deeplinkA)?.desc || '';
+    return `
+    ${stepHtml}
+    <div class="grid2">
+      <div>
+        <div class="sec">메시지 작성 ${BD.service==='zigbang'?'(직방)':'(호갱노노)'}</div>
+        <div class="tab-bar">
+          <button class="tab-btn on">메시지 A</button>
+          <button class="tab-btn" onclick="BD.abTest=!BD.abTest;render()">+ A/B 테스트${BD.abTest?' ✓':''}</button>
+        </div>
+        <div class="frow"><label class="lbl">제목</label><input class="inp" placeholder="예: 관심 지역 신규 매물 등록!" value="${BD.titleA}" oninput="BD.titleA=this.value;updatePreview()"></div>
+        <div class="frow"><label class="lbl">본문</label><textarea class="inp" placeholder="매물 내용을 간결하게..." oninput="BD.bodyA=this.value;updatePreview()">${BD.bodyA}</textarea></div>
+        <div class="frow">
+          <label class="lbl">딥링크 <span style="color:var(--txt3)">(클릭 시 이동 화면)</span></label>
+          <div class="dl-wrap">
+            <input class="inp" id="dlInpA" placeholder="zigbang:///home/apt/map" value="${BD.deeplinkA}" oninput="BD.deeplinkA=this.value">
+            ${dlDesc?`<span class="dl-badge">${dlDesc}</span>`:''}
+          </div>
+          <div class="chips" style="margin-top:5px">
+            ${suggested.map(d=>`<span class="chip" onclick="BD.deeplinkA='${d.link}';document.getElementById('dlInpA').value='${d.link}';render()" title="${d.desc}">${d.desc.split('(')[0].trim()}</span>`).join('')}
+          </div>
+        </div>
+        <div class="frow"><label class="lbl">CTA 버튼</label><input class="inp" placeholder="지금 확인하기" value="${BD.ctaA}" oninput="BD.ctaA=this.value"></div>
+        <button class="btn btn-sm" style="width:100%;justify-content:center;margin-top:4px" onclick="aiMsg('A')"><i class="ti ti-sparkles" style="font-size:11px;color:var(--ac)"></i>AI 메시지 추천</button>
+      </div>
+      <div>
+        <div class="sec">미리보기</div>
+        <div class="preview" id="msgPreview">
+          <div class="preview-bar"><div class="preview-ico"><i class="ti ti-home" style="font-size:11px"></i></div><div class="preview-app">직방</div><div class="preview-time">지금</div></div>
+          <div class="preview-title" id="prevTitle">${BD.titleA||'제목을 입력하세요'}</div>
+          <div class="preview-body" id="prevBody">${BD.bodyA||'메시지 본문이 여기 표시됩니다'}</div>
+        </div>
+        <div class="sec" style="margin-top:12px">발송 트리거</div>
+        <div class="frow">
+          <select class="inp" onchange="BD.trigger=this.value">
+            <option value="immediate" ${BD.trigger==='immediate'?'selected':''}>즉시 발송</option>
+            <option value="schedule"  ${BD.trigger==='schedule' ?'selected':''}>예약 발송</option>
+            <option value="event"     ${BD.trigger==='event'    ?'selected':''}>이벤트 기반</option>
+          </select>
+        </div>
+        ${BD.trigger==='schedule'?`<div class="frow"><input type="datetime-local" class="inp"></div>`:''}
       </div>
     </div>
-  </div>
-  <div class="chart-box">
-    <div class="chart-hd">채널별 수신동의율</div>
-    ${chanOpt.map(d=>`
-    <div class="hbar-row">
-      <div class="hbar-lbl">${d.l}</div>
-      <div class="hbar-track"><div class="hbar-fill" style="width:${d.v}%;background:${d.c}"></div></div>
-      <div class="hbar-val" style="color:${d.c}">${d.v}%</div>
-    </div>`).join('')}
-    <div style="font-size:10px;color:var(--tx3);margin-top:8px">인앱은 앱 실행 시 100% 도달 (수신동의 불필요)</div>
-  </div>
-</div>
+    </div>
+    ${renderRetargetConfig()}
+    <div style="display:flex;justify-content:space-between;margin-top:8px">
+      <button class="btn btn-sm" onclick="builderStep=1;render()"><i class="ti ti-arrow-left" style="font-size:11px"></i> 이전</button>
+      <button class="btn btn-p btn-sm" onclick="builderStep=3;render()">검토 <i class="ti ti-arrow-right" style="font-size:11px"></i></button>
+    </div>`;
+  }
 
-<!-- OS 분석 + 캠페인 상세 -->
-<div class="ana-grid">
-  <div class="chart-box">
-    <div class="chart-hd">OS별 분석</div>
-    ${osData.map(d=>`
-    <div class="hbar-row">
-      <div class="hbar-lbl">${d.l}</div>
-      <div class="hbar-track"><div class="hbar-fill" style="width:${d.v}%;background:${d.c}"></div></div>
-      <div class="hbar-val" style="color:${d.c}">${d.v}%</div>
+  // STEP 3 — REVIEW
+  const seg = SEGS.find(s=>s.id===BD.segId)||SEGS[0];
+  const dlEntry = Object.values(DEEPLINK_MAP).find(d=>d.link===BD.deeplinkA);
+  return `
+  ${stepHtml}
+  <div class="card">
+    <div class="card-t">캠페인 요약</div>
+    ${[
+      ['서비스', BD.service==='zigbang'?'직방':'호갱노노'],
+      ['채널',   BD.channel==='push'?'푸시 알림':BD.channel==='inapp'?'인앱 메시지':'카카오 알림톡'],
+      ['오디언스', `${seg.name} (${seg.cnt}명)`],
+      ['제목', BD.titleA||'(미입력)'],
+      ['본문', BD.bodyA||'(미입력)'],
+      ['딥링크', `${BD.deeplinkA||'(미설정)'}${dlEntry?` — ${dlEntry.desc}`:''}` ],
+      ['트리거', BD.trigger==='immediate'?'즉시 발송':BD.trigger==='schedule'?'예약 발송':'이벤트 기반'],
+    ].map(([k,v])=>`
+    <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+      <span style="color:var(--txt2);width:72px;flex-shrink:0">${k}</span>
+      <span style="word-break:break-all">${v}</span>
     </div>`).join('')}
-    <div style="font-size:10px;color:var(--tx3);margin-top:8px">iOS 평균 오픈율 18.4% / Android 15.9%</div>
   </div>
-  <div class="chart-box">
-    <div class="chart-hd">캠페인별 성과 상세</div>
-    <table class="tbl" style="font-size:10px">
-      <thead><tr><th>캠페인</th><th>발송</th><th>클릭</th><th>조회</th><th>문의</th></tr></thead>
-      <tbody>${campPerf.map(c=>`<tr>
-        <td style="font-weight:600">${c.name.substring(0,6)}</td>
-        <td>${c.sent.toLocaleString()}</td>
-        <td style="color:var(--g)">${c.click.toLocaleString()}</td>
-        <td style="color:var(--bl)">${c.view.toLocaleString()}</td>
-        <td style="color:var(--pk)">${c.inquiry.toLocaleString()}</td>
-      </tr>`).join('')}</tbody>
-    </table>
-  </div>
-</div>`;
+  ${renderRetargetSummary()}
+  <div style="display:flex;justify-content:space-between;margin-top:8px">
+    <button class="btn btn-sm" onclick="builderStep=2;render()"><i class="ti ti-arrow-left" style="font-size:11px"></i> 이전</button>
+    <button class="btn btn-p btn-sm" onclick="alert('🚀 캠페인이 등록되었습니다!\n크로스 디타겟: ' + (BD.retargetEnabled ? BD.retargetSteps.length + '단계 설정' : '미사용') + '\n(실제 발송 연동 필요)')"><i class="ti ti-send" style="font-size:11px"></i>캠페인 등록</button>
+  </div>`;
 }
 
-// ── AGENT ─────────────────────────────────────────
-let agentHist=[],agentBusy=false;
-function renderAgent(){
-  const h=window.innerHeight||700;
-  return `<div class="agent-wrap" style="height:${h-110}px">
-    <div class="chat-area" id="chat-area" style="flex:1">
-      <div class="msg msg-a">안녕하세요! 직방 TMS AI 에이전트입니다.<br>자연어로 캠페인을 설계하거나 세그먼트를 분석해드려요.<br><br><strong>예시:</strong> "서울 30대 iOS 유저에게 이사철 매물 추천 알림톡+푸시 만들어줘"</div>
+function updatePreview() {
+  const t = document.getElementById('prevTitle');
+  const b = document.getElementById('prevBody');
+  if(t) t.textContent = BD.titleA || '제목을 입력하세요';
+  if(b) b.textContent = BD.bodyA  || '메시지 본문이 여기 표시됩니다';
+}
+
+// ── 크로스 채널 디타겟 헬퍼 ──────────────────────────────────────────────
+function toggleRetarget() {
+  BD.retargetEnabled = !BD.retargetEnabled;
+  render();
+}
+function updateRtStep(idx, key, val) {
+  BD.retargetSteps[idx][key] = val;
+  // 딥링크 미입력 시 채널별 기본값 자동 설정
+  if(key==='channel' && !BD.retargetSteps[idx].deeplink) {
+    const defaults = {inapp:'zigbang:///home/apt/map', push:'zigbang:///home/apt/items/zzim', kakao:''};
+    BD.retargetSteps[idx].deeplink = defaults[val]||'';
+  }
+}
+function addRtStep() {
+  if(BD.retargetSteps.length >= 3) return;
+  const channels = ['push','inapp','kakao'];
+  const usedCh = BD.retargetSteps.map(s=>s.channel);
+  usedCh.push(BD.channel);
+  const nextCh = channels.find(c=>!usedCh.includes(c)) || channels[0];
+  BD.retargetSteps.push({condition:'no_open', delay:48, delayUnit:'h', channel:nextCh, title:'', body:'', deeplink:''});
+  render();
+}
+function removeRtStep(idx) {
+  BD.retargetSteps.splice(idx, 1);
+  render();
+}
+function aiRtMsg(idx) {
+  const step = BD.retargetSteps[idx];
+  const seg = SEGS.find(s=>s.id===BD.segId)||SEGS[0];
+  const key = getKey();
+  if(!key) { alert('Claude API Key를 입력해주세요'); return; }
+  const condLabel = COND_META[step.condition]?.label||step.condition;
+  const prompt = `직방 앱 크로스채널 리타겟 메시지를 작성해주세요.
+채널: ${CH_META[step.channel]?.label||step.channel}
+조건: 1차 발송 ${condLabel} 유저 대상
+세그먼트: ${seg.name}
+딥링크: ${step.deeplink}
+JSON 형식으로만: {"title":"...","body":"..."}`;
+  fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:prompt}]})})
+    .then(r=>r.json()).then(d=>{
+      const txt = d.content[0].text.replace(/```json?|```/g,'').trim();
+      const obj = JSON.parse(txt);
+      BD.retargetSteps[idx].title = obj.title||'';
+      BD.retargetSteps[idx].body  = obj.body||'';
+      render();
+    }).catch(e=>alert('생성 실패: '+e.message));
+}
+
+function renderRetargetConfig() {
+  const firstCh = CH_META[BD.channel] || CH_META.push;
+  const chOptions = (cur) => ['push','inapp','kakao']
+    .filter(c => c !== BD.channel)
+    .map(c => `<option value="${c}" ${cur===c?'selected':''}>${CH_META[c].label}</option>`).join('');
+
+  return `
+  <div class="divider" style="margin:14px 0 12px"></div>
+  <div class="rt-toggle ${BD.retargetEnabled?'on':''}" onclick="toggleRetarget()">
+    <div class="switch ${BD.retargetEnabled?'on':''}"></div>
+    <div>
+      <div style="font-size:12px;font-weight:600">크로스 채널 디타겟</div>
+      <div class="tip">미오픈·미클릭·미전환 유저를 다른 채널로 자동 재발송</div>
     </div>
-    <div class="chat-foot">
-      <textarea class="chat-inp" id="chat-inp" placeholder="메시지를 입력하세요..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
-      <button class="chat-send" id="chat-send" onclick="sendMsg()"><i class="ti ti-send" style="font-size:14px"></i></button>
+    ${BD.retargetEnabled?`<span class="badge badge-ok" style="margin-left:auto">${BD.retargetSteps.length}단계 설정됨</span>`:''}
+  </div>
+  ${BD.retargetEnabled ? `
+  <div class="retarget-flow" style="margin-bottom:8px">
+    <!-- 1차 발송 (현재 채널) -->
+    <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--panel2);border-radius:var(--r2);border:1.5px solid var(--border2);margin-bottom:0">
+      <div class="rt-ch-dot" style="background:${firstCh.color}22;border-color:${firstCh.color}">
+        <i class="${firstCh.icon}" style="color:${firstCh.color}"></i>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700">1차 발송</div>
+        <div style="font-size:10px;color:var(--txt2)">${firstCh.label} · ${BD.titleA||'제목 미입력'}</div>
+      </div>
+      <span class="badge badge-info" style="margin-left:auto">발송 기준</span>
+    </div>
+
+    <!-- 각 디타겟 단계 -->
+    ${BD.retargetSteps.map((step, idx) => {
+      const cond = COND_META[step.condition]||COND_META.no_open;
+      const ch   = CH_META[step.channel]  ||CH_META.push;
+      const dlEntry = Object.values(DEEPLINK_MAP).find(d=>d.link===step.deeplink);
+      return `
+      <!-- 화살표 + 조건 -->
+      <div style="display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:3px">
+        <div style="width:1px;height:10px;background:var(--border2)"></div>
+        <div class="rt-cond" style="color:${cond.color};background:${cond.bg};border:1px solid ${cond.border}">
+          <i class="${cond.icon}" style="font-size:11px"></i>${cond.label}
+          <select style="border:none;background:transparent;font-family:var(--font);font-size:10px;font-weight:600;color:${cond.color};cursor:pointer;padding:0 2px" onchange="updateRtStep(${idx},'condition',this.value);render()">
+            ${Object.entries(COND_META).map(([k,v])=>`<option value="${k}" ${step.condition===k?'selected':''}>${v.label}</option>`).join('')}
+          </select>
+        </div>
+        <div style="font-size:9px;color:var(--txt3)">
+          <input type="number" min="1" max="72" value="${step.delay}" style="width:30px;border:none;background:transparent;font-family:var(--font);font-size:9px;color:var(--txt3);text-align:center" oninput="updateRtStep(${idx},'delay',+this.value)">
+          <select style="border:none;background:transparent;font-family:var(--font);font-size:9px;color:var(--txt3);cursor:pointer" onchange="updateRtStep(${idx},'delayUnit',this.value)">
+            <option value="h" ${step.delayUnit==='h'?'selected':''}>시간 후</option>
+            <option value="d" ${step.delayUnit==='d'?'selected':''}>일 후</option>
+          </select>
+        </div>
+        <div style="width:1px;height:10px;background:var(--border2)"></div>
+      </div>
+
+      <!-- 디타겟 채널 카드 -->
+      <div class="rt-step-card">
+        <span class="step-num">${idx+2}차 디타겟</span>
+        <button class="rt-del-btn" onclick="removeRtStep(${idx})"><i class="ti ti-x" style="font-size:11px"></i></button>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;margin-top:4px">
+          <div class="rt-ch-dot" style="width:32px;height:32px;background:${ch.color}22;border:1.5px solid ${ch.color}">
+            <i class="${ch.icon}" style="color:${ch.color};font-size:14px"></i>
+          </div>
+          <select class="inp" style="flex:1;font-size:12px" onchange="updateRtStep(${idx},'channel',this.value);render()">
+            ${chOptions(step.channel)}
+          </select>
+        </div>
+        <div class="grid2" style="gap:7px;margin-bottom:7px">
+          <div class="frow" style="margin:0"><label class="lbl">제목</label><input class="inp" style="font-size:11px" placeholder="재발송 제목" value="${step.title}" oninput="updateRtStep(${idx},'title',this.value)"></div>
+          <div class="frow" style="margin:0"><label class="lbl">딥링크</label>
+            <input class="inp" style="font-size:10px" placeholder="zigbang:///" value="${step.deeplink}" oninput="updateRtStep(${idx},'deeplink',this.value)">
+            ${dlEntry?`<div class="tip" style="margin-top:2px">${dlEntry.desc}</div>`:''}
+          </div>
+        </div>
+        <div class="frow" style="margin:0 0 7px">
+          <label class="lbl">본문</label>
+          <textarea class="inp" style="font-size:11px;min-height:44px" placeholder="재발송 메시지 본문..." oninput="updateRtStep(${idx},'body',this.value)">${step.body}</textarea>
+        </div>
+        <button class="btn btn-sm" style="width:100%;justify-content:center;font-size:11px" onclick="aiRtMsg(${idx})">
+          <i class="ti ti-sparkles" style="font-size:10px;color:var(--ac)"></i>AI 메시지 추천
+        </button>
+      </div>`;
+    }).join('')}
+
+    ${BD.retargetSteps.length < 3 ? `
+    <div style="padding:6px 0 2px;text-align:center">
+      <button class="btn btn-sm" style="font-size:11px" onclick="addRtStep()">
+        <i class="ti ti-plus" style="font-size:11px"></i>디타겟 단계 추가
+      </button>
+    </div>` : ''}
+  </div>` : ''}`;
+}
+
+function renderRetargetSummary() {
+  if(!BD.retargetEnabled || !BD.retargetSteps.length) return '';
+  const firstCh = CH_META[BD.channel]||CH_META.push;
+  return `
+  <div class="card" style="border-color:var(--ac-border);background:var(--ac-bg);margin-top:10px">
+    <div class="card-t" style="color:var(--ac);display:flex;align-items:center;gap:5px">
+      <i class="ti ti-arrows-shuffle" style="font-size:13px"></i>크로스 채널 디타겟 (${BD.retargetSteps.length}단계)
+    </div>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:6px">
+      <span class="ch-pill" style="color:${firstCh.color};border-color:${firstCh.color}44;background:${firstCh.color}11">
+        <i class="${firstCh.icon}" style="font-size:11px"></i>${firstCh.label}
+      </span>
+      ${BD.retargetSteps.map(step=>{
+        const cond = COND_META[step.condition]||COND_META.no_open;
+        const ch   = CH_META[step.channel]||CH_META.push;
+        return `
+        <span style="font-size:10px;color:var(--txt3)">→ ${cond.label} → ${step.delay}${step.delayUnit==='h'?'시간':'일'} 후</span>
+        <span class="ch-pill" style="color:${ch.color};border-color:${ch.color}44;background:${ch.color}11">
+          <i class="${ch.icon}" style="font-size:11px"></i>${ch.label}
+        </span>`;
+      }).join('')}
+    </div>
+    <div class="divider" style="margin:10px 0 8px"></div>
+    ${BD.retargetSteps.map((step,idx)=>{
+      const cond = COND_META[step.condition]||COND_META.no_open;
+      const ch   = CH_META[step.channel]||CH_META.push;
+      return `
+      <div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--ac-border);font-size:11px;align-items:flex-start">
+        <span style="color:var(--txt2);width:56px;flex-shrink:0">${idx+2}차</span>
+        <div>
+          <span class="rt-cond" style="color:${cond.color};background:${cond.bg};border:1px solid ${cond.border};font-size:9px;padding:1px 6px">${cond.label}</span>
+          <span style="color:var(--txt2)"> → ${step.delay}${step.delayUnit==='h'?'시간':'일'} 후</span>
+          <strong style="color:${ch.color}"> ${ch.label}</strong>
+          ${step.title?`<div style="color:var(--txt);margin-top:2px">"${step.title}"</div>`:''}
+          ${step.deeplink?`<code style="font-size:9px;color:var(--txt3)">${step.deeplink}</code>`:''}
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+async function aiMsg(variant) {
+  const seg = SEGS.find(s=>s.id===BD.segId)||SEGS[0];
+  const key = getKey();
+  if(!key) { alert('Claude API Key를 입력해주세요'); return; }
+  const prompt = `직방 ${BD.service==='zigbang'?'직방':'호갱노노'} 앱 푸시 메시지를 작성해주세요.
+대상: ${seg.name}
+채널: ${BD.channel}
+딥링크: ${BD.deeplinkA}
+JSON 형식으로만 답해주세요: {"title":"...","body":"...","cta":"..."}`;
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});
+    const d = await r.json();
+    const txt = d.content[0].text.replace(/```json?|```/g,'').trim();
+    const obj = JSON.parse(txt);
+    BD.titleA = obj.title||''; BD.bodyA = obj.body||''; BD.ctaA = obj.cta||'';
+    render();
+  } catch(e){ alert('메시지 생성 실패: '+e.message); }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  JOURNEY
+// ═══════════════════════════════════════════════════════════════════════════
+function renderJourney() {
+  if(!selectedJourney) {
+    return `
+    <div class="sec">저니 템플릿</div>
+    <div class="grid2">
+    ${JOURNEYS.map(j=>`
+    <div class="card" style="cursor:pointer" onclick="selectedJourney='${j.id}';render()">
+      <div style="font-size:20px;margin-bottom:8px"><i class="ti ${j.icon}"></i></div>
+      <div style="font-size:12px;font-weight:600;margin-bottom:3px">${j.name}</div>
+      <div class="tip">${j.desc}</div>
+      <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
+        ${j.nodes.map(n=>`<span class="chip">${n.t}</span>`).join('')}
+      </div>
+    </div>`).join('')}
+    </div>`;
+  }
+  const j = JOURNEYS.find(x=>x.id===selectedJourney);
+  return `
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <button class="btn btn-sm" onclick="selectedJourney=null;render()"><i class="ti ti-arrow-left" style="font-size:11px"></i> 목록</button>
+    <span style="font-size:13px;font-weight:600">${j.name}</span>
+    <span class="badge badge-info" style="margin-left:4px">${j.desc}</span>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="sec">플로우</div>
+      <div class="jflow">
+      ${j.nodes.map((n,i)=>`
+        <div class="jnode ${n.type}">
+          <div class="jnode-t">${n.t}</div>
+          <div class="jnode-d">${n.d}</div>
+        </div>
+        ${i<j.nodes.length-1?'<div class="jarrow"><i class="ti ti-arrow-down"></i></div>':''}
+      `).join('')}
+      </div>
+    </div>
+    <div>
+      <div class="sec">딥링크 연결 현황</div>
+      ${j.nodes.filter(n=>n.d.includes('zigbang://')).map(n=>{
+        const dl = n.d.match(/zigbang:\/\/[^\s)]+/)?.[0]||'';
+        const entry = Object.values(DEEPLINK_MAP).find(d=>d.link===dl);
+        return `
+        <div style="padding:8px 10px;background:var(--panel2);border-radius:var(--r);margin-bottom:6px;border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:500;margin-bottom:3px">${n.t}</div>
+          <code style="font-size:10px;color:var(--ac)">${dl}</code>
+          ${entry?`<div class="tip" style="margin-top:2px">${entry.desc}</div>`:''}
+        </div>`;
+      }).join('')}
+      <div style="margin-top:10px">
+        <button class="btn btn-p btn-sm" style="width:100%;justify-content:center" onclick="agentSug('${j.name} 저니 메시지 작성해줘')"><i class="ti ti-sparkles" style="font-size:11px"></i>AI로 메시지 작성</button>
+      </div>
     </div>
   </div>`;
 }
-function initAgent(){setTimeout(()=>{const i=document.getElementById('chat-inp');if(i)i.focus();},100);}
-async function sendMsg(){
-  if(agentBusy)return;
-  const inp=document.getElementById('chat-inp');
-  const msg=inp?.value.trim();if(!msg)return;
-  inp.value='';addMsg(msg,'u');
-  if(!API_KEY){addMsg('API 키를 먼저 설정해주세요. 상단 ⚙️ 를 눌러 입력해주세요.','a');return;}
-  agentBusy=true;document.getElementById('chat-send').disabled=true;addTyping();
-  agentHist.push({role:'user',content:msg});
-  const sys=`당신은 직방·호갱노노 TMS AI 에이전트입니다. 현재 서비스: ${SVCS[curSvc].label}.
-캠페인 설계, 세그먼트 분석, A/B 메시지 작성을 도와주세요. 한국어로 간결하게 답변하세요.
-채널: 푸시 / 인앱 메시지 / 카카오 알림톡
-세그먼트: ${SEGMENTS.map(s=>s.name).join(', ')}
-트리거: ${TRIGGERS.map(t=>t.label).join(', ')}`;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,system:sys,messages:agentHist})});
-    removeTyping();
-    if(!r.ok)throw new Error(`API ${r.status}`);
-    const data=await r.json();const reply=data.content[0].text;
-    agentHist.push({role:'assistant',content:reply});addMsg(reply,'a');
-  }catch(ex){removeTyping();addMsg(`오류: ${ex.message}`,'a');}
-  finally{agentBusy=false;const s=document.getElementById('chat-send');if(s)s.disabled=false;}
-}
-function addMsg(txt,t){const ca=document.getElementById('chat-area');if(!ca)return;const d=document.createElement('div');d.className=`msg msg-${t}`;d.innerHTML=txt.replace(/\n/g,'<br>');ca.appendChild(d);ca.scrollTop=ca.scrollHeight;}
-function addTyping(){const ca=document.getElementById('chat-area');if(!ca)return;const d=document.createElement('div');d.className='msg msg-a typing';d.id='typ';d.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';ca.appendChild(d);ca.scrollTop=ca.scrollHeight;}
-function removeTyping(){document.getElementById('typ')?.remove();}
 
-// ── TOAST ─────────────────────────────────────────
-let toastT=null;
-function showToast(msg,type='s'){
-  clearTimeout(toastT);
-  let el=document.getElementById('toast');
-  if(!el){el=document.createElement('div');el.id='toast';el.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:8px 14px;border-radius:8px;font-size:12px;z-index:9999;box-shadow:0 4px 14px rgba(0,0,0,.15);white-space:nowrap;font-family:var(--f);transition:opacity .2s;';document.body.appendChild(el);}
-  el.style.cssText+=type==='warn'?'background:#fffbeb;border:1px solid var(--am2);color:#92400e;':'background:var(--g8);border:1px solid var(--g2);color:var(--g);';
-  el.textContent=msg;el.style.opacity='1';
-  toastT=setTimeout(()=>{el.style.opacity='0';},2200);
+// ═══════════════════════════════════════════════════════════════════════════
+//  AUDIENCE
+// ═══════════════════════════════════════════════════════════════════════════
+function renderAudience() {
+  return `
+  <div class="sec">저장된 세그먼트</div>
+  <div class="tip" style="margin-bottom:10px;padding:8px 10px;background:var(--info-bg);border-radius:var(--r);border:1px solid var(--info-border);color:var(--info-txt)">
+    <i class="ti ti-info-circle" style="font-size:12px"></i>
+    큐브 기반 세그먼트: <strong>lifecycle_stage IS NOT NULL</strong> 조건이 자동 적용됩니다.
+    지역 필터는 <strong>서울특별시</strong> (full name) 형식을 사용하세요.
+  </div>
+  ${SEGS.map(s=>`
+  <div class="seg-item">
+    <div style="flex:1">
+      <div class="seg-name">${s.name}</div>
+      <div style="font-size:10px;color:var(--txt3);margin-top:2px">${s.filters}</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="text-align:right;margin-right:6px">
+        <div style="font-size:14px;font-weight:700;color:var(--ac)">${s.cnt}</div>
+        <div class="tip">명</div>
+      </div>
+      <button class="btn btn-p btn-sm" onclick="BD.segId='${s.id}';nav('builder',document.getElementById('sbn-builder'))">캠페인 생성</button>
+    </div>
+  </div>`).join('')}`;
 }
 
-// ── INIT ──────────────────────────────────────────
-nav('dash',document.getElementById('sbn-dash'));
+// ═══════════════════════════════════════════════════════════════════════════
+//  ANALYTICS
+// ═══════════════════════════════════════════════════════════════════════════
+function renderAnalytics() {
+  const perfData = [
+    {name:'5월 청약 마감 D-3',    sent:18420, open:'18.4%', click:'6.2%', conv:'3.8%'},
+    {name:'관심 단지 가격 하락',  sent:41200, open:'22.1%', click:'9.4%', conv:'5.1%'},
+    {name:'AI 중개사 첫 이용',    sent:38200, open:'14.8%', click:'5.1%', conv:'2.9%'},
+  ];
+  return `
+  <div class="grid4">
+    <div class="stat"><div class="stat-l">전체 발송</div><div class="stat-v">97,820</div><div class="stat-d up">3개 캠페인</div></div>
+    <div class="stat"><div class="stat-l">평균 오픈율</div><div class="stat-v">18.4%</div><div class="stat-d up">↑ 2.1%p</div></div>
+    <div class="stat"><div class="stat-l">평균 클릭율</div><div class="stat-v">6.9%</div><div class="stat-d up">↑ 0.8%p</div></div>
+    <div class="stat"><div class="stat-l">문의 전환율</div><div class="stat-v">3.9%</div><div class="stat-d up">↑ 0.5%p</div></div>
+  </div>
+  <div class="sec">캠페인별 성과</div>
+  ${perfData.map(p=>`
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:600">${p.name}</div>
+      <span class="badge badge-ok">완료</span>
+    </div>
+    ${[['오픈율',p.open,parseFloat(p.open)],['클릭율',p.click,parseFloat(p.click)],['문의 전환율',p.conv,parseFloat(p.conv)]].map(([l,v,n])=>`
+    <div class="perf-bar">
+      <span style="width:80px;flex-shrink:0">${l}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.min(n*4,100)}%"></div></div>
+      <span style="width:36px;text-align:right;font-weight:600">${v}</span>
+    </div>`).join('')}
+  </div>`).join('')}
+  <div style="margin-top:12px">
+    <button class="btn btn-p btn-sm" onclick="agentSug('큐브로 zb_daily_mkt_kpi에서 지난달 매체별 캠페인 성과 비교해줘')"><i class="ti ti-sparkles" style="font-size:11px"></i>AI 성과 분석</button>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  AI AGENT — v3 (큐브 + 딥링크 통합)
+// ═══════════════════════════════════════════════════════════════════════════
+const agentSys = `당신은 직방·호갱노노 토탈 메시징 솔루션의 AI 에이전트입니다.
+마케터가 자연어로 요청하면 세그먼트 모수 조회, 캠페인 생성, 저니 설계, 성과 분석을 도와줍니다.
+
+## 데이터 조회 — 큐브 우선 원칙
+query_cube 도구 사용 시 prompt에 반드시 "큐브로" 접두어를 붙이세요.
+없으면 게이트웨이 MCP가 RDS 직접 조회로 라우팅되어 대시보드 수치와 달라집니다.
+
+## 딥링크 — 캠페인 랜딩 URL
+캠페인 생성 시 항상 deeplink 파라미터를 포함하세요. 형식: zigbang:///경로 (슬래시 3개)
+
+캠페인 목적별 추천 딥링크:
+- 아파트 재방문: zigbang:///home/apt/map
+- 아파트 찜 리마인더: zigbang:///home/apt/items/zzim
+- 아파트 단지 상세: zigbang:///home/apt/danjis/:area_danji_id
+- 원룸 재방문: zigbang:///home/oneroom/map
+- 분양 관심: zigbang:///home/apt/offer/all
+- AI 중개사(Zena): zigbang:///home/ai/zena
+- 청약진단: zigbang:///home/housing_subscription/add/intro
+- 콘텐츠 유도: zigbang:///home/real_estate_trend
+- 거주민 인증: zigbang:///resident/certify/intro
+- 찜 목록(원룸): zigbang:///home/oneroom/items/zzim
+- 인기 단지: zigbang:///search/popular
+- 지킴진단: zigbang:///zikim-report/intro
+지도 딥링크에 좌표 추가 가능: ?latitude=37.54&longitude=126.97&zoom=14
+
+## zb_user_profile_all 핵심 속성
+lifecycle_stage: active|inactive|frozen|nru|NULL
+⚠️ 행동 기반 필터 사용 시 반드시 lifecycle_stage IS NOT NULL 추가
+platform: ios|android  /  gender: 남자|여자  /  age_group: 10대|20대|30대|40대|50대+
+current_local1: 서울특별시|경기도 (full name, '서울' 불가)
+is_push_enabled: 허용|거부  /  marketing_opt_in: 동의|미동의
+apart_crm_grade: 0(미활동)|100(방문)|200(상세조회)|300(찜/알림)|400(1회문의)|500(코어)
+urgency_level: 즉시|1–3개월|탐색 중|관망|장기
+pref_property_type: 아파트|원오빌|아파트+원오빌
+pref_transaction_type: 매매|전세|월세
+conversion_prob_apt: 0–0.875 (ML 전환 확률, 상대 순위로 활용)
+musthave_conditions 등 array 타입 → contains 연산자 사용 (= 불가)
+청약·소득·가구 관련 필드는 청약진단레포트 이용 유저만 채워짐
+
+## 주요 큐브
+zb_user_profile_all — 유저 프로파일·CRM 등급·인구통계 (타겟 모수 산정)
+zb_dau_inflow_daily — 직방 일별 DAU·채널 유입
+zb_daily_mkt_kpi — 직방 캠페인 성과 (호갱노노: hg_daily_mkt_kpi)
+zb_retention_daily_nru / zb_retention_weekly_nru — NRU 리텐션
+
+## 크로스 채널 디타겟 설계
+마케터가 디타겟(미오픈/미클릭/미전환 재발송) 요청 시 아래 원칙으로 설계하세요.
+
+조건 유형:
+- 미오픈(no_open): 1차 발송 후 지정 시간 내 오픈 없음
+- 오픈 후 미클릭(no_click): 오픈했으나 딥링크 클릭 없음
+- 클릭 후 미전환(no_convert): 클릭했으나 문의/찜 미발생
+
+추천 채널 순서 (오픈율 기준):
+- 인앱 메시지 > 푸시 > 카카오 알림톡
+- 동일 채널 반복 발송은 스팸 위험 → 반드시 채널을 바꿔 디타겟
+
+추천 딜레이:
+- 미오픈: 24–48시간 후
+- 미클릭: 48–72시간 후
+- 미전환: 72시간–7일 후
+
+## 응답 원칙
+- 캠페인 생성 시 create_campaign의 deeplink에 반드시 적합한 딥링크를 포함하세요.
+- 모수 조회 결과에 is_push_enabled=허용 기준 실발송 가능 모수를 함께 제시하세요.
+- 지역 필터는 '서울특별시' full name 사용을 권고하세요.
+- 디타겟 요청 시 채널 순서(인앱→푸시→카카오)와 딜레이를 명시하세요.`;
+
+const agentTools = [
+  {
+    name: 'create_campaign',
+    description: '마케터의 요청을 분석해 캠페인 빌더를 자동으로 채웁니다. deeplink는 반드시 포함하세요.',
+    input_schema:{type:'object',properties:{
+      service:{type:'string',enum:['zigbang','hogangnono']},
+      audience:{type:'string'},
+      channel:{type:'string',enum:['push','inapp','kakao','multi']},
+      message:{type:'string'},
+      deeplink:{type:'string',description:'zigbang:/// 딥링크 (필수)'},
+      trigger:{type:'string'},
+      schedule:{type:'string'}
+    },required:['service','audience','channel','message','deeplink']}
+  },
+  {
+    name: 'select_journey',
+    description: '저니 템플릿을 선택하고 저니 빌더로 이동합니다.',
+    input_schema:{type:'object',properties:{
+      journey_type:{type:'string',enum:['welcome','reactivation','subscription_deadline','wishlist']}
+    },required:['journey_type']}
+  },
+  {
+    name: 'query_cube',
+    description: `직방 큐브를 통해 표준화된 데이터를 조회합니다. prompt를 "큐브로"로 시작하세요.
+주요 큐브: zb_user_profile_all | zb_dau_inflow_daily | zb_daily_mkt_kpi | hg_daily_mkt_kpi | zb_retention_daily_nru
+핵심 필터: lifecycle_stage IS NOT NULL (행동 기반 필수), is_push_enabled=허용`,
+    input_schema:{type:'object',properties:{
+      cube_name:{type:'string'},
+      prompt:{type:'string',description:'"큐브로"로 시작하는 자연어 질의'},
+      service:{type:'string',enum:['zigbang','hogangnono','all']}
+    },required:['prompt']}
+  }
+];
+
+function execTool(name, input) {
+  if(name === 'create_campaign') {
+    let deeplink = input.deeplink || '';
+    if(!deeplink) {
+      const s = suggestDeeplinks(input.audience||'', input.message||'');
+      deeplink = s[0]?.link || 'zigbang:///home/apt/map';
+    }
+    BD.service   = input.service || 'zigbang';
+    BD.channel   = input.channel || 'push';
+    BD.titleA    = '';
+    BD.bodyA     = input.message || '';
+    BD.deeplinkA = deeplink;
+    BD.trigger   = input.trigger || 'immediate';
+    builderStep  = 2;
+    setTimeout(()=>nav('builder', document.getElementById('sbn-builder')), 400);
+    const dlEntry = Object.values(DEEPLINK_MAP).find(d=>d.link===deeplink);
+    return { success:true, filled:{...input, deeplink}, deeplink_desc: dlEntry?.desc||'커스텀 딥링크' };
+  }
+  if(name === 'select_journey') {
+    selectedJourney = input.journey_type;
+    setTimeout(()=>nav('journey', document.getElementById('sbn-journey')), 400);
+    return { success:true, journey: input.journey_type };
+  }
+  if(name === 'query_cube') {
+    return getMockCubeResult(input.cube_name||'', input.prompt);
+  }
+  return { error:'unknown tool' };
+}
+
+function getMockCubeResult(cubeName, prompt) {
+  const p = prompt.toLowerCase();
+
+  if(cubeName.includes('user_profile')||p.includes('user_profile')) {
+    if(p.includes('30대')&&(p.includes('서울')||p.includes('서울특별시'))&&(p.includes('여성')||p.includes('여자'))) {
+      return {cube:'zb_user_profile_all',result:{total_users:52340,push_enabled:38910,marketing_opted_in:29820,by_lifecycle:{active:34180,inactive:13420,nru:2840,frozen:1900},by_crm_grade:{'미활동(0)':8200,'방문/조회(100)':14300,'매물상세조회(200)':12900,'찜/알림(300)':9840,'1회문의(400)':4820,'코어(500)':2280},top_regions:[{region:'마포구',pct:'14.9%'},{region:'강남구',pct:'13.2%'},{region:'송파구',pct:'11.1%'}]},note:'⚠️ 청약·소득 필터 추가 시 청약진단레포트 이용자만 포함되어 모수가 크게 줄어들 수 있습니다.',summary:'서울특별시 30대 여성 유저 총 52,340명.\n실발송 가능(푸시 허용) 모수: 38,910명.\nCRM 코어(500등급): 2,280명.'};
+    }
+    if(p.includes('코어')||p.includes('500')) {
+      return {cube:'zb_user_profile_all',result:{total_users:18420,push_enabled:16890,by_platform:{ios:11830,android:6590},by_urgency:{'즉시':5230,'1–3개월':8140,'탐색 중':4220,'관망':830},avg_conversion_prob_apt:0.412},summary:'CRM 코어(500등급) + active + 푸시 허용 유저: 18,420명.\n평균 전환 확률 0.41, 즉시 이사 의향 5,230명이 최우선 타겟.'};
+    }
+    if(p.includes('경기')) {
+      return {cube:'zb_user_profile_all',result:{total_users:89340,push_enabled:64280,avg_apart_trade_viewed_price_band:58000},summary:'경기도 거주 + 아파트 관심 유저: 89,340명 (푸시 허용 64,280명).\n평균 아파트 매매 조회 가격대 5.8억.'};
+    }
+    if(p.includes('찜')&&(p.includes('미문의')||p.includes('문의 안')||p.includes('call_cnt'))) {
+      return {cube:'zb_user_profile_all',result:{total_users:41200,avg_wish_count:2.8,avg_conversion_prob_apt:0.183,by_urgency:{'탐색 중':22400,'1–3개월':13100,'즉시':5700}},summary:'CRM 300등급(찜/알림 보유, 문의 미경험) active 유저: 41,200명.\n평균 찜 수 2.8건. 문의 전환 유도 캠페인 적합 모수.'};
+    }
+    if(p.includes('긴박')||p.includes('즉시')||p.includes('urgency')) {
+      return {cube:'zb_user_profile_all',result:{total_users:142800,'즉시':38200,'1–3개월':104600,by_platform:{ios:89300,android:53500}},note:'AI 중개사 채팅 미이용자는 행동 기반 추론값이므로 정확도 낮을 수 있음.',summary:'이사 의향 높은 유저(즉시+1–3개월): 142,800명.\n"즉시" 38,200명이 긴급 타겟.'};
+    }
+    return {cube:'zb_user_profile_all',result:{total_users:128400},note:'lifecycle_stage IS NOT NULL 조건 자동 적용.',summary:'조건에 맞는 유저 128,400명.'};
+  }
+
+  if(cubeName.includes('dau_inflow')||p.includes('dau')||p.includes('nru')) {
+    return {cube:'zb_dau_inflow_daily',result:{period:'최근 7일',avg_dau:284500,avg_nru:3760,trend:[{date:'05-12',dau:278200,nru:3420},{date:'05-13',dau:281400,nru:3680},{date:'05-14',dau:289300,nru:3910},{date:'05-15',dau:276800,nru:3290},{date:'05-16',dau:291200,nru:4010},{date:'05-17',dau:295400,nru:4180},{date:'05-18',dau:288600,nru:3840}]},summary:'최근 7일 평균 DAU 284,500명. 일평균 NRU 3,760명.'};
+  }
+
+  if(cubeName.includes('mkt_kpi')||p.includes('캠페인')||p.includes('전환율')||p.includes('매체')) {
+    const isHG = cubeName.includes('hg')||p.includes('호갱');
+    return {cube:isHG?'hg_daily_mkt_kpi':'zb_daily_mkt_kpi',result:{period:'지난달',campaigns:[{medium:'Meta',type:'리타겟',install:12400,d7_inquiry_cvr:'4.2%',cpi:2800},{medium:'Meta',type:'신규',install:8900,d7_inquiry_cvr:'2.8%',cpi:3400},{medium:'Google',type:'브랜드',install:6200,d7_inquiry_cvr:'5.1%',cpi:1900},{medium:'Google',type:'UAC',install:9800,d7_inquiry_cvr:'3.3%',cpi:2600}]},summary:'Google 브랜드 D7 문의 전환율 5.1% 최고. Meta 리타겟 4.2% 순.'};
+  }
+
+  if(cubeName.includes('retention')||p.includes('리텐션')) {
+    return {cube:'zb_retention_daily_nru',result:{cohort:'최근 4주 NRU 평균',d1:'42.1%',d3:'28.4%',d7:'19.2%',d14:'13.8%',d30:'9.1%'},summary:'NRU 리텐션: D1 42.1% → D7 19.2% → D30 9.1%.\nD2–D3 재방문 유도 푸시가 효과적입니다.'};
+  }
+
+  if(p.includes('목록')||p.includes('어떤 큐브')||p.includes('큐브 목록')) {
+    return {available_cubes:[{name:'zb_user_profile_all',desc:'유저 프로파일·CRM 등급 (타겟 모수 산정 핵심)'},{name:'zb_dau_inflow_daily',desc:'직방 일별 DAU·채널 유입'},{name:'zb_daily_mkt_kpi',desc:'직방 캠페인 성과'},{name:'hg_daily_mkt_kpi',desc:'호갱노노 캠페인 성과'},{name:'zb_retention_daily_nru',desc:'NRU 일별 리텐션'}],summary:'5개 주요 큐브. 타겟 모수는 zb_user_profile_all을 우선 사용.'};
+  }
+
+  return {cube:cubeName||'(자동 선택)',result:{message:'큐브 조회 완료.'},summary:'실제 MCP 연결 시 정확한 수치 확인 가능.'};
+}
+
+const agentSuggestions = [
+  {label:'🗺️ 아파트 재방문 캠페인', text:'큐브로 zb_user_profile_all에서 서울특별시 30대 apart_crm_grade=300 이상 active 유저 모수 확인하고, 딥링크 zigbang:///home/apt/map으로 재방문 유도 푸시 만들어줘'},
+  {label:'💛 찜 리마인더 캠페인',   text:'큐브로 zb_user_profile_all에서 apart_crm_grade=300이고 call_cnt=0인 active 유저 모수 확인하고, zigbang:///home/apt/items/zzim으로 연결되는 찜 리마인더 푸시 만들어줘'},
+  {label:'🤖 AI 중개사(Zena) 유도', text:'큐브로 zb_user_profile_all에서 urgency_level=즉시이고 ai_chat_message_count=0인 active 유저 모수 확인하고, zigbang:///home/ai/zena로 연결되는 첫 이용 유도 푸시 만들어줘'},
+  {label:'🏠 청약 관심 유저 캠페인', text:'큐브로 zb_user_profile_all에서 apart_crm_grade>=200이고 is_push_enabled=허용인 유저 모수 확인하고, zigbang:///home/housing_subscription/add/intro 연결로 청약진단 안내 푸시 만들어줘'},
+  {label:'📊 원룸 재방문 캠페인',   text:'큐브로 zb_user_profile_all에서 pref_property_type=원오빌이고 lifecycle_stage=inactive인 유저 모수 확인하고, zigbang:///home/oneroom/recommend/item_list 연결로 재방문 푸시 만들어줘'},
+  {label:'📈 DAU/NRU 현황',         text:'큐브로 zb_dau_inflow_daily에서 이번 달 직방 DAU·NRU 일별 추이 보여줘'},
+  {label:'🎯 CRM 코어 모수',        text:'큐브로 zb_user_profile_all에서 apart_crm_grade=500이고 lifecycle_stage=active이고 is_push_enabled=허용인 유저 수랑 urgency 분포 알려줘'},
+  {label:'📉 캠페인 KPI 비교',      text:'큐브로 zb_daily_mkt_kpi에서 지난달 매체별 앱 설치 수와 D7 문의 전환율 비교해줘'},
+  {label:'🔁 3채널 크로스 디타겟',   text:'서울특별시 30대 코어 유저에게 푸시 보내고, 24시간 내 미오픈 시 인앱 메시지로 재발송, 48시간 미클릭 시 카카오 알림톡 최종 발송하는 캠페인 만들어줘'},
+  {label:'⚡ 긴박도 높음 디타겟',    text:'큐브로 zb_user_profile_all에서 urgency_level=즉시 유저 모수 확인하고, zigbang:///home/apt/danjis/19931 연결로 푸시 → 미오픈 24h → 인앱 2단계 디타겟 캠페인 만들어줘'},
+];
+
+function renderAgent() {
+  return `
+  <div class="agent-wrap">
+    <div class="agent-msgs" id="amsgs">
+      <div class="amsg agent">안녕하세요! 직방·호갱노노 TMS AI 에이전트입니다.
+세그먼트 모수 조회(큐브), 캠페인 생성, 저니 설계를 자연어로 요청해 보세요.
+딥링크 추천까지 자동으로 처리됩니다.
+<br><br>아래 예시를 클릭하거나 직접 입력해 주세요.</div>
+    </div>
+    <div class="agent-sug" id="asug">
+      ${agentSuggestions.map(s=>`<button class="agent-sug-btn" onclick="agentSend('${s.text.replace(/'/g,'&#39;')}')">${s.label}</button>`).join('')}
+    </div>
+    <div class="agent-inp">
+      <textarea id="ainp" placeholder="예: 큐브로 zb_user_profile_all에서 서울특별시 30대 코어 모수 알려줘" onkeydown="onAKey(event)" oninput="rsz(this)"></textarea>
+      <button id="asbtn" onclick="agentSend()"><i class="ti ti-send" style="font-size:13px"></i></button>
+    </div>
+  </div>`;
+}
+
+function initAgentUI() {}
+
+function addAgentMsg(role, text, isErr=false) {
+  const c = document.getElementById('amsgs');
+  if(!c) return;
+  const d = document.createElement('div');
+  d.className = `amsg ${role}${isErr?' err':''}`;
+  d.innerHTML = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code style="font-family:monospace;font-size:11px;background:rgba(0,0,0,.07);padding:1px 4px;border-radius:3px">$1</code>').replace(/\n/g,'<br>');
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+
+function addAgentTool(name, navigate=false) {
+  const c = document.getElementById('amsgs');
+  if(!c) return null;
+  const d = document.createElement('div');
+  d.className = 'amsg tool';
+  d.textContent = `⚙️ ${name}() 실행 중...${navigate?' → 빌더/저니로 이동':''}`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+  return d;
+}
+
+function addAgentTy() {
+  const c = document.getElementById('amsgs');
+  if(!c) return;
+  const d = document.createElement('div');
+  d.className = 'amsg agent typing-wrap';
+  d.id = 'agTyping';
+  d.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+
+function rmAgentTy() {
+  const t = document.getElementById('agTyping');
+  if(t) t.remove();
+}
+
+function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+function getKey() {
+  return document.getElementById('apiKeyInp')?.value.trim() ||
+         sessionStorage.getItem('tms_apikey') || '';
+}
+function saveKey() {
+  const v = document.getElementById('apiKeyInp')?.value.trim();
+  if(v) { sessionStorage.setItem('tms_apikey', v); alert('API Key 저장됨 (세션)'); }
+}
+
+async function apiCall(msgs, attempt=0) {
+  const key = getKey();
+  if(!key) throw new Error('Claude API Key를 입력해주세요 (상단 오른쪽)');
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system:agentSys,tools:agentTools,messages:msgs})
+    });
+    if(!r.ok) {
+      const e = await r.json().catch(()=>({error:{message:r.statusText}}));
+      throw new Error(e.error?.message || r.statusText);
+    }
+    return await r.json();
+  } catch(e) {
+    if((e.message.includes('fetch')||e.message.includes('Failed'))&&attempt<2){ await sleep(800*Math.pow(2,attempt)); return apiCall(msgs,attempt+1); }
+    throw e;
+  }
+}
+
+async function runAgent() {
+  while(true) {
+    const data = await apiCall(agentHist); rmAgentTy();
+    const tbs = data.content.filter(b=>b.type==='tool_use');
+    const txs = data.content.filter(b=>b.type==='text');
+    if(tbs.length) {
+      const isNav = tbs[0].name==='create_campaign'||tbs[0].name==='select_journey';
+      const td = addAgentTool(tbs[0].name, isNav);
+      const results = tbs.map(tb=>({type:'tool_result',tool_use_id:tb.id,content:JSON.stringify(execTool(tb.name,tb.input))}));
+      agentHist.push({role:'assistant',content:data.content});
+      agentHist.push({role:'user',content:results});
+      if(td) td.remove();
+      // 도구 결과 요약 메시지
+      const toolRes = results[0]?.content;
+      if(toolRes) {
+        const parsed = JSON.parse(toolRes);
+        if(parsed.summary) addAgentMsg('agent', parsed.summary);
+      }
+      continue;
+    }
+    agentHist.push({role:'assistant',content:data.content});
+    if(txs.length) addAgentMsg('agent', txs.map(b=>b.text).join('\n'));
+    break;
+  }
+}
+
+async function agentSend(txt) {
+  const el = document.getElementById('ainp');
+  const m = txt || el?.value.trim();
+  if(!m||agentBusy) return;
+  if(!txt&&el) { el.value=''; el.style.height='auto'; }
+  agentBusy = true;
+  const sb = document.getElementById('asbtn'); if(sb) sb.disabled=true;
+  addAgentMsg('user', m);
+  agentHist.push({role:'user',content:m});
+  addAgentTy();
+  try { await runAgent(); }
+  catch(e) { rmAgentTy(); addAgentMsg('agent', `⚠️ 오류: ${e.message}`, true); }
+  agentBusy = false; if(sb) sb.disabled=false;
+}
+
+function agentSug(t) {
+  if(activeSection!=='agent') nav('agent', document.getElementById('sbn-agent'));
+  setTimeout(()=>agentSend(t), 100);
+}
+function sendPrompt(t) { agentSug(t); }
+function onAKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();agentSend();} }
+function rsz(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,68)+'px'; }
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  THEME
+// ═══════════════════════════════════════════════════════════════════════════
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('themeIco').className = isDark?'ti ti-moon':'ti ti-sun';
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+render();
 </script>
 </body>
 </html>
